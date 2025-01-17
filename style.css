@@ -9,8 +9,8 @@ body {
   }
   .current {
     font-weight: bold; /* Make the text bold */
-    background-color: #555; /* Highlight the current page with a different background */
-    color: white; /* Ensure the text is readable */
+    background-color: #ac1212; /* Highlight the current page with a different background */
+    color: rgb(19, 19, 211); /* Ensure the text is readable */
     padding: 8px 12px; /* Add spacing like the other links */
     border-radius: 4px; /* Keep the design consistent */
 }
