@@ -7,10 +7,28 @@ body {
     margin-inline: auto;
     padding: 10px;
   }
-  .current {
-    font-weight: bold; /* Make the text bold */
-    background-color: #ac1212; /* Highlight the current page with a different background */
-    color: rgb(19, 19, 211); /* Ensure the text is readable */
-    padding: 8px 12px; /* Add spacing like the other links */
-    border-radius: 4px; /* Keep the design consistent */
-}
+  
+.current {
+  font-weight: bold; /* Make the text bold */
+  background-color: #555; /* Highlight the current page with a different background */
+  color: white; /* Ensure the text is readable */
+  }
+
+nav.menu {
+  display: flex; /* Enables Flexbox layout */
+  justify-content: space-around; /* Distributes items evenly */
+  padding: 10px; /* Adds padding around the navigation */
+  }
+
+nav.menu {
+  flex: 1; /* Makes all links take up equal space */
+  text-align: center; /* Centers the text inside each link */
+  padding: 8px 12px; /* Adds padding for better spacing */
+  color: white; /* Makes the text white */
+  text-decoration: none; /* Removes underline from the links */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+  }
+  
+nav.menu a:hover {
+  background-color: #555; /* Changes the background color on hover */
+  }
