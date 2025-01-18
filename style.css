@@ -13,11 +13,22 @@ nav.menu {
   justify-content: space-around;
   align-items: center;
   padding: 1em 0;
-  margin-bottom: 2em;
-  border-bottom-width: 1px;
-  border-bottom-style: solid hsl(0, 0%, 80%);
+  margin-bottom: 1em;
+  border-bottom: 1px solid hsl(0, 0%, 80%);
   }
   
+nav.menu ul {
+  display: flex; /* Apply Flexbox to the list */
+  list-style: none; /* Remove default bullet points */
+  margin: 0; /* Reset default margin */
+  padding: 0; /* Reset default padding */
+}
+
+nav.menu li {
+  margin: 0; /* Remove extra margins */
+  padding: 0; /* Remove extra padding */
+}
+
 nav.menu .current { 
   font-weight: bold;
   border-bottom: 4px solid hsl(0, 0%, 80%);
