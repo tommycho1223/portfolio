@@ -7,28 +7,34 @@ body {
     margin-inline: auto;
     padding: 10px;
   }
-  
-.current {
-  font-weight: bold; /* Make the text bold */
-  background-color: #555; /* Highlight the current page with a different background */
-  color: white; /* Ensure the text is readable */
-  }
 
 nav.menu {
-  display: flex; /* Enables Flexbox layout */
-  justify-content: space-around; /* Distributes items evenly */
-  padding: 10px; /* Adds padding around the navigation */
-  }
-
-nav.menu {
-  flex: 1; /* Makes all links take up equal space */
-  text-align: center; /* Centers the text inside each link */
-  padding: 8px 12px; /* Adds padding for better spacing */
-  color: white; /* Makes the text white */
-  text-decoration: none; /* Removes underline from the links */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+  margin-bottom: 1em;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: oklch(80% 3% 200);
   }
   
+nav.menu .current { 
+  font-weight: bold;
+  background-color: #555;
+  color: white;
+  border-bottom: 0.4em;
+  padding-bottom: calc(0.5em - 4px);
+  }
+
+nav.menu a {
+  flex: 1;
+  text-align: center;
+  padding: 0.5em;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  }
+
 nav.menu a:hover {
   background-color: #555; /* Changes the background color on hover */
   }
