@@ -10,35 +10,25 @@ body {
 
 nav.menu {
   display: flex;
-  /* justify-content: space-around; */
-  text-decoration: none;
-  color: inherit;
-  text-align: center;
-  padding: 0.5em;
-  /* padding: 10px; */
-  margin-bottom: 1em;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1em 0;
+  margin-bottom: 2em;
   border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: oklch(80% 3% 200);
+  border-bottom-style: solid hsl(0, 0%, 80%);
   }
   
 nav.menu .current { 
   font-weight: bold;
-  background-color: #555;
-  color: white;
-  border-bottom: 0.4em;
+  border-bottom: 4px solid hsl(0, 0%, 80%);
   padding-bottom: calc(0.5em - 4px);
   }
 
 nav.menu a {
   flex: 1;
-  /* text-decoration: none;
+  text-decoration: none;
   color: inherit;
   text-align: center;
-  padding: 0.5em;
-  transition: background-color 0.3s ease; */
+  padding: 0.5em 1em;
+  font-weight: normal;
   }
-
-/* nav.menu a:hover {
-  background-color: #555;
-  } */
