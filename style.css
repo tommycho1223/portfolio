@@ -8,31 +8,15 @@ body {
     padding: 10px;
   }
 
+nav.menu ul,
+nav.menu li {
+    display: contents; /* Remove styling for <ul> and <li> */
+  }
+
 nav.menu {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 1em 0;
   margin-bottom: 1em;
-  border-bottom: 1px solid hsl(0, 0%, 80%);
-  }
-  
-nav.menu ul {
-  display: flex; /* Apply Flexbox to the list */
-  list-style: none; /* Remove default bullet points */
-  margin: 0; /* Reset default margin */
-  padding: 0; /* Reset default padding */
-}
-
-nav.menu li {
-  margin: 0; /* Remove extra margins */
-  padding: 0; /* Remove extra padding */
-}
-
-nav.menu .current { 
-  font-weight: bold;
-  border-bottom: 4px solid hsl(0, 0%, 80%);
-  padding-bottom: calc(0.5em - 4px);
+  border-bottom: 1px solid oklch(80% 3% 200);
   }
 
 nav.menu a {
@@ -40,6 +24,11 @@ nav.menu a {
   text-decoration: none;
   color: inherit;
   text-align: center;
-  padding: 0.5em 1em;
-  font-weight: normal;
+  padding: 0.5em;
+  }
+
+nav.menu .current { 
+  font-weight: bold;
+  border-bottom: 0.4em solid oklch(80% 3% 200);
+  padding-bottom: calc(0.5em - 0.4em);
   }
