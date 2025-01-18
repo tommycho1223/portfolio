@@ -32,3 +32,12 @@ nav.menu .current {
   border-bottom: 0.4em solid oklch(80% 3% 200);
   padding-bottom: calc(0.5em - 0.4em);
   }
+
+:root {
+  --color-accent: oklch(65% 50% 0);
+}
+
+nav.menu a:hover {
+  border-bottom: 0.4em solid var(--color-accent);
+  background-color: oklch(from var(--color-accent) 95% 5% h);
+}
