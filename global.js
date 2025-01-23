@@ -6,3 +6,14 @@ function $$(selector, context = document) {
 
 const navLinks = $$("nav a");
 console.log(navLinks);
+
+let currentLink = navLinks.find(
+    (a) => a.host === location.host && a.pathname === location.pathname
+  );
+  
+  console.log(currentLink);
+
+  if (currentLink) {
+    // or if (currentLink !== undefined)
+    currentLink.classList.add('current');
+  }
