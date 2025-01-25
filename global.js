@@ -65,3 +65,9 @@ document.body.insertAdjacentHTML(
     </label>
     `
   );
+
+const themeSelector = document.getElementById('theme-selector');
+themeSelector.addEventListener('change', (event) => {
+    const selectedTheme = event.target.value; // Get the selected value
+    document.documentElement.style.colorScheme = selectedTheme; // Update the color-scheme property
+});
