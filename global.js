@@ -66,8 +66,14 @@ document.body.insertAdjacentHTML(
     `
   );
 
-const themeSelector = document.getElementById('theme-selector');
-themeSelector.addEventListener('change', (event) => {
+  const savedTheme = localStorage.getItem('theme') || 'light dark';
+  document.documentElement.style.colorScheme = savedTheme;
+  document.getElementById('theme-selector').value = savedTheme;
+  
+  // Listen for changes in the dropdown
+  const themeSelector = document.getElementById('theme-selector');
+  themeSelector.addEventListener('change', (event) => {
     const selectedTheme = event.target.value; // Get the selected value
     document.documentElement.style.colorScheme = selectedTheme; // Update the color-scheme property
-});
+    localStorage.setItem('theme', selectedTheme); // Save the preference
+  });
