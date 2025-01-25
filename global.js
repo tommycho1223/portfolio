@@ -19,11 +19,11 @@ function $$(selector, context = document) {
 // }
 
 let pages = [
-    { url: '', title: 'Home' },
-    { url: 'projects/', title: 'Projects' },
-    { url: 'contact/', title: 'Contact' },
+    { url: 'https://tommycho1223.github.io/portfolio/', title: 'Home' },
+    { url: 'https://tommycho1223.github.io/portfolio/projects/', title: 'Projects' },
+    { url: 'https://tommycho1223.github.io/portfolio/contact/', title: 'Contact' },
     { url: 'https://github.com/tommycho1223', title: 'My GitHub' },
-    { url: 'cv/', title: 'Resume' },
+    { url: 'https://tommycho1223.github.io/portfolio/cv/', title: 'Resume' },
 ];
 
 let nav = document.createElement('nav');
