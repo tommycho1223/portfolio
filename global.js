@@ -4,7 +4,7 @@ function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-let navLinks = $$("nav a");
+let navLinks = $$("ul a");
 console.log(navLinks);
 
 let currentLink = navLinks.find(
