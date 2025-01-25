@@ -141,29 +141,39 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* form {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1em;
+form {
+  display: flex;
+  flex-direction: column; /* Stack form elements vertically */
+  gap: 1em; /* Add consistent spacing between elements */
+  margin-top: 20px;
 }
 
-label {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
+form label {
+  font-weight: bold; /* Highlight labels */
+  margin-bottom: 0.5em; /* Add spacing below the labels */
 }
 
-button {
-  grid-column: 1 / -1;
-  padding: 0.5em;
-} */
+form input, form textarea, form button {
+  width: 100%; /* Make all form controls full-width */
+  padding: 0.7em; /* Add padding for a better look */
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Slightly round corners */
+  box-sizing: border-box; /* Include padding in width calculation */
+}
 
 form textarea {
-  width: 100%; /* Ensures it matches the width of other inputs */
-  height: 150px; /* Adjust height as needed */
-  resize: vertical; /* Allow users to resize only vertically */
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  height: 150px; /* Set a default height */
+  resize: vertical; /* Allow vertical resizing only */
+}
+
+form button {
+  background-color: #f4f4f4; /* Light background for the button */
+  border: 1px solid #ccc; /* Match input borders */
+  cursor: pointer; /* Change cursor on hover */
+  font-size: 1em; /* Match text size */
+  transition: background-color 0.3s ease; /* Smooth hover effect */
+}
+
+form button:hover {
+  background-color: #ddd; /* Slightly darker hover color */
 }
