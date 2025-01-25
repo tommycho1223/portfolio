@@ -18,7 +18,7 @@ body {
 
 /* Header styles */
 header {
-  background-color: #4CAF50;
+  background-color: hsl(176, 69%, 63%);
   color: white;
   padding: 10px 20px;
   text-align: center;
@@ -30,11 +30,12 @@ header {
 nav {
   display: flex;
   justify-content: space-between;
-  background-color: #4CAF50;
+  background-color: hsl(176, 69%, 63%);
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
   border-bottom: 1px solid hsl(0, 0%, 80%);
+  --border-color: oklch(50% 10% 200 / 40%);
 }
 
 nav ul, nav li {
@@ -52,12 +53,13 @@ nav a {
 }
 
 nav a:hover {
-  background-color: #45a049;
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
 nav a.current {
   border-bottom: 0.4em solid hsl(0, 0%, 80%);
   padding-bottom: 0.1em;
+  border-bottom-color: var(--border-color);
 }
 
 /* Main content styling */
@@ -133,7 +135,7 @@ footer {
 }
 
 footer a {
-  color: #4CAF50;
+  color: hsl(176, 69%, 63%);
   text-decoration: none;
 }
 
@@ -176,4 +178,8 @@ form button {
 
 form button:hover {
   background-color: #ddd; /* Slightly darker hover color */
+}
+
+html {
+  color-scheme: light dark; /* Automatically adapts to OS color scheme */
 }
