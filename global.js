@@ -35,8 +35,14 @@ for (let p of pages) {
     let url = p.url;
     let title = p.title;
 
-    if (!ARE_WE_HOME && !url.startsWith('http')) {
-        url = '../' + url;
+    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
+
+    if (a.host === location.host && a.pathname === location.pathname) {
+        a.classList.add('current');
+    }
+
+    if (a.host !== location.host) {
+        a.target = '_blank';
     }
 
     let a = document.createElement('a');
