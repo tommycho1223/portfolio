@@ -15,6 +15,10 @@ h1 {
   color: #333;
 }
 
+html[style*="color-scheme: dark"] h1 {
+  color: #fff;
+}
+
 nav.menu ul,
 nav.menu li {
     display: contents;
