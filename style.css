@@ -120,3 +120,11 @@ nav {
   --border-color: oklch(50% 10% 200 / 40%);
   border-bottom-color: var(--border-color);
 }
+
+.color-scheme {
+  position: absolute; /* Positions the element relative to the document */
+  top: 1rem; /* Distance from the top of the page */
+  right: 1rem; /* Distance from the right of the page */
+  font-size: 80%; /* Make the font slightly smaller */
+  font-family: inherit; /* Ensure it inherits the font-family from the parent */
+}
