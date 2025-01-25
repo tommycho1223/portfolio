@@ -1,64 +1,71 @@
 console.log("IT'S ALIVE!");
 
-function $$(selector, context = document) {
-    return Array.from(context.querySelectorAll(selector));
-}
-
-// Define pages for navigation
+// Add navigation menu dynamically (from Step 3)
 const pages = [
-    { url: '', title: 'Home' },
-    { url: 'projects/', title: 'Projects' },
-    { url: 'contact/', title: 'Contact' },
-    { url: 'https://github.com/tommycho1223', title: 'My GitHub' },
-    { url: 'cv/', title: 'Resume' }
+  { url: '', title: 'Home' },
+  { url: 'projects/', title: 'Projects' },
+  { url: 'contact/', title: 'Contact' },
+  { url: 'https://github.com/tommycho1223/', title: 'My GitHub' },
+  { url: 'cv/', title: 'Resume' },
 ];
 
-// Create the navigation menu
 const nav = document.createElement('nav');
 document.body.prepend(nav);
 
-// Check if we're on the home page
 const ARE_WE_HOME = document.documentElement.classList.contains('home');
 
-// Generate navigation links
-for (let p of pages) {
-    let a = document.createElement('a'); // Create an anchor element
-    let url = p.url;
-    let title = p.title;
+for (const p of pages) {
+  let url = p.url;
+  if (!ARE_WE_HOME && !url.startsWith('http')) url = '../' + url;
 
-    // Adjust relative URLs if not on the home page and the URL is not absolute
-    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
+  const a = document.createElement('a');
+  a.href = url;
+  a.textContent = p.title;
 
-    // Set attributes for the link
-    a.href = url;
-    a.textContent = title;
+  if (a.host === location.host && a.pathname === location.pathname) {
+    a.classList.add('current');
+  }
 
-    // Highlight the current page
-    if (a.host === location.host && a.pathname === location.pathname) {
-        a.classList.add('current');
-    }
+  if (a.host !== location.host) {
+    a.target = '_blank';
+  }
 
-    // Open external links in a new tab
-    if (a.host !== location.host) {
-        a.target = '_blank';
-    }
-
-    // Append the link to the navigation menu
-    nav.append(a);
+  nav.append(a);
 }
 
-// Add theme switch dropdown
+// Add theme switch dropdown dynamically
 document.body.insertAdjacentHTML(
-    'afterbegin',
-    `
-    <label class="color-scheme">
-        Theme:
-        <select id="theme-switch">
-            <option value="light dark">Automatic</option>
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-        </select>
-    </label>
-    `
+  'afterbegin',
+  `
+  <label class="color-scheme">
+      Theme:
+      <select id="theme-switch">
+          <option value="light dark">Automatic</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+      </select>
+  </label>
+  `
 );
 
+// Reference to the theme switcher dropdown
+const themeSwitcher = document.querySelector('#theme-switch');
+
+// On page load, check localStorage for a saved theme
+const savedTheme = localStorage.colorScheme;
+if (savedTheme) {
+  document.documentElement.style.setProperty('color-scheme', savedTheme);
+  themeSwitcher.value = savedTheme;
+}
+
+// Attach event listener to handle theme changes
+themeSwitcher.addEventListener('input', (event) => {
+  const selectedTheme = event.target.value;
+  console.log('Color scheme changed to', selectedTheme);
+
+  // Apply the selected theme to the root element
+  document.documentElement.style.setProperty('color-scheme', selectedTheme);
+
+  // Save the selected theme to localStorage
+  localStorage.colorScheme = selectedTheme;
+});
