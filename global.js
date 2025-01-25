@@ -27,6 +27,7 @@ let pages = [
 ];
 
 let nav = document.createElement('nav');
+nav.classList.add("menu");
 document.body.prepend(nav);
 
 const ARE_WE_HOME = document.documentElement.classList.contains('home');
@@ -58,7 +59,7 @@ document.body.insertAdjacentHTML(
     <label class="color-scheme">
       Theme:
       <select>
-        <option value="light dark">Automatic</option>
+        <option value="light dark">Automatic (Dark)</option>
         <option value="light">Light</option>
         <option value="dark">Dark</option>
       </select>

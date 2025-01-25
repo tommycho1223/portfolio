@@ -4,6 +4,7 @@ body {
        */
     font: 100%/1.5 system-ui;
     max-width: 100ch;
+    margin-top: 80px;
     margin-inline: auto;
     padding: 10px;
   }
@@ -16,79 +17,43 @@ h1 {
 }
 
 .menu {
-  background-color: #333; /* Dark background */
-  position: fixed; /* Stick the menu to the top */
-  top: 0;
-  left: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2em; /* Spacing between links */
+  background-color: #333;
+  position: fixed;
   width: 100%;
-  display: flex; /* Align items horizontally */
-  justify-content: center; /* Center the items */
-  padding: 10px 0;
-  margin: 0;
-  list-style: none; /* Remove bullet points */
-  z-index: 1000; /* Ensure it stays on top */
+  top: 0;
+  padding: 1em;
+  z-index: 1000;
 }
 
-.menu li {
-  margin: 0 15px; /* Space between items */
-}
-
-.menu li a {
-  text-decoration: none; /* Remove underline */
-  color: #fff; /* Default text color */
-  font-size: 16px;
-  font-weight: bold;
+.menu a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1em;
   text-transform: uppercase;
-  transition: color 0.3s ease;
+  transition: color 0.3s;
 }
 
-.menu li a.current {
-  color: #ffcc00; /* Highlighted color */
-  border-bottom: 2px solid #ffcc00; /* Underline to indicate active */
+.menu a.current {
+  color: #ffcc00;
+    border-bottom: 2px solid #ffcc00;
 }
 
-.menu li a:hover {
+.menu a:hover {
   color: #ffcc00;
 }
 
-body {
-  margin-top: 60px;
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
-
-/* nav.menu ul,
-nav.menu li {
-    display: contents;
-  }
-
-nav.menu {
-  display: flex;
-  margin-bottom: 1em;
-  border-bottom: 1px solid oklch(80% 3% 200);
-  }
-
-nav.menu a {
-  flex: 1;
-  text-decoration: none;
-  color: inherit;
-  text-align: center;
-  padding: 0.5em;
-  }
-
-nav.menu .current { 
-  font-weight: bold;
-  border-bottom: 0.4em solid oklch(80% 3% 200);
-  padding-bottom: calc(0.5em - 0.4em);
-  } */
 
 :root {
   --color-accent: oklch(65% 50% 0);
 }
-
-/* nav.menu a:hover {
-  border-bottom: 0.4em solid var(--color-accent);
-  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
-
-} */
 
 textarea {
   width: 100%;
