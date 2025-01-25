@@ -4,19 +4,19 @@ function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-// let navLinks = $$("nav a");
-// console.log(navLinks);
+let navLinks = $$("nav a");
+console.log(navLinks);
 
-// let currentLink = navLinks.find(
-//     (a) => a.host === location.host && a.pathname === location.pathname
-// );
+let currentLink = navLinks.find(
+    (a) => a.host === location.host && a.pathname === location.pathname
+);
   
-// console.log(currentLink);
+console.log(currentLink);
 
-// if (currentLink) {
-//     // or if (currentLink !== undefined)
-//     currentLink.classList.add('current');
-// }
+if (currentLink) {
+    // or if (currentLink !== undefined)
+    currentLink.classList.add('current');
+}
 
 let pages = [
     { url: 'https://tommycho1223.github.io/portfolio/index.html', title: 'Home' },
