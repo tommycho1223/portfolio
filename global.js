@@ -65,3 +65,20 @@ document.body.insertAdjacentHTML(
     </label>
     `
   );
+
+  let select = document.querySelector('.color-scheme select');
+
+  select.addEventListener('input', function (event) {
+    console.log('Color scheme changed to', event.target.value);
+
+    localStorage.colorScheme = event.target.value;
+
+    document.documentElement.style.setProperty('color-scheme', event.target.value);
+});
+
+if ('colorScheme' in localStorage) {
+    let savedScheme = localStorage.colorScheme;
+    document.documentElement.style.setProperty('color-scheme', savedScheme);
+
+    select.value = savedScheme;
+}

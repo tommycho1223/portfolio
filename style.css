@@ -122,9 +122,9 @@ nav {
 }
 
 .color-scheme {
-  position: absolute; /* Positions the element relative to the document */
-  top: 1rem; /* Distance from the top of the page */
-  right: 1rem; /* Distance from the right of the page */
-  font-size: 80%; /* Make the font slightly smaller */
-  font-family: inherit; /* Ensure it inherits the font-family from the parent */
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
+  font-family: inherit;
 }
