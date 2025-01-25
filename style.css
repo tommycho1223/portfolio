@@ -60,7 +60,7 @@ button {
     box-sizing: border-box;
 }
 
-form label,
+/* form label,
 form input,
 form textarea,
 form button {
@@ -68,7 +68,7 @@ form button {
     width: 100%;
     margin-block: 0.5em;
     box-sizing: border-box;
-}
+} */
 
 form {
   display: grid;
@@ -76,8 +76,15 @@ form {
   gap: 1em;
 }
 
-form label {
+label {
+  display: grid;
+  grid-template-columns: subgrid;
   grid-column: 1 / -1;
+}
+
+button {
+  grid-column: 1 / -1;
+  padding: 0.5em;
 }
 
 .projects {
