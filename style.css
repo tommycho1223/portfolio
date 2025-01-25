@@ -17,7 +17,7 @@ h1 {
 
 nav.menu ul,
 nav.menu li {
-    display: contents; /* Remove styling for <ul> and <li> */
+    display: contents;
   }
 
 nav.menu {
@@ -46,7 +46,8 @@ nav.menu .current {
 
 nav.menu a:hover {
   border-bottom: 0.4em solid var(--color-accent);
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+
 }
 
 /* input,
@@ -109,4 +110,13 @@ button {
   max-width: 100%;
   height: auto;
   object-fit: cover;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+nav {
+  --border-color: oklch(50% 10% 200 / 40%);
+  border-bottom-color: var(--border-color);
 }
