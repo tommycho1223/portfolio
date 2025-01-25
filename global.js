@@ -1,70 +1,48 @@
-// Log a message to the console to verify the script is working
 console.log("IT'S ALIVE!");
 
-// Helper function to select multiple elements
 function $$(selector, context = document) {
     return Array.from(context.querySelectorAll(selector));
 }
 
-// Highlight the current page in the navigation
-const currentPage = window.location.pathname; // Get the current page's pathname
-const navLinks = $$("nav a"); // Get all navigation links
+// Define pages for navigation
+const pages = [
+    { url: '', title: 'Home' },
+    { url: 'projects/', title: 'Projects' },
+    { url: 'contact/', title: 'Contact' },
+    { url: 'https://github.com/tommycho1223', title: 'My GitHub' },
+    { url: 'cv/', title: 'Resume' }
+];
 
-// Find the link corresponding to the current page
-const currentLink = navLinks.find((link) => link.href.includes(currentPage));
+// Create the navigation menu
+const nav = document.createElement('nav');
+document.body.prepend(nav);
 
-// Add the 'current' class safely
-currentLink?.classList.add("current");
+// Check if we're on the home page
+const ARE_WE_HOME = document.documentElement.classList.contains('home');
 
-// Set dynamic page title
-const pageTitles = {
-    "/": "Home",
-    "/projects/": "Projects",
-    "/contact/": "Contact",
-    "/cv/": "Resume",
-};
+// Generate navigation links
+for (let p of pages) {
+    let a = document.createElement('a'); // Create an anchor element
+    let url = p.url;
+    let title = p.title;
 
-const currentPath = window.location.pathname;
-const newTitle = pageTitles[currentPath] || "Portfolio";
+    // Adjust relative URLs if not on the home page and the URL is not absolute
+    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
 
-document.title = `Tommy Li: ${newTitle}`;
+    // Set attributes for the link
+    a.href = url;
+    a.textContent = title;
 
+    // Highlight the current page
+    if (a.host === location.host && a.pathname === location.pathname) {
+        a.classList.add('current');
+    }
 
+    // Open external links in a new tab
+    if (a.host !== location.host) {
+        a.target = '_blank';
+    }
 
-// let pages = [
-//     { url: '', title: 'Home' },
-//     { url: 'projects/', title: 'Projects' },
-//     { url: 'contact/', title: 'Contact' },
-//     { url: 'https:///github.com/tommycho1223/', title: 'My GitHub' },
-//     { url: 'cv/', title: 'Resume' },
-// ];
-
-// const ARE_WE_HOME = document.documentElement.classList.contains('home');
-
-// let nav = document.createElement('nav');
-// nav.classList.add('menu'); // Optional: Add a class for styling
-// document.body.prepend(nav); // Add the navigation menu at the top of the <body>
-
-// for (let p of pages) {
-//     let url = p.url;
-//     let title = p.title;
-  
-//     // Adjust the URL if not on the home page
-//     url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
-  
-//     // Add links to the <nav>
-//     nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
-// }
-
-// const navLinks = $$("nav a");
-// // console.log(navLinks);
-
-// let currentLink = navLinks.find(
-//     (a) => a.host === location.host && a.pathname === location.pathname
-// );
-  
-// // console.log(currentLink);
-
-// if (currentLink) {
-//     currentLink.classList.add('current');
-// }
+    // Append the link to the navigation menu
+    nav.append(a);
+}
