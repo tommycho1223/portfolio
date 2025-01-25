@@ -141,7 +141,7 @@ footer a:hover {
   text-decoration: underline;
 }
 
-form {
+/* form {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 1em;
@@ -156,4 +156,14 @@ label {
 button {
   grid-column: 1 / -1;
   padding: 0.5em;
+} */
+
+form textarea {
+  width: 100%; /* Ensures it matches the width of other inputs */
+  height: 150px; /* Adjust height as needed */
+  resize: vertical; /* Allow users to resize only vertically */
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
