@@ -37,6 +37,10 @@ for (let p of pages) {
 
     url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
 
+    let a = document.createElement('a');
+    a.href = url;
+    a.textContent = title;
+
     if (a.host === location.host && a.pathname === location.pathname) {
         a.classList.add('current');
     }
@@ -45,9 +49,6 @@ for (let p of pages) {
         a.target = '_blank';
     }
 
-    let a = document.createElement('a');
-    a.href = url;
-    a.textContent = title;
     nav.append(a);
 }
   
