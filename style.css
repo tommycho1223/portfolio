@@ -193,5 +193,7 @@ form button:hover {
 
 /* Light and dark mode support */
 html {
-  color-scheme: light dark; /* Automatically adapts to OS color scheme */
+  color-scheme: light dark;
+  background-color: Canvas; /* System-defined dark/light background */
+  color: CanvasText; /* System-defined text color */
 }
