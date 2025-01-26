@@ -9,44 +9,16 @@ body, h1, h2, h3, p, ul, li {
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
+  background-color: var(--body-bg-color, #f4f4f9);
+  color: var(--body-text-color, #333);
   padding: 20px;
   max-width: 100ch;
   margin-inline: auto;
 }
 
-/* Light mode */
-html[data-theme="light"] {
-  background-color: #f4f4f9; /* Light background */
-  color: #333; /* Dark text */
-}
-
-html[data-theme="light"] nav {
-  background-color: hsl(107, 91%, 83%);
-}
-
-html[data-theme="light"] main {
-  background-color: white;
-  color: #333;
-}
-
-/* Dark mode */
-html[data-theme="dark"] {
-  background-color: #121212; /* Dark background */
-  color: #e0e0e0; /* Light text */
-}
-
-html[data-theme="dark"] nav {
-  background-color: hsl(175, 19%, 65%); /* Darker nav background */
-}
-
-html[data-theme="dark"] main {
-  background-color: #1e1e1e; /* Darker main background */
-  color: #e0e0e0; /* Light text */
-}
-
 /* Header styles */
 header {
-  background-color: hsl(107, 91%, 83%);
+  background-color: hsl(176, 69%, 63%);
   color: white;
   padding: 10px 20px;
   text-align: center;
@@ -55,14 +27,14 @@ header {
 }
 
 /* Navigation menu */
-/* nav {
+nav {
   display: flex;
   justify-content: space-between;
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
   border-bottom: 1px solid var(--menu-border-color, CanvasText);
-  --border-color: oklch(50% 10% 200 / 40%);
+  background-color: var(--menu-bg-color, Canvas);
 }
 
 nav ul, nav li {
@@ -76,18 +48,17 @@ nav a {
   border-radius: 5px;
   text-align: center;
   flex: 1;
-  transition: background-color 0.3s ease, border-bottom 0.3s ease;
+  transition: background-color 0.3s ease, border-bottom 0.3s ease, padding-bottom 0.3s ease;
 }
 
 nav a:hover {
-  background-color: var(--hover-bg-color, color-mix(in oklch, var(--color-accent), canvas 85%));
+  background-color: var(--hover-bg-color, rgba(0, 0, 0, 0.1));
 }
 
 nav a.current {
-  border-bottom: 0.4em solid hsl(0, 0%, 80%);
+  border-bottom: 0.4em solid var(--menu-border-color, CanvasText);
   padding-bottom: 0.1em;
-  border-bottom-color: var(--border-color);
-} */
+}
 
 /* Main content styling */
 main {
@@ -99,7 +70,7 @@ main {
 
 main h1 {
   margin-bottom: 20px;
-  color: hsl(107, 91%, 83%);
+  color: #4CAF50;
   font-size: 400%;
   line-height: 1.1;
   text-wrap: balance;
@@ -162,7 +133,7 @@ footer {
 }
 
 footer a {
-  color: hsl(107, 91%, 83%);
+  color: hsl(176, 69%, 63%);
   text-decoration: none;
 }
 
@@ -173,46 +144,39 @@ footer a:hover {
 /* Form styles */
 form {
   display: flex;
-  flex-direction: column; /* Stack form elements vertically */
-  gap: 1em; /* Add consistent spacing between elements */
+  flex-direction: column;
+  gap: 1em;
   margin-top: 20px;
 }
 
 form label {
-  font-weight: bold; /* Highlight labels */
-  margin-bottom: 0.5em; /* Add spacing below the labels */
+  font-weight: bold;
+  margin-bottom: 0.5em;
 }
 
 form input, form textarea, form button {
-  width: 100%; /* Make all form controls full-width */
-  padding: 0.7em; /* Add padding for a better look */
-  border: 1px solid #ccc; /* Add a border */
-  border-radius: 5px; /* Slightly round corners */
-  box-sizing: border-box; /* Include padding in width calculation */
+  width: 100%;
+  padding: 0.7em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 form textarea {
-  height: 150px; /* Set a default height */
-  resize: vertical; /* Allow vertical resizing only */
+  height: 150px;
+  resize: vertical;
 }
 
 form button {
-  background-color: var(--button-bg, #f4f4f4); /* Use custom property */
-  color: var(--button-text, #333); /* Use custom property */
-  border: 1px solid #ccc; /* Match input borders */
-  cursor: pointer; /* Change cursor on hover */
-  font-size: 1em; /* Match text size */
-  transition: background-color 0.3s ease; /* Smooth hover effect */
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
 form button:hover {
-  background-color: #ddd; /* Slightly darker hover color */
-}
-
-/* Dark mode button tweaks */
-html[data-theme="dark"] form button {
-  --button-bg: #333;
-  --button-text: #e0e0e0;
+  background-color: #ddd;
 }
 
 /* Theme switcher */
@@ -220,25 +184,24 @@ html[data-theme="dark"] form button {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  font-size: 80%; /* Smaller font size */
-  font-family: inherit; /* Inherit parent font */
-  z-index: 100; /* Ensure it's above other elements */
+  font-size: 80%;
+  font-family: inherit;
+  z-index: 100;
 }
 
 /* Light and dark mode support */
-html {
-  color-scheme: light dark;
-}
-
 :root {
-  --menu-bg-color: #333; /* Dark background for both automatic and dark mode */
-  --menu-border-color: #555; /* Subtle border for dark modes */
-  --hover-bg-color: rgba(255, 255, 255, 0.1); /* Transparent hover effect */
+  --body-bg-color: #f4f4f9;
+  --body-text-color: #333;
+  --menu-bg-color: #e0e0e0;
+  --menu-border-color: #ccc;
+  --hover-bg-color: rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --menu-bg-color: #333;
-    --menu-border-color: #555;
-  }
+html[data-theme="dark"] {
+  --body-bg-color: #121212;
+  --body-text-color: #eee;
+  --menu-bg-color: #333;
+  --menu-border-color: #555;
+  --hover-bg-color: rgba(255, 255, 255, 0.1);
 }
