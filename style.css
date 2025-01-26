@@ -9,11 +9,39 @@ body, h1, h2, h3, p, ul, li {
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
-  background-color: #f4f4f9;
-  color: #333;
   padding: 20px;
   max-width: 100ch;
   margin-inline: auto;
+}
+
+/* Light mode */
+html[data-theme="light"] {
+  background-color: #f4f4f9; /* Light background */
+  color: #333; /* Dark text */
+}
+
+html[data-theme="light"] nav {
+  background-color: hsl(176, 69%, 63%);
+}
+
+html[data-theme="light"] main {
+  background-color: white;
+  color: #333;
+}
+
+/* Dark mode */
+html[data-theme="dark"] {
+  background-color: #121212; /* Dark background */
+  color: #e0e0e0; /* Light text */
+}
+
+html[data-theme="dark"] nav {
+  background-color: hsl(176, 69%, 33%); /* Darker nav background */
+}
+
+html[data-theme="dark"] main {
+  background-color: #1e1e1e; /* Darker main background */
+  color: #e0e0e0; /* Light text */
 }
 
 /* Header styles */
@@ -30,7 +58,6 @@ header {
 nav {
   display: flex;
   justify-content: space-between;
-  background-color: hsl(176, 69%, 63%);
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
@@ -170,7 +197,8 @@ form textarea {
 }
 
 form button {
-  background-color: #f4f4f4; /* Light background for the button */
+  background-color: var(--button-bg, #f4f4f4); /* Use custom property */
+  color: var(--button-text, #333); /* Use custom property */
   border: 1px solid #ccc; /* Match input borders */
   cursor: pointer; /* Change cursor on hover */
   font-size: 1em; /* Match text size */
@@ -179,6 +207,12 @@ form button {
 
 form button:hover {
   background-color: #ddd; /* Slightly darker hover color */
+}
+
+/* Dark mode button tweaks */
+html[data-theme="dark"] form button {
+  --button-bg: #333;
+  --button-text: #e0e0e0;
 }
 
 /* Theme switcher */
@@ -194,6 +228,4 @@ form button:hover {
 /* Light and dark mode support */
 html {
   color-scheme: light dark;
-  background-color: Canvas; /* System-defined dark/light background */
-  color: CanvasText; /* System-defined text color */
 }
