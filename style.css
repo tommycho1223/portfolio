@@ -61,7 +61,7 @@ nav {
   padding: 10px;
   border-radius: 5px;
   margin-bottom: 20px;
-  border-bottom: 1px solid hsl(0, 0%, 80%);
+  border-bottom: 1px solid var(--menu-border-color, CanvasText);
   --border-color: oklch(50% 10% 200 / 40%);
 }
 
@@ -76,11 +76,11 @@ nav a {
   border-radius: 5px;
   text-align: center;
   flex: 1;
-  transition: border-bottom 0.3s ease, padding-bottom 0.3s ease;
+  transition: background-color 0.3s ease, border-bottom 0.3s ease;
 }
 
 nav a:hover {
-  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+  background-color: var(--hover-bg-color, color-mix(in oklch, var(--color-accent), canvas 85%));
 }
 
 nav a.current {
@@ -228,4 +228,17 @@ html[data-theme="dark"] form button {
 /* Light and dark mode support */
 html {
   color-scheme: light dark;
+}
+
+:root {
+  --menu-bg-color: #333; /* Dark background for both automatic and dark mode */
+  --menu-border-color: #555; /* Subtle border for dark modes */
+  --hover-bg-color: rgba(255, 255, 255, 0.1); /* Transparent hover effect */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --menu-bg-color: #333;
+    --menu-border-color: #555;
+  }
 }
