@@ -12,11 +12,11 @@ currentLink?.classList.add('current');
 
 // Step 3: Automatic navigation menu
 const pages = [
-  { url: '/', title: 'Home' },
-  { url: '/projects/', title: 'Projects' },
-  { url: '/contact/', title: 'Contact' },
+  { url: 'https://tommycho1223.github.io/portfolio/', title: 'Home' },
+  { url: 'https://tommycho1223.github.io/portfolio/projects/', title: 'Projects' },
+  { url: 'https://tommycho1223.github.io/portfolio/contact/', title: 'Contact' },
   { url: 'https://github.com/tommycho1223', title: 'My GitHub' },
-  { url: '/cv/', title: 'Resume' }
+  { url: 'https://tommycho1223.github.io/portfolio/cv/', title: 'Resume' }
 ];
 
 const nav = document.createElement('nav');
@@ -50,7 +50,7 @@ document.body.insertAdjacentHTML(
   <label class="color-scheme">
     Theme:
     <select>
-      <option value="light dark">Automatic (Dark)</option>
+      <option value="light dark">Automatic</option>
       <option value="light">Light</option>
       <option value="dark">Dark</option>
     </select>
@@ -76,8 +76,14 @@ if (savedTheme) {
   document.documentElement.style.setProperty('color-scheme', savedTheme);
   document.documentElement.setAttribute('data-theme', savedTheme);
   select.value = savedTheme; // Update the dropdown value
+} else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  // Default to Automatic Dark Mode
+  document.documentElement.style.setProperty('color-scheme', 'dark');
+  document.documentElement.setAttribute('data-theme', 'light dark');
+  select.value = 'light dark';
 } else {
-  // Default to Automatic (light dark)
+  // Default to Automatic Light Mode
+  document.documentElement.style.setProperty('color-scheme', 'light');
   document.documentElement.setAttribute('data-theme', 'light dark');
   select.value = 'light dark';
 }

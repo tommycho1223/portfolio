@@ -203,5 +203,5 @@ html[data-theme="dark"] {
   --body-text-color: #eee;
   --menu-bg-color: #333;
   --menu-border-color: #555;
-  --hover-bg-color: rgba(255, 255, 255, 0.1);
+  --hover-bg-color: rgba(224, 139, 139, 0.1);
 }
