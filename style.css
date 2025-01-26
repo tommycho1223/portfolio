@@ -55,7 +55,7 @@ header {
 }
 
 /* Navigation menu */
-nav {
+/* nav {
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -87,7 +87,7 @@ nav a.current {
   border-bottom: 0.4em solid hsl(0, 0%, 80%);
   padding-bottom: 0.1em;
   border-bottom-color: var(--border-color);
-}
+} */
 
 /* Main content styling */
 main {
