@@ -1,16 +1,16 @@
-// Step 1: Logging and utility function
+// Step 1
 console.log('IT’S ALIVE!');
 
 function $$(selector, context = document) {
   return Array.from(context.querySelectorAll(selector));
 }
 
-// Step 2: Highlighting the current page
+// Step 2
 const navLinks = $$('nav a');
 const currentLink = navLinks.find(a => a.host === location.host && a.pathname === location.pathname);
 currentLink?.classList.add('current');
 
-// Step 3: Automatic navigation menu
+// Step 3
 const pages = [
   { url: 'https://tommycho1223.github.io/portfolio/', title: 'Home' },
   { url: 'https://tommycho1223.github.io/portfolio/projects/', title: 'Projects' },
@@ -40,10 +40,10 @@ for (let page of pages) {
   nav.append(a);
 }
 
-// Step 4.1: Enable dark mode support using CSS
+// Step 4.1
 document.documentElement.style.setProperty('color-scheme', 'light dark');
 
-// Step 4.2: Adding theme switcher
+// Step 4.2
 document.body.insertAdjacentHTML(
   'afterbegin',
   `
@@ -58,11 +58,11 @@ document.body.insertAdjacentHTML(
 `
 );
 
-// Step 4.3: Theme switcher positioning
+// Step 4.3
 const themeSwitcher = document.querySelector('.color-scheme');
 const select = themeSwitcher.querySelector('select');
 
-// Step 4.4: Make theme switcher functional
+// Step 4.4
 select.addEventListener('input', event => {
   const theme = event.target.value;
   document.documentElement.style.setProperty('color-scheme', theme);
@@ -70,7 +70,7 @@ select.addEventListener('input', event => {
   localStorage.colorScheme = theme; // Save user preference
 });
 
-// Step 4.5: Load saved theme preference on page load
+// Step 4.5
 const savedTheme = localStorage.colorScheme;
 if (savedTheme) {
   document.documentElement.style.setProperty('color-scheme', savedTheme);
@@ -86,4 +86,25 @@ if (savedTheme) {
   document.documentElement.style.setProperty('color-scheme', 'light');
   document.documentElement.setAttribute('data-theme', 'light dark');
   select.value = 'light dark';
+}
+
+// Step 5
+const form = document.getElementById('contact-form');
+
+if (form) {
+  form.addEventListener('submit', event => {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(form);
+    const mailto = form.action; // The mailto address from the form's action attribute
+    const url = new URL(mailto);
+
+    // Loop through the form data and append as query parameters
+    for (let [name, value] of formData) {
+      url.searchParams.append(name, encodeURIComponent(value));
+    }
+
+    // Open the mailto link with the built URL
+    location.href = url.href;
+  });
 }

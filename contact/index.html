@@ -7,28 +7,16 @@
     <title>Contact</title>
 </head>
 <body>
-    <!-- <nav class="menu">
-        <ul>
-            <li><a href="https://tommycho1223.github.io/portfolio/" target="_blank">Home</a></li>
-            <li><a href="https://tommycho1223.github.io/portfolio/projects/" target="_blank">Projects</a></li>
-            <li><a href="https://tommycho1223.github.io/portfolio/contact/" target="_blank">Contact</a></li>
-            <li><a href="https://github.com/tommycho1223/" target="_blank">My GitHub</a></li>
-            <li><a href="https://tommycho1223.github.io/portfolio/cv/" target="_blank">Resume</a></li>
-        </ul>
-    </nav> -->
     <h1>Contact Me</h1>
-    <form action="mailto:tommycho1223@gmail.com" method="POST" enctype="text/plain">
-        <label for="email">Email:</label>
-        <input id="email" name="email" type="email" />
-
+    <form id="contact-form" action="mailto:your-email@example.com" method="get">
         <label for="subject">Subject:</label>
-        <input id="subject" name="subject" />
-
-        <label for="body">Message:</label>
-        <textarea id="body" name="body"></textarea>
-        <a></a>
+        <input type="text" id="subject" name="subject" required>
+      
+        <label for="message">Message:</label>
+        <textarea id="message" name="body" required></textarea>
+      
         <button type="submit">Send</button>
-    </form>
+    </form> 
     <script src="contact/global.js" type="module"></script>
 </body>
 </html>
