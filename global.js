@@ -72,19 +72,20 @@ select.addEventListener('input', event => {
 
 // Step 4.5
 const savedTheme = localStorage.colorScheme;
+
 if (savedTheme) {
   document.documentElement.style.setProperty('color-scheme', savedTheme);
   document.documentElement.setAttribute('data-theme', savedTheme);
-  select.value = savedTheme; // Update the dropdown value
+  select.value = savedTheme;
 } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
   // Default to Automatic Dark Mode
   document.documentElement.style.setProperty('color-scheme', 'dark');
-  document.documentElement.setAttribute('data-theme', 'light dark');
+  document.documentElement.setAttribute('data-theme', 'dark'); // Change to "dark"
   select.value = 'light dark';
 } else {
   // Default to Automatic Light Mode
   document.documentElement.style.setProperty('color-scheme', 'light');
-  document.documentElement.setAttribute('data-theme', 'light dark');
+  document.documentElement.setAttribute('data-theme', 'light');
   select.value = 'light dark';
 }
 

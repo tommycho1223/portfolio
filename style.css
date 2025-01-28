@@ -189,6 +189,12 @@ form button:hover {
   z-index: 100;
 }
 
+html {
+  color-scheme: light dark;
+  background-color: var(--body-bg-color);
+  color: var(--body-text-color);
+}
+
 /* Light and dark mode support */
 :root {
   --body-bg-color: #f4f4f9;
@@ -198,7 +204,7 @@ form button:hover {
   --hover-bg-color: rgba(0, 0, 0, 0.1);
 }
 
-html[data-theme="dark"] {
+html[data-theme="dark"], html[color-scheme="dark"] {
   --body-bg-color: #121212;
   --body-text-color: #eee;
   --menu-bg-color: #333;
