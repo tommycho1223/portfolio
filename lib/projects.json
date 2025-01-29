@@ -1,11 +1,21 @@
 [
     {
-        "title": "Project 1",
+        "title": "Project 1: Expository Visualization",
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
         "description": "I'm working on it!"
     },
     {
-        "title": "Project 2",
+        "title": "Project 2: Deceptive Visualization - Peer Grading",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "I'm working on it!"
+    },
+    {
+        "title": "Project 3: Interactive Visualization",
+        "image": "https://vis-society.github.io/labs/2/images/empty.svg",
+        "description": "I'm working on it!"
+    },
+    {
+        "title": "Final Project",
         "image": "https://vis-society.github.io/labs/2/images/empty.svg",
         "description": "I'm working on it!"
     }

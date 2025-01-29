@@ -134,24 +134,50 @@ async function loadProjects() {
 
   const projects = await fetchJSON('https://tommycho1223.github.io/portfolio/lib/projects.json');
 
-  if (!projects) {
+  if (!projects || projects.length === 0) {
     console.error('Error: No projects were loaded.');
     return;
   }
 
   projectsContainer.innerHTML = ''; // Clear existing content
-  projects.forEach(project => {
-    const article = document.createElement('article');
-    article.innerHTML = `
-      <h2>${project.title}</h2>
-      <img src="${project.image}" alt="${project.title}">
-      <p>${project.description}</p>
-    `;
-    projectsContainer.appendChild(article);
-  });
 
+  // Use renderProjects() instead of manually creating elements
+  projects.forEach(project => {
+    renderProjects(project, projectsContainer, 'h2'); 
+  });
   console.log('Projects successfully added to the page.');
 }
 
 // Run this function when the page loads
 document.addEventListener('DOMContentLoaded', loadProjects);
+
+export function renderProjects(project, containerElement, headingLevel = 'h2') {
+  // Ensure the container exists
+  if (!containerElement) {
+    console.error('Error: containerElement is null or undefined.');
+    return;
+  }
+
+  // Clear existing content to avoid duplication
+  containerElement.innerHTML = '';
+
+  // Create an <article> element
+  const article = document.createElement('article');
+
+  // Validate heading level (default to h2 if invalid)
+  const validHeadingTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  if (!validHeadingTags.includes(headingLevel)) {
+    console.warn(`Invalid headingLevel "${headingLevel}". Using "h2" instead.`);
+    headingLevel = 'h2';
+  }
+
+  // Set article content dynamically
+  article.innerHTML = `
+    <${headingLevel}>${project.title}</${headingLevel}>
+    <img src="${project.image}" alt="${project.title}">
+    <p>${project.description}</p>
+  `;
+
+  // Append the article to the container
+  containerElement.appendChild(article);
+}
