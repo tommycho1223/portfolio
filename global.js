@@ -109,3 +109,16 @@ if (form) {
     location.href = url.href;
   });
 }
+
+export async function fetchJSON(url) {
+  try {
+    const response = await fetch('https://tommycho1223.github.io/portfolio/lib/projects.json');
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching or parsing JSON data:', error);
+  }
+}
