@@ -113,12 +113,45 @@ if (form) {
 export async function fetchJSON(url) {
   try {
     const response = await fetch('https://tommycho1223.github.io/portfolio/lib/projects.json');
+
     if (!response.ok) {
       throw new Error(`Failed to fetch projects: ${response.statusText}`);
     }
+
     const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error fetching or parsing JSON data:', error);
   }
 }
+
+async function loadProjects() {
+  const projectsContainer = document.querySelector('.projects');
+  if (!projectsContainer) {
+    console.error('Error: .projects container not found in the HTML.');
+    return;
+  }
+
+  const projects = await fetchJSON('https://tommycho1223.github.io/portfolio/lib/projects.json');
+
+  if (!projects) {
+    console.error('Error: No projects were loaded.');
+    return;
+  }
+
+  projectsContainer.innerHTML = ''; // Clear existing content
+  projects.forEach(project => {
+    const article = document.createElement('article');
+    article.innerHTML = `
+      <h2>${project.title}</h2>
+      <img src="${project.image}" alt="${project.title}">
+      <p>${project.description}</p>
+    `;
+    projectsContainer.appendChild(article);
+  });
+
+  console.log('Projects successfully added to the page.');
+}
+
+// Run this function when the page loads
+document.addEventListener('DOMContentLoaded', loadProjects);
