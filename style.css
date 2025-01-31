@@ -6,6 +6,8 @@ body {
     max-width: 100ch;
     margin-inline: max(1em, (100% - 100ch) / 2);
     padding: 1em;
+    background-color: var(--background-color); /* testing */
+    color: var(--text-color); /* testing */
 }
 
 nav ul, nav li {
@@ -39,6 +41,8 @@ nav a.current {
 :root {
     --color-accent: oklch(65% 50% 0); /* Choose your desired accent color */
     color-scheme: light dark;
+    --background-color: white; /* testing */
+    --text-color: black; /* testing */
 }
 
 /* Apply accent color to hovered navigation links */
@@ -165,13 +169,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Force Light Mode */
-[data-theme="light"] {
+/* [data-theme="light"] {
     color-scheme: light;
-}
+} */
 
 /* Force Dark Mode */
-[data-theme="dark"] {
+/* [data-theme="dark"] {
     color-scheme: dark;
+} */
+
+[data-theme="dark"] {
+    --background-color: black;
+    --text-color: white;
+}
+
+[data-theme="light"] {
+    --background-color: white;
+    --text-color: black;
 }
 
 /* Position theme switcher in the top-right corner */

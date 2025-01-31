@@ -21,10 +21,10 @@ document.body.insertAdjacentHTML(
 
 // Define the pages and their URLs
 let pages = [
-    { url: '', title: 'Home' },
-    { url: 'projects/', title: 'Projects' },
-    { url: 'contact/', title: 'Contact' },
-    { url: 'cv/', title: 'Resume' },
+    { url: '/portfolio/', title: 'Home' },
+    { url: '/portfolio/projects/', title: 'Projects' },
+    { url: '/portfolio/contact/', title: 'Contact' },
+    { url: '/portfolio/cv/', title: 'Resume' },
     { url: 'https://github.com/tommycho1223', title: 'My GitHub' }
 ];
 
@@ -76,7 +76,7 @@ function setTheme(mode) {
     } else {
         document.documentElement.setAttribute("data-theme", mode);
     }
-    
+
     // Save user preference in localStorage
     localStorage.setItem("colorScheme", mode);
 }
@@ -87,4 +87,6 @@ themeSwitch.value = savedTheme;
 setTheme(savedTheme);
 
 // Change theme on user selection
-themeSwitch.addEvent
+themeSwitch.addEventListener("input", (event) => {
+    setTheme(event.target.value);
+});
