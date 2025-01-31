@@ -1,0 +1,162 @@
+body {
+    /* Set line height to 1.5 times the font size
+         and use the OS’s UI font as the website font
+       */
+    font: 100%/1.5 system-ui;
+    max-width: 100ch;
+    margin-inline: max(1em, (100% - 100ch) / 2);
+    padding: 1em;
+}
+
+nav ul, nav li {
+    display: contents;
+}
+
+nav {
+    display: flex;
+    gap: 1em; /* Adds spacing between items */
+    margin-bottom: 1em;  /* Space between nav and content */
+    border-bottom: 1px solid oklch(80% 3% 200);  /* Cool gray bottom border */
+}
+
+nav a {
+    flex: 1; /* Ensures each link takes equal space */
+    text-align: center; /* Centers text inside each link */
+    padding: 0.5em; /* Adds padding for better clickability */
+    text-decoration: none; /* Removes underline */
+    color: inherit;  /* Use the same text color as the parent */
+}
+
+nav a.current {
+    font-weight: bold; /* Highlights the current page */
+    border-bottom: 0.4em solid oklch(80% 3% 200);  /* Thicker bottom border */
+    padding-bottom: 0.1em;  /* Reduce padding to compensate for border */
+}
+
+/* Define the accent color as a custom property */
+:root {
+    --color-accent: oklch(65% 50% 0); /* Choose your desired accent color */
+}
+
+/* Apply accent color to hovered navigation links */
+nav a:hover {
+    border-bottom: 0.4em solid var(--color-accent); /* Apply accent color as bottom border */
+    background-color: oklch(from var(--color-accent) 95% 5% h); /* Optional: Lighter version of accent color */
+    transition: background-color 0.3s ease-in-out; /* Optional: Smooth transition effect */
+}
+
+/* Ensure all form elements inherit the page's font */
+input, textarea, button {
+    font: inherit;
+    grid-column: 2 / -1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make form elements behave like block elements */
+label, input, textarea, button {
+    display: block;
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box; /* Includes padding and border in width calculation */
+}
+
+/* Add spacing between labels */
+label {
+    margin-block: 0.5em;
+    display: contents;
+}
+
+/* Apply CSS Grid to the form */
+form {
+    display: grid;
+    grid-template-columns: auto 1fr; /* First column fits content, second takes remaining space */
+    gap: 1em; /* Adds spacing between elements */
+}
+
+/* Ensure the button spans the full form width */
+button {
+    grid-column: 1 / -1; /* Spans the entire row */
+}
+
+/* Make .projects a grid container */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr)); /* Responsive grid */
+    gap: 1em; /* Add spacing between grid items */
+}
+
+/* Style individual articles */
+.projects article {
+    background-color: #f5f5f5;
+    padding: 1em;
+    border-radius: 5px; /* Slightly rounded corners */
+    text-align: center;
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3; /* Makes each article span 3 rows */
+    align-items: start; /* Ensures elements inside align properly */
+}
+
+/* Style images */
+.projects img {
+    width: 100%;
+    height: auto;
+}
+
+.projects article h2 {
+    margin: 0;
+}
+
+/* Improve heading sizes */
+h1 {
+    font-size: 400%; /* Make h1 significantly larger */
+}
+
+/* Improve readability for all headings */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1; /* Adjusts spacing */
+    text-wrap: balance; /* Prevents uneven lines */
+}
+
+/* Container for the entire CV */
+.cv-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Sidebar takes 1 part, main content takes 3 parts */
+    gap: 2em;
+    max-width: 900px;
+    margin: auto;
+    padding: 2em;
+}
+
+/* Style the Sidebar */
+.cv-sidebar {
+    background-color: #f5f5f5;
+    padding: 1.5em;
+    border-radius: 8px;
+}
+
+/* Style Main Content */
+.cv-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+/* Improve Section Headings */
+.cv-main h1, .cv-sidebar h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5em;
+}
+
+/* Style Lists for Readability */
+.cv-main ul {
+    padding-left: 1.5em;
+    line-height: 1.6;
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 600px) {
+    .cv-container {
+        grid-template-columns: 1fr; /* Stacks everything vertically on small screens */
+    }
+}
