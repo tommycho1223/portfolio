@@ -99,3 +99,23 @@ setTheme(savedTheme);
 themeSwitch.addEventListener("input", (event) => {
     setTheme(event.target.value);
 });
+
+// Get the contact form
+const form = document.getElementById("contact-form");
+
+if (form) {
+    form.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default submission
+
+        // Get form values
+        const email = document.getElementById("email").value;
+        const subject = document.getElementById("subject").value;
+        const body = document.getElementById("body").value;
+
+        // Encode values properly
+        const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        // Open mail client with pre-filled fields
+        window.location.href = mailtoLink;
+    });
+}
