@@ -19,12 +19,28 @@ document.body.insertAdjacentHTML(
     `
 );
 
+// const navLinks = $$("nav a"); // Get all navigation links
+// console.log(navLinks); // Debugging: Check if we got the correct links
+
+// let currentLink = navLinks.find(
+//     (a) => a.host === location.host && a.pathname === location.pathname
+// );
+
+console.log(currentLink); // Debugging: Check if we found the correct link
+
+if (currentLink) {
+    currentLink.classList.add("current");
+}
+
+// OR, using optional chaining (shorter version):
+currentLink?.classList.add("current");
+
 // Define the pages and their URLs
 let pages = [
-    { url: '/portfolio/', title: 'Home' },
-    { url: '/portfolio/projects/', title: 'Projects' },
-    { url: '/portfolio/contact/', title: 'Contact' },
-    { url: '/portfolio/cv/', title: 'Resume' },
+    { url: 'portfolio/', title: 'Home' },
+    { url: 'portfolio/projects/', title: 'Projects' },
+    { url: 'portfolio/contact/', title: 'Contact' },
+    { url: 'portfolio/cv/', title: 'Resume' },
     { url: 'https://github.com/tommycho1223', title: 'My GitHub' }
 ];
 
@@ -32,27 +48,33 @@ let pages = [
 let nav = document.createElement('nav');
 document.body.prepend(nav);
 
+// Detect if we are on the homepage
+const ARE_WE_HOME = document.documentElement.classList.contains('home');
+
 // Generate links and append to <nav>
 for (let p of pages) {
+    let url = p.url;
+    let title = p.title;
+
+    // Adjust URLs for pages that are not on the home page
+    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
+
+    // Create <a> element manually instead of using innerHTML
     let a = document.createElement('a');
-    a.href = p.url;
-    a.textContent = p.title;
+    a.href = url;
+    a.textContent = title;
 
     // Highlight the current page
-    if (window.location.pathname === p.url) {
-        a.classList.add("current");
-    }
+    a.classList.toggle("current", a.host === location.host && a.pathname === location.pathname);
 
-    // Open GitHub in a new tab
-    if (p.url.startsWith("http")) {
+    // Open external links (GitHub) in a new tab
+    if (a.host !== location.host) {
         a.target = "_blank";
     }
 
-    nav.appendChild(a);
+    // Append link to navigation
+    nav.append(a);
 }
-
-// Log navigation links to debug
-console.log($$("nav a")); // Debugging: Check if we got the correct links
 
 // Get the theme switcher dropdown
 const themeSwitch = document.getElementById("theme-switch");
@@ -64,20 +86,20 @@ function setTheme(mode) {
     } else {
         document.documentElement.setAttribute("data-theme", mode);
     }
+    
+    // Save user preference in localStorage
     localStorage.setItem("colorScheme", mode);
 }
 
 // Apply stored theme on page load
 const savedTheme = localStorage.getItem("colorScheme") || "auto";
-if (themeSwitch) {
-    themeSwitch.value = savedTheme;
-    setTheme(savedTheme);
+themeSwitch.value = savedTheme;
+setTheme(savedTheme);
 
-    // Change theme on user selection
-    themeSwitch.addEventListener("input", (event) => {
-        setTheme(event.target.value);
-    });
-}
+// Change theme on user selection
+themeSwitch.addEventListener("input", (event) => {
+    setTheme(event.target.value);
+});
 
 // Get the contact form
 const form = document.getElementById("contact-form");
