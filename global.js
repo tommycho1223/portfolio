@@ -44,11 +44,19 @@ for (let p of pages) {
     // Adjust URLs for pages that are not on the home page
     url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
 
-    // Add the link to <nav>
-    nav.insertAdjacentHTML('beforeend', `<a href="${url}">${title}</a>`);
-}
+    // Create <a> element manually instead of using innerHTML
+    let a = document.createElement('a');
+    a.href = url;
+    a.textContent = title;
 
-// Automatically highlight the current page
-let navLinks = $$("nav a"); // Get all navigation links
-let currentLink = navLinks.find(a => a.host === location.host && a.pathname === location.pathname);
-currentLink?.classList.add("current");
+    // Highlight the current page
+    a.classList.toggle("current", a.host === location.host && a.pathname === location.pathname);
+
+    // Open external links (GitHub) in a new tab
+    if (a.host !== location.host) {
+        a.target = "_blank";
+    }
+
+    // Append link to navigation
+    nav.append(a);
+}
