@@ -6,7 +6,7 @@ function $$(selector, context = document) {
 
 // Insert the color scheme switch at the top of the body
 document.body.insertAdjacentHTML(
-    "beforeend",
+    "afterbegin",
     `
     <label class="color-scheme">
         Theme:
