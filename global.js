@@ -4,7 +4,7 @@ function $$(selector, context = document) {
     return Array.from(context.querySelectorAll(selector));
 }
 
-// Insert the color scheme switch at the top of the body
+// Insert the color scheme switch at the top of the body (to the right)
 document.body.insertAdjacentHTML(
     "afterbegin",
     `
@@ -18,22 +18,6 @@ document.body.insertAdjacentHTML(
     </label>
     `
 );
-
-// const navLinks = $$("nav a"); // Get all navigation links
-// console.log(navLinks); // Debugging: Check if we got the correct links
-
-// let currentLink = navLinks.find(
-//     (a) => a.host === location.host && a.pathname === location.pathname
-// );
-
-console.log(currentLink); // Debugging: Check if we found the correct link
-
-if (currentLink) {
-    currentLink.classList.add("current");
-}
-
-// OR, using optional chaining (shorter version):
-currentLink?.classList.add("current");
 
 // Define the pages and their URLs
 let pages = [
@@ -64,17 +48,23 @@ for (let p of pages) {
     a.href = url;
     a.textContent = title;
 
-    // Highlight the current page
-    a.classList.toggle("current", a.host === location.host && a.pathname === location.pathname);
-
-    // Open external links (GitHub) in a new tab
-    if (a.host !== location.host) {
-        a.target = "_blank";
-    }
-
     // Append link to navigation
     nav.append(a);
 }
+
+// Get all navigation links
+const navLinks = $$("nav a");
+
+// Find the current page link
+let currentLink = navLinks.find(
+    (a) => a.host === location.host && a.pathname === location.pathname
+);
+
+// Debugging check
+console.log(currentLink);
+
+// Highlight the current page link
+currentLink?.classList.add("current");
 
 // Get the theme switcher dropdown
 const themeSwitch = document.getElementById("theme-switch");
@@ -97,26 +87,4 @@ themeSwitch.value = savedTheme;
 setTheme(savedTheme);
 
 // Change theme on user selection
-themeSwitch.addEventListener("input", (event) => {
-    setTheme(event.target.value);
-});
-
-// Get the contact form
-const form = document.getElementById("contact-form");
-
-if (form) {
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Prevent default submission
-
-        // Get form values
-        const email = document.getElementById("email").value;
-        const subject = document.getElementById("subject").value;
-        const body = document.getElementById("body").value;
-
-        // Encode values properly
-        const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-        // Open mail client with pre-filled fields
-        window.location.href = mailtoLink;
-    });
-}
+themeSwitch.addEvent
