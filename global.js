@@ -78,22 +78,24 @@ for (let p of pages) {
 // Get the theme switcher dropdown
 const themeSwitch = document.getElementById("theme-switch");
 
-// Function to set the theme
+// Function to set and save the theme
 function setTheme(mode) {
     if (mode === "auto") {
         document.documentElement.removeAttribute("data-theme");
     } else {
         document.documentElement.setAttribute("data-theme", mode);
     }
-    localStorage.setItem("theme", mode); // Save user preference
+    
+    // Save user preference in localStorage
+    localStorage.setItem("colorScheme", mode);
 }
 
 // Apply stored theme on page load
-const savedTheme = localStorage.getItem("theme") || "auto";
+const savedTheme = localStorage.getItem("colorScheme") || "auto";
 themeSwitch.value = savedTheme;
 setTheme(savedTheme);
 
 // Change theme on user selection
-themeSwitch.addEventListener("change", (event) => {
+themeSwitch.addEventListener("input", (event) => {
     setTheme(event.target.value);
 });

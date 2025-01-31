@@ -173,3 +173,12 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="dark"] {
     color-scheme: dark;
 }
+
+/* Position theme switcher in the top-right corner */
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 80%; /* Make it slightly smaller */
+    font-family: inherit; /* Ensure it inherits the same font */
+}
