@@ -109,12 +109,12 @@ button {
 
 /* Improve heading sizes */
 h1 {
-    font-size: 400%; /* Make h1 significantly larger */
+    font-size: 200%; /* Make h1 significantly larger */
 }
 
 /* Improve readability for all headings */
 h1, h2, h3, h4, h5, h6 {
-    line-height: 1.1; /* Adjusts spacing */
+    line-height: 1; /* Adjusts spacing */
     text-wrap: balance; /* Prevents uneven lines */
 }
 
