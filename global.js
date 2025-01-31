@@ -4,6 +4,20 @@ function $$(selector, context = document) {
     return Array.from(context.querySelectorAll(selector));
 }
 
+// Insert the color scheme switch at the top of the body
+document.body.insertAdjacentHTML(
+    "afterbegin",
+    `
+    <label class="color-scheme">
+        Theme:
+        <select id="theme-switch">
+            <option value="auto">Automatic</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+        </select>
+    </label>
+    `
+);
 // const navLinks = $$("nav a"); // Get all navigation links
 // console.log(navLinks); // Debugging: Check if we got the correct links
 
@@ -60,3 +74,26 @@ for (let p of pages) {
     // Append link to navigation
     nav.append(a);
 }
+
+// Get the theme switcher dropdown
+const themeSwitch = document.getElementById("theme-switch");
+
+// Function to set the theme
+function setTheme(mode) {
+    if (mode === "auto") {
+        document.documentElement.removeAttribute("data-theme");
+    } else {
+        document.documentElement.setAttribute("data-theme", mode);
+    }
+    localStorage.setItem("theme", mode); // Save user preference
+}
+
+// Apply stored theme on page load
+const savedTheme = localStorage.getItem("theme") || "auto";
+themeSwitch.value = savedTheme;
+setTheme(savedTheme);
+
+// Change theme on user selection
+themeSwitch.addEventListener("change", (event) => {
+    setTheme(event.target.value);
+});

@@ -17,6 +17,8 @@ nav {
     gap: 1em; /* Adds spacing between items */
     margin-bottom: 1em;  /* Space between nav and content */
     border-bottom: 1px solid oklch(80% 3% 200);  /* Cool gray bottom border */
+    --border-color: oklch(50% 10% 200 / 40%); /* Adapts better in dark mode */
+    border-bottom-color: var(--border-color);
 }
 
 nav a {
@@ -36,12 +38,13 @@ nav a.current {
 /* Define the accent color as a custom property */
 :root {
     --color-accent: oklch(65% 50% 0); /* Choose your desired accent color */
+    color-scheme: light dark;
 }
 
 /* Apply accent color to hovered navigation links */
 nav a:hover {
     border-bottom: 0.4em solid var(--color-accent); /* Apply accent color as bottom border */
-    background-color: oklch(from var(--color-accent) 95% 5% h); /* Optional: Lighter version of accent color */
+    background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
     transition: background-color 0.3s ease-in-out; /* Optional: Smooth transition effect */
 }
 
@@ -159,4 +162,14 @@ h1, h2, h3, h4, h5, h6 {
     .cv-container {
         grid-template-columns: 1fr; /* Stacks everything vertically on small screens */
     }
+}
+
+/* Force Light Mode */
+[data-theme="light"] {
+    color-scheme: light;
+}
+
+/* Force Dark Mode */
+[data-theme="dark"] {
+    color-scheme: dark;
 }
