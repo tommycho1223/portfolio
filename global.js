@@ -22,9 +22,9 @@ document.body.insertAdjacentHTML(
 // Define the pages and their URLs
 let pages = [
     { url: 'portfolio/', title: 'Home' },
-    { url: 'portfolio/projects/', title: 'Projects' },
-    { url: 'portfolio/contact/', title: 'Contact' },
-    { url: 'portfolio/cv/', title: 'Resume' },
+    { url: 'projects/', title: 'Projects' },
+    { url: 'contact/', title: 'Contact' },
+    { url: 'cv/', title: 'Resume' },
     { url: 'https://github.com/tommycho1223', title: 'My GitHub' }
 ];
 
