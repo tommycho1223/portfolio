@@ -181,6 +181,4 @@ h1, h2, h3, h4, h5, h6 {
     right: 1rem;
     font-size: 80%; /* Make it slightly smaller */
     font-family: inherit; /* Ensure it inherits the same font */
-    padding: 0.5rem;
-    border-radius: 5px;
 }
