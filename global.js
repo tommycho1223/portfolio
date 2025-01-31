@@ -12,3 +12,10 @@ let currentLink = navLinks.find(
 );
 
 console.log(currentLink); // Debugging: Check if we found the correct link
+
+if (currentLink) {
+    currentLink.classList.add("current");
+}
+
+// OR, using optional chaining (shorter version):
+currentLink?.classList.add("current");
