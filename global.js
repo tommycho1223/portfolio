@@ -49,6 +49,12 @@ for (let p of pages) {
     a.href = url;
     a.textContent = title;
 
+    // To open "My GitHub" in a new tab
+    if (url.startsWith("http")) {
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+    }
+
     // Append link to navigation
     nav.append(a);
 }
