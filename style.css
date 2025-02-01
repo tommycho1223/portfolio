@@ -49,7 +49,8 @@ nav a.current {
 nav a:hover {
     border-bottom: 0.4em solid var(--color-accent); /* Apply accent color as bottom border */
     background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
-    transition: background-color 0.3s ease-in-out; /* Optional: Smooth transition effect */
+    color: var(--hover-text-color); /* Adaptive text color */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Optional: Smooth transition effect */
 }
 
 /* Ensure all form elements inherit the page's font */
@@ -169,14 +170,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Force Light Mode */
-/* [data-theme="light"] {
+[data-theme="light"] {
     color-scheme: light;
-} */
+}
 
 /* Force Dark Mode */
-/* [data-theme="dark"] {
+[data-theme="dark"] {
     color-scheme: dark;
-} */
+}
 
 [data-theme="dark"] {
     --background-color: black;
