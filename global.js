@@ -139,9 +139,16 @@ export function renderProjects(projects, container, headingTag = 'h2') {
     // Clear existing content
     container.innerHTML = '';
 
-    if (projects.length === 0) {
+    if (!projects || projects.length === 0) {
         container.innerHTML = '<p>No projects available.</p>';
         return;
+    }
+
+    // Validate headingTag to ensure it's a valid heading tag
+    const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+    if (!validHeadings.includes(headingTag)) {
+        console.warn(`Invalid heading level: ${headingTag}. Defaulting to h2.`);
+        headingTag = 'h2';
     }
 
     // Create project elements
@@ -161,6 +168,8 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         article.appendChild(title);
         article.appendChild(img);
         article.appendChild(description);
+
+        // Append article to container
         container.appendChild(article);
     });
 }
