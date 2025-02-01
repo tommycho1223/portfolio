@@ -129,3 +129,38 @@ export async function fetchJSON(url) {
         console.error('Error fetching or parsing JSON data:', error);
     }
 }
+
+export function renderProjects(projects, container, headingTag = 'h2') {
+    if (!container) {
+        console.error("Error: Projects container not found.");
+        return;
+    }
+
+    // Clear existing content
+    container.innerHTML = '';
+
+    if (projects.length === 0) {
+        container.innerHTML = '<p>No projects available.</p>';
+        return;
+    }
+
+    // Create project elements
+    projects.forEach(project => {
+        const article = document.createElement('article');
+
+        const title = document.createElement(headingTag);
+        title.textContent = project.title;
+
+        const img = document.createElement('img');
+        img.src = project.image;
+        img.alt = project.title;
+
+        const description = document.createElement('p');
+        description.textContent = project.description;
+
+        article.appendChild(title);
+        article.appendChild(img);
+        article.appendChild(description);
+        container.appendChild(article);
+    });
+}
