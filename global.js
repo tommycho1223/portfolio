@@ -43,7 +43,7 @@ for (let p of pages) {
     // Adjust URLs for pages that are not on the home page
     const BASE_PATH = '/portfolio/';
     url = !ARE_WE_HOME && !url.startsWith('http') ? BASE_PATH + url.replace(/^portfolio\//, '') : url;
-    
+
     // Create <a> element manually instead of using innerHTML
     let a = document.createElement('a');
     a.href = url;
@@ -70,16 +70,22 @@ currentLink?.classList.add("current");
 // Get the theme switcher dropdown
 const themeSwitch = document.getElementById("theme-switch");
 
-// Function to set and save the theme
+function updateAutomaticLabel() {
+    const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const autoOption = themeSwitch.querySelector("option[value='auto']");
+    autoOption.textContent = `Automatic (${isDarkMode ? "Dark" : "Light"})`;
+}
+
 function setTheme(mode) {
     if (mode === "auto") {
-        document.documentElement.removeAttribute("data-theme");
+        const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.setAttribute("data-theme", isDarkMode ? "dark" : "light");
     } else {
         document.documentElement.setAttribute("data-theme", mode);
     }
 
-    // Save user preference in localStorage
     localStorage.setItem("colorScheme", mode);
+    updateAutomaticLabel();  // Update the dropdown text
 }
 
 // Apply stored theme on page load
@@ -87,7 +93,14 @@ const savedTheme = localStorage.getItem("colorScheme") || "auto";
 themeSwitch.value = savedTheme;
 setTheme(savedTheme);
 
-// Change theme on user selection
+// Update theme when the user changes it
 themeSwitch.addEventListener("input", (event) => {
     setTheme(event.target.value);
+});
+
+// Listen for OS theme changes and update accordingly
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+    if (localStorage.getItem("colorScheme") === "auto") {
+        setTheme("auto");
+    }
 });
