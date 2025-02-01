@@ -41,8 +41,9 @@ for (let p of pages) {
     let title = p.title;
 
     // Adjust URLs for pages that are not on the home page
-    url = !ARE_WE_HOME && !url.startsWith('http') ? '../' + url : url;
-
+    const BASE_PATH = '/portfolio/';
+    url = !ARE_WE_HOME && !url.startsWith('http') ? BASE_PATH + url.replace(/^portfolio\//, '') : url;
+    
     // Create <a> element manually instead of using innerHTML
     let a = document.createElement('a');
     a.href = url;
