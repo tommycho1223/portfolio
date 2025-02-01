@@ -1,4 +1,4 @@
-import { fetchJSON, renderProjects } from './global.js';
+import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
 async function loadLatestProjects() {
     try {
@@ -20,29 +20,33 @@ async function loadLatestProjects() {
 // Call function to load the latest projects
 loadLatestProjects();
 
-import { fetchGitHubData } from './global.js';
+async function loadGitHubProfile(username) {
+    try {
+        const githubData = await fetchGitHubData(username);
+        const profileContainer = document.querySelector('.github-profile');
 
-async function loadGitHubProfile() {
-    const username = "tommycho1223";
-    const profileContainer = document.querySelector('.github-profile');
+        if (!profileContainer) {
+            console.error('Error: No container with class .github-profile found.');
+            return;
+        }
 
-    if (!profileContainer) {
-        console.error('Error: No container with class .github-profile found.');
-        return;
-    }
+        if (!githubData) {
+            profileContainer.innerHTML = '<p>GitHub profile not available.</p>';
+            return;
+        }
 
-    const data = await fetchGitHubData(username);
-
-    if (data) {
+        // Populate the profile with data
         profileContainer.innerHTML = `
-            <h2>${data.name || data.login}</h2>
-            <p>Followers: ${data.followers}</p>
-            <p>Following: ${data.following}</p>
-            <p>Public Repos: ${data.public_repos}</p>
-            <img src="${data.avatar_url}" alt="${data.login}" width="100">
+            <p><strong>${githubData.name}</strong></p>
+            <p>Followers: ${githubData.followers}</p>
+            <p>Following: ${githubData.following}</p>
+            <p>Public Repos: ${githubData.public_repos}</p>
+            <img src="${githubData.avatar_url}" alt="GitHub Profile Picture" width="100">
         `;
+    } catch (error) {
+        console.error('Error loading GitHub profile:', error);
     }
 }
 
-// Call function to load the GitHub profile
-loadGitHubProfile();
+// Call the function with your GitHub username
+loadGitHubProfile('tommycho1223');
