@@ -172,22 +172,16 @@ h1, h2, h3, h4, h5, h6 {
 /* Force Light Mode */
 [data-theme="light"] {
     color-scheme: light;
+    --background-color: white !important;
+    --text-color: black !important;
 }
 
 /* Force Dark Mode */
 [data-theme="dark"] {
     color-scheme: dark;
+    --background-color: black !important;
+    --text-color: white !important;
 }
-
-/* [data-theme="dark"] {
-    --background-color: black;
-    --text-color: white;
-}
-
-[data-theme="light"] {
-    --background-color: white;
-    --text-color: black;
-} */
 
 /* Position theme switcher in the top-right corner */
 .color-scheme {
