@@ -188,4 +188,3 @@ export async function fetchGitHubData(username) {
         return null;  // Return null if fetch fails
     }
 }
-
