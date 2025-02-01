@@ -179,7 +179,7 @@ h1, h2, h3, h4, h5, h6 {
     color-scheme: dark;
 }
 
-[data-theme="dark"] {
+/* [data-theme="dark"] {
     --background-color: black;
     --text-color: white;
 }
@@ -187,7 +187,7 @@ h1, h2, h3, h4, h5, h6 {
 [data-theme="light"] {
     --background-color: white;
     --text-color: black;
-}
+} */
 
 /* Position theme switcher in the top-right corner */
 .color-scheme {
