@@ -30,10 +30,10 @@ async function loadGitHubProfile(username) {
             return;
         }
 
-        if (!githubData) {
-            profileContainer.innerHTML = '<p>GitHub profile not available.</p>';
-            return;
-        }
+        // if (!githubData) {
+        //     profileContainer.innerHTML = '<p>GitHub profile not available.</p>';
+        //     return;
+        // }
 
         // Populate the profile with data
         profileContainer.innerHTML = `
