@@ -90,7 +90,7 @@ button {
 /* Make .projects a grid container */
 .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 3 columns Adjust width dynamically */
+    grid-template-columns: repeat(3, 1fr); /* Ensures 3 columns */
     gap: 1.5em; /* Space between projects */
     padding: 1.5em;
     max-width: 1200px; /* Limit max width to keep alignment */
@@ -171,6 +171,15 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 600px) {
     .cv-container {
         grid-template-columns: 1fr; /* Stacks everything vertically on small screens */
+    }
+    .projects {
+        grid-template-columns: 1fr; /* 1 column for small screens */
+    }
+}
+
+@media (max-width: 900px) {
+    .projects {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
     }
 }
 
