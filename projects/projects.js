@@ -5,9 +5,16 @@ async function loadProjects() {
         const projects = await fetchJSON('../lib/projects.json');
 
         const projectsContainer = document.querySelector('.projects');
+        const projectsTitle = document.querySelector('.projects-title');
+
         if (!projectsContainer) {
             console.error('Error: No container with class .projects found.');
             return;
+        }
+
+        // Update the heading with the number of projects
+        if (projectsTitle) {
+            projectsTitle.textContent = `${projects.length} Projects`;
         }
 
         renderProjects(projects, projectsContainer, 'h2');
@@ -16,5 +23,5 @@ async function loadProjects() {
     }
 }
 
-// Load and render projects
+// Call the function to load and display projects
 loadProjects();
