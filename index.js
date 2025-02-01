@@ -23,7 +23,7 @@ loadLatestProjects();
 import { fetchGitHubData } from './global.js';
 
 async function loadGitHubProfile() {
-    const username = "your-github-username"; // Replace with your GitHub username
+    const username = "tommycho1223";
     const profileContainer = document.querySelector('.github-profile');
 
     if (!profileContainer) {
