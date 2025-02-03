@@ -166,9 +166,9 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         description.textContent = project.description;
 
         article.appendChild(title);
-        article.appendChild(year);
         article.appendChild(img);
         article.appendChild(description);
+        article.appendChild(year);
 
         // Append article to container
         container.appendChild(article);
