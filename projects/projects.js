@@ -4,6 +4,8 @@ async function loadProjects() {
     try {
         const projects = await fetchJSON('../lib/projects.json');
 
+        console.log("Fetched projects:", projects); // Debugging line
+
         const projectsContainer = document.querySelector('.projects');
         const projectsTitle = document.querySelector('.projects-title');
 

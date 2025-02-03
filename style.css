@@ -237,5 +237,7 @@ h1, h2, h3, h4, h5, h6 {
     font-family: Baskerville, serif;
     font-variant-numeric: oldstyle-nums;
     font-style: italic;
-    color: gray;
+    color: lightgray; /* Make it more visible in dark mode */
+    font-size: 0.9rem;
+    margin-top: 5px;
 }

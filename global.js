@@ -167,7 +167,7 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         // Add year to each project
         const year = document.createElement('p');
         year.classList.add('project-year');
-        year.textContent = `© ${project.year}`;
+        year.textContent = `© ${project.year || 'Unknown Year'}`; // Default text if missing
 
         article.appendChild(title);
         article.appendChild(img);
