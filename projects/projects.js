@@ -17,11 +17,11 @@ async function loadProjects() {
             projectsTitle.textContent = `${projects.length} Projects`;
         }
 
-        renderProjects(projects, projectsContainer, 'h2');
+        renderProjects(projects, projectsContainer, 'h2'); // Calls the updated render function
     } catch (error) {
         console.error('Error loading projects:', error);
     }
 }
 
-// Call the function to load and display projects
+// Call function
 loadProjects();
