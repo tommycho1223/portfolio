@@ -153,6 +153,7 @@ export function renderProjects(projects, container, headingTag = 'h2') {
     // Create project elements
     projects.forEach(project => {
         const article = document.createElement('article');
+        article.classList.add('project-card'); // Added class for better styling
 
         const title = document.createElement(headingTag);
         title.textContent = project.title;
@@ -169,10 +170,16 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         year.classList.add('project-year');
         year.textContent = `© ${project.year || 'Unknown Year'}`; // Default text if missing
 
-        article.appendChild(title);
-        article.appendChild(img);
-        article.appendChild(description);
-        article.appendChild(year);
+        // Create a flex container to ensure proper alignment
+        const contentWrapper = document.createElement('div');
+        contentWrapper.classList.add('project-content');
+        contentWrapper.appendChild(title);
+        contentWrapper.appendChild(img);
+        contentWrapper.appendChild(description);
+
+        // Append everything in order
+        article.appendChild(contentWrapper);
+        article.appendChild(year); // Now it's positioned at the bottom
 
         // Append article to container
         container.appendChild(article);

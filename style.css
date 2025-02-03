@@ -233,11 +233,27 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+.project-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes year to the bottom */
+    background-color: var(--project-bg);
+    padding: 1em;
+    border-radius: 5px;
+    text-align: center;
+    height: 100%; /* Ensures all project cards are the same height */
+}
+
+.project-content {
+    flex-grow: 1; /* Allows content to expand while keeping year at the bottom */
+}
+
 .project-year {
     font-family: Baskerville, serif;
     font-variant-numeric: oldstyle-nums;
     font-style: italic;
     color: lightgray; /* Make it more visible in dark mode */
     font-size: 0.9rem;
-    margin-top: 5px;
+    margin-top: auto; /* Pushes the year to the bottom */
+    padding-top: 10px;
 }
