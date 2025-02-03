@@ -242,6 +242,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 5px;
     text-align: center;
     height: 100%; /* Ensures all project cards are the same height */
+    padding-bottom: 0.5em; /* Reduces bottom padding */
 }
 
 .project-content {
@@ -255,5 +256,6 @@ h1, h2, h3, h4, h5, h6 {
     color: lightgray; /* Make it more visible in dark mode */
     font-size: 0.9rem;
     margin-top: auto; /* Pushes the year to the bottom */
-    padding-top: 10px;
+    padding-top: 5px; /* Reduces extra space */
+    padding-bottom: 2px; /* Slightly reduces bottom spacing */
 }
