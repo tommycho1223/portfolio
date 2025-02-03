@@ -206,3 +206,29 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 80%; /* Make it slightly smaller */
     font-family: inherit; /* Ensure it inherits the same font */
 }
+
+#profile-stats {
+    max-width: 800px; /* Adjust width to fit the stats */
+    margin: 20px auto; /* Center align */
+    text-align: center;
+}
+
+#profile-stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 equal-width columns */
+    gap: 20px; /* Adds spacing between columns */
+    text-align: center;
+}
+
+#profile-stats dt {
+    font-weight: bold;
+    font-size: 1rem;
+    color: gray; /* Subtitle color */
+    text-transform: uppercase; /* Makes text uppercase */
+}
+
+#profile-stats dd {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: bold;
+}

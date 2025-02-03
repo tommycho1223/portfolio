@@ -31,31 +31,25 @@ async function loadGitHubProfile(username) {
             return;
         }
 
+        if (!profileStats) {
+            console.error('Error: No container with id #profile-stats found.');
+            return;
+        }
+
         if (!githubData) {
             profileContainer.innerHTML = '<p>GitHub profile not available.</p>';
             return;
         }
 
-        // Populate the profile with data
-        profileContainer.innerHTML = `
-            <p><strong>${githubData.name}</strong></p>
-            <p>Followers: ${githubData.followers}</p>
-            <p>Following: ${githubData.following}</p>
-            <p>Public Repos: ${githubData.public_repos}</p>
-            <img src="${githubData.avatar_url}" alt="GitHub Profile Picture" width="100">
+        // Update the profileStats div with the formatted stats
+        profileStats.innerHTML = `
+            <dl>
+                <dt>Followers</dt><dd>${githubData.followers}</dd>
+                <dt>Following</dt><dd>${githubData.following}</dd>
+                <dt>Public Repos</dt><dd>${githubData.public_repos}</dd>
+                <dt>Public Gists</dt><dd>${githubData.public_gists}</dd>
+            </dl>
         `;
-
-        // Update the profile stats if the container exists
-        if (profileStats) {
-            profileStats.innerHTML = `
-                <dl>
-                    <dt>Public Repos:</dt><dd>${githubData.public_repos}</dd>
-                    <dt>Public Gists:</dt><dd>${githubData.public_gists}</dd>
-                    <dt>Followers:</dt><dd>${githubData.followers}</dd>
-                    <dt>Following:</dt><dd>${githubData.following}</dd>
-                </dl>
-            `;
-        }
     } catch (error) {
         console.error('Error loading GitHub profile:', error);
     }
