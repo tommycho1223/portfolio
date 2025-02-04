@@ -236,26 +236,26 @@ h1, h2, h3, h4, h5, h6 {
 .project-card {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Pushes year to the bottom */
+    justify-content: flex-start; /* Ensures items stack properly */
     background-color: var(--project-bg);
     padding: 1em;
     border-radius: 5px;
     text-align: center;
-    height: 100%; /* Ensures all project cards are the same height */
-    padding-bottom: 0.2em; /* Reduces bottom padding */
+    height: auto; /* Remove forced height */
+    min-height: 400px; /* Ensure consistency */
 }
 
 .project-content {
-    flex-grow: 1; /* Allows content to expand while keeping year at the bottom */
+    flex-grow: 1; /* Ensures description takes up available space */
 }
 
 .project-year {
     font-family: Baskerville, serif;
     font-variant-numeric: oldstyle-nums;
     font-style: italic;
-    color: lightgray; /* Make it more visible in dark mode */
+    color: lightgray;
     font-size: 0.85rem;
     margin-top: auto; /* Pushes the year to the bottom */
-    padding-top: 2px; /* Reduces extra space */
-    padding-bottom: 1px; /* Slightly reduces bottom spacing */
+    padding-top: 3px;
+    padding-bottom: 0px; /* Completely removes bottom spacing */
 }

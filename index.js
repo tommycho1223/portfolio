@@ -23,13 +23,7 @@ loadLatestProjects();
 async function loadGitHubProfile(username) {
     try {
         const githubData = await fetchGitHubData(username);
-        const profileContainer = document.querySelector('.github-profile');
         const profileStats = document.querySelector('#profile-stats');
-
-        if (!profileContainer) {
-            console.error('Error: No container with class .github-profile found.');
-            return;
-        }
 
         if (!profileStats) {
             console.error('Error: No container with id #profile-stats found.');
@@ -37,7 +31,7 @@ async function loadGitHubProfile(username) {
         }
 
         if (!githubData) {
-            profileContainer.innerHTML = '<p>GitHub profile not available.</p>';
+            profileStats.innerHTML = '<p>GitHub profile not available.</p>';
             return;
         }
 
@@ -55,5 +49,6 @@ async function loadGitHubProfile(username) {
     }
 }
 
-// Call the function with your GitHub username
+// Ensure it's actually called
 loadGitHubProfile('tommycho1223');
+
