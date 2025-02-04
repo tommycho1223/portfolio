@@ -208,7 +208,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #profile-stats {
-    max-width: 800px; /* Adjust width to fit the stats */
+    max-width: 400px; /* Adjust width to fit the stats */
     margin: 20px auto; /* Center align */
     text-align: center;
 }
