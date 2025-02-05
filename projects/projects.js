@@ -1,4 +1,5 @@
 import { fetchJSON, renderProjects } from '../global.js';
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
 async function loadProjects() {
     try {
@@ -27,3 +28,22 @@ async function loadProjects() {
 
 // Call function
 loadProjects();
+
+// Define the arc generator
+let arcGenerator = d3.arc()
+    .innerRadius(0)  // Creates a full circle (0 for filled, >0 for a donut chart)
+    .outerRadius(50); // Radius of 50
+
+// Generate the arc path data
+let arc = arcGenerator({
+    startAngle: 0,        // Start angle (0 radians)
+    endAngle: 2 * Math.PI // End angle (full circle, 2π radians)
+});
+
+// Append the generated path to the existing SVG
+document.addEventListener("DOMContentLoaded", () => {
+    d3.select("#projects-pie-plot")
+      .append("path")
+      .attr("d", arc)
+      .attr("fill", "red");
+});

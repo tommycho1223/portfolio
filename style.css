@@ -106,8 +106,8 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Ensures proper spacing */
-    height: auto; /* Prevents forced height */
-    min-height: 350px; /* Ensures consistency */
+    height: fit-content; /* Prevents forced height */
+    min-height: 280px; /* Ensures consistency */
 }
 
 /* Style images */
