@@ -245,9 +245,15 @@ h1, h2, h3, h4, h5, h6 {
 /* Style the legend container */
 .legend {
     display: grid;
-    grid-template-columns: repeat(1, auto); /* Keeps all items in one row */
+    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts layout */
+    gap: 10px;
+    list-style: none;
+    padding: 10px;
+    margin: 15px 0;
+    flex: 1;
     justify-items: start; /* Align text properly */
-    min-width: 200px; /* Ensures the legend has enough space */
+    min-width: 200px; /* Ensures legend doesn’t collapse too much */
+
 }
 
 /* Style each legend item */
@@ -270,10 +276,13 @@ h1, h2, h3, h4, h5, h6 {
 /* Container to align pie chart and legend side by side */
 .container {
     display: flex;
-    align-items: center; /* Ensures everything is aligned */
-    justify-content: center; /* Centers content */
-    flex-wrap: nowrap; /* Prevents legend from wrapping */
-    gap: 2rem; /* Adjust spacing */
+    align-items: center;  /* Aligns items vertically */
+    justify-content: center;
+    gap: 2rem;  /* Space between pie chart and legend */
+    max-width: 800px; /* Adjust width to ensure they fit side by side */
+    min-width: 600px; /* Prevents legend from wrapping too soon */
+    margin: auto;
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
 /* Ensure pie chart does not shrink */
