@@ -31,15 +31,24 @@ loadProjects();
 
 // === PIE CHART CODE ===
 
-// Data for the pie chart (with labels)
-let data = [
-    { value: 1, label: 'apples' },
-    { value: 2, label: 'oranges' },
-    { value: 3, label: 'mangos' },
-    { value: 4, label: 'pears' },
-    { value: 5, label: 'limes' },
-    { value: 5, label: 'cherries' },
-];
+// Fetch project data from projects.json and render pie chart dynamically
+fetch('projects.json')
+  .then(response => response.json())
+  .then(projects => {
+    let rolledData = d3.rollups(
+      projects,
+      v => v.length,  // Count projects per year
+      d => d.year      // Group by year
+    );
+
+    let data = rolledData.map(([year, count]) => ({
+      value: count,
+      label: year
+    }));
+
+    renderPieChart(data);
+});
+
 
 // Generate pie slice angles using D3
 let sliceGenerator = d3.pie().value((d) => d.value);
@@ -101,6 +110,8 @@ function renderPieChart(data) {
                 .attr('height', height)
                 .append('g')
                 .attr('transform', `translate(${width / 2}, ${height / 2})`);
+
+    svg.selectAll("*").remove(); // Clear previous pie chart
   
     let color = d3.scaleOrdinal(d3.schemeTableau10);
   
@@ -116,7 +127,6 @@ function renderPieChart(data) {
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
   
-    // Update legend
     let legend = d3.select('.legend').selectAll('li')
                    .data(data)
                    .enter()
@@ -124,4 +134,5 @@ function renderPieChart(data) {
                    .style('color', (d, i) => color(i))
                    .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
+
   
