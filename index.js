@@ -36,12 +36,15 @@ async function loadProjects() {
         // Add search event listener
         let searchInput = document.querySelector('.searchBar');
         searchInput.addEventListener('input', (event) => {
-            query = event.target.value.toLowerCase();
-            const filteredProjects = projects.filter(project =>
-                project.title.toLowerCase().includes(query) ||
-                project.description.toLowerCase().includes(query)
-            );
-            renderProjects(filteredProjects, projectsContainer, 'h2');
+            query = event.target.value.toLowerCase(); // Convert query to lowercase
+
+            const filteredProjects = projects.filter(project => {
+                // Convert all project values to a single string and lowercase
+                let values = Object.values(project).join('\n').toLowerCase();
+                return values.includes(query);
+            });
+
+            renderProjects(filteredProjects, projectsContainer, 'h2'); // Update results
         });
 
     } catch (error) {
@@ -53,6 +56,7 @@ async function loadProjects() {
 loadLatestProjects(); // Loads only the latest 3 projects
 loadProjects(); // Loads all projects and enables search
 
+// Keeping GitHub Profile Loading
 async function loadGitHubProfile(username) {
     try {
         const githubData = await fetchGitHubData(username);
