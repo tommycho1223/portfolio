@@ -235,61 +235,55 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #projects-pie-plot {
-    max-width: 20em;
-    margin-block: 2em;
-
-    /* Ensures parts of the shape don't get clipped */
-    overflow: visible;
+    max-width: 300px; /* Restricts the width */
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Centers the chart */
 }
 
 /* Style the legend container */
 .legend {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts layout */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
-    list-style: none;
-    padding: 10px;
-    margin: 15px 0;
-    flex: 1;
-    justify-items: start; /* Align text properly */
-    min-width: 200px; /* Ensures legend doesn’t collapse too much */
 
 }
 
 /* Style each legend item */
 .legend li {
+    list-style: none;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 14px;
+    gap: 5px;
 }
 
 /* Create the color swatch */
 .legend .swatch {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%; /* Makes it circular */
-    background-color: var(--color);
+    width: 12px;
+    height: 12px;
     display: inline-block;
+    border-radius: 50%;
+    background: currentColor;
 }
 
 /* Container to align pie chart and legend side by side */
 .container {
     display: flex;
     align-items: center;  /* Aligns items vertically */
-    justify-content: center;
+    justify-content: space-between; /* Distributes chart and legend */
     gap: 2rem;  /* Space between pie chart and legend */
-    max-width: 800px; /* Adjust width to ensure they fit side by side */
+    max-width: 700px; /* Adjust width to ensure they fit side by side */
     min-width: 600px; /* Prevents legend from wrapping too soon */
     margin: auto;
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
-/* Ensure pie chart does not shrink */
 .container svg {
     flex: 0 0 auto;
-    width: 250px; /* Adjust size if needed */
+    width: 250px; /* Reduce the size */
     height: auto;
+    max-width: 100%; /* Prevents it from growing too large */
 }
 
 @media (max-width: 768px) {
