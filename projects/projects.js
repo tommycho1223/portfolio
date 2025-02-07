@@ -32,7 +32,7 @@ loadProjects();
 // === PIE CHART CODE ===
 
 // Data for the pie chart (two slices: 1 and 2)
-let data = [1, 2];
+let data = [1, 2, 3, 4, 5, 5];
 
 // Compute total sum
 let total = data.reduce((sum, d) => sum + d, 0);
@@ -56,7 +56,7 @@ let pieArcGenerator = d3.arc()
 let arcs = arcData.map(d => pieArcGenerator(d));
 
 // Define colors for slices
-let colors = ['gold', 'purple'];
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 // Select the existing SVG and append slices
 d3.select("#projects-pie-plot")
@@ -65,4 +65,4 @@ d3.select("#projects-pie-plot")
   .enter()
   .append("path")
   .attr("d", d => d)
-  .attr("fill", (_, i) => colors[i]); // Assigns color
+  .attr("fill", (_, i) => colors(i));  // Calls the function to get color
