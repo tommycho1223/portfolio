@@ -241,3 +241,30 @@ h1, h2, h3, h4, h5, h6 {
     /* Ensures parts of the shape don't get clipped */
     overflow: visible;
 }
+
+/* Style the legend container */
+.legend {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts layout */
+    gap: 10px;
+    list-style: none;
+    padding: 10px;
+    margin: 15px 0;
+}
+
+/* Style each legend item */
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+/* Create the color swatch */
+.legend .swatch {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%; /* Makes it circular */
+    background-color: var(--color);
+    display: inline-block;
+}
