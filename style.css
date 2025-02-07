@@ -291,3 +291,11 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: repeat(2, minmax(180px, 1fr)); /* Adjusts for small screens */
     }
 }
+
+svg:has(path:hover) path:not(:hover) {
+    opacity: 0.5;
+}
+
+path {
+    transition: 300ms;
+}
