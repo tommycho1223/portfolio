@@ -1,5 +1,7 @@
 import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
+let query = ''; // Declare search query variable
+
 async function loadLatestProjects() {
     try {
         const projects = await fetchJSON('./lib/projects.json');
