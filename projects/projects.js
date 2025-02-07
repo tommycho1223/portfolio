@@ -53,17 +53,20 @@ function renderProjectPieChart(projects) {
 }
 
 function renderPieChart(data) {
-    let width = 300;
-    let height = 300;
+    let width = 300;  // Adjusted width
+    let height = 300; // Adjusted height
     let radius = Math.min(width, height) / 2;
 
-    let svg = d3.select("#projects-pie-plot")
+    let svgContainer = d3.select("#projects-pie-plot");
+
+    // Ensure previous pie chart is cleared before drawing a new one
+    svgContainer.selectAll("*").remove();
+
+    let svg = svgContainer
                 .attr("width", width)
                 .attr("height", height)
                 .append("g")
                 .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-    svg.selectAll("*").remove(); // Clear previous pie chart before updating
 
     let color = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -79,13 +82,18 @@ function renderPieChart(data) {
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
 
-    let legend = d3.select('.legend').selectAll('li')
-                   .data(data)
-                   .enter()
-                   .append('li')
-                   .style('color', (d, i) => color(i))
-                   .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
+    // Add legend
+    let legend = d3.select('.legend');
+    legend.selectAll("*").remove(); // Clear previous legends
+
+    legend.selectAll('li')
+          .data(data)
+          .enter()
+          .append('li')
+          .style('color', (d, i) => color(i))
+          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
+
 
 // Call function
 loadProjects();
