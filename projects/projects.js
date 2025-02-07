@@ -29,21 +29,40 @@ async function loadProjects() {
 // Call function
 loadProjects();
 
-// Define the arc generator
-let arcGenerator = d3.arc()
-    .innerRadius(0)  // Creates a full circle (0 for filled, >0 for a donut chart)
-    .outerRadius(50); // Radius of 50
+// === PIE CHART CODE ===
 
-// Generate the arc path data
-let arc = arcGenerator({
-    startAngle: 0,        // Start angle (0 radians)
-    endAngle: 2 * Math.PI // End angle (full circle, 2π radians)
-});
+// Data for the pie chart (two slices: 1 and 2)
+let data = [1, 2];
 
-// Append the generated path to the existing SVG
-document.addEventListener("DOMContentLoaded", () => {
-    d3.select("#projects-pie-plot")
-      .append("path")
-      .attr("d", arc)
-      .attr("fill", "red");
-});
+// Compute total sum
+let total = data.reduce((sum, d) => sum + d, 0);
+
+// Calculate start and end angles
+let angle = 0;
+let arcData = [];
+
+for (let d of data) {
+    let endAngle = angle + (d / total) * 2 * Math.PI;
+    arcData.push({ startAngle: angle, endAngle });
+    angle = endAngle;
+}
+
+// Create an arc generator
+let pieArcGenerator = d3.arc()
+    .innerRadius(0)  // Full pie (0 for full pie, >0 for donut chart)
+    .outerRadius(50); // Pie radius
+
+// Generate paths for slices
+let arcs = arcData.map(d => pieArcGenerator(d));
+
+// Define colors for slices
+let colors = ['gold', 'purple'];
+
+// Select the existing SVG and append slices
+d3.select("#projects-pie-plot")
+  .selectAll("path")
+  .data(arcs)
+  .enter()
+  .append("path")
+  .attr("d", d => d)
+  .attr("fill", (_, i) => colors[i]); // Assigns color
