@@ -52,9 +52,9 @@ function renderProjectPieChart(projects) {
 }
 
 function renderPieChart(data) {
-    let width = 300;  // Controlled width
-    let height = 300; // Controlled height
-    let radius = Math.min(width, height) / 2;
+    let width = 400;  // Controlled width
+    let height = 400; // Controlled height
+    let radius = Math.min(width, height) / 2 - 10;
 
     let svgContainer = d3.select("#projects-pie-plot");
 
