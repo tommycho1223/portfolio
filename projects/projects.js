@@ -20,16 +20,16 @@ async function loadProjects() {
             projectsTitle.textContent = `${projects.length} Projects`;
         }
 
-        renderProjects(projects, projectsContainer, 'h2'); // Calls the updated render function
+        renderProjects(projects, projectsContainer, 'h2');
 
-        // Call pie chart rendering after fetching projects
+        // Debugging - Ensure data is correctly grouped
+        console.log("Grouping projects for pie chart...");
         renderProjectPieChart(projects);
     } catch (error) {
         console.error('Error loading projects:', error);
     }
 }
 
-// Function to render the pie chart
 function renderProjectPieChart(projects) {
     let rolledData = d3.rollups(
         projects,
@@ -45,6 +45,7 @@ function renderProjectPieChart(projects) {
     console.log("Pie Chart Data:", data); // Debugging
 
     if (data.length > 0) {
+        console.log("Rendering Pie Chart...");
         renderPieChart(data);
     } else {
         console.error("No valid data for pie chart.");
@@ -52,8 +53,8 @@ function renderProjectPieChart(projects) {
 }
 
 function renderPieChart(data) {
-    let width = 400;  // Controlled width
-    let height = 400; // Controlled height
+    let width = 300;  // Adjusted to match layout
+    let height = 300; // Adjusted for proportionality
     let radius = Math.min(width, height) / 2 - 10;
 
     let svgContainer = d3.select("#projects-pie-plot");
@@ -62,8 +63,8 @@ function renderPieChart(data) {
     svgContainer.selectAll("*").remove();
 
     let svg = svgContainer
-                .attr("width", width)
-                .attr("height", height)
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .attr("preserveAspectRatio", "xMidYMid meet") // Ensures responsiveness
                 .append("g")
                 .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
@@ -80,6 +81,8 @@ function renderPieChart(data) {
                   .attr('fill', (d, i) => color(i))
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
+
+    console.log("Arcs Data:", arcs); // Debugging
 
     // Add legend
     let legend = d3.select('.legend');
