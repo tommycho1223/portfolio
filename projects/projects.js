@@ -69,3 +69,59 @@ data.forEach((d, idx) => {
         .attr("style", `--color:${colors(idx)}`) // Assigns the slice's color
         .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`); // Adds label and value
 });
+
+// Fetch project data from projects.json or another source
+fetch('projects.json')
+  .then(response => response.json())
+  .then(projects => {
+    // Process project data
+    let rolledData = d3.rollups(
+      projects,
+      v => v.length,  // Count projects per year
+      d => d.year      // Group by year
+    );
+
+    // Convert to the expected format for the pie chart
+    let data = rolledData.map(([year, count]) => ({
+      value: count,
+      label: year
+    }));
+
+    // Now use this data for rendering the pie chart
+    renderPieChart(data);
+});
+
+function renderPieChart(data) {
+    let width = 300;
+    let height = 300;
+    let radius = Math.min(width, height) / 2;
+  
+    let svg = d3.select('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+  
+    let color = d3.scaleOrdinal(d3.schemeTableau10);
+  
+    let pie = d3.pie().value(d => d.value);
+    let arc = d3.arc().innerRadius(0).outerRadius(radius);
+  
+    let arcs = svg.selectAll('path')
+                  .data(pie(data))
+                  .enter()
+                  .append('path')
+                  .attr('d', arc)
+                  .attr('fill', (d, i) => color(i))
+                  .attr('stroke', 'white')
+                  .style('stroke-width', '2px');
+  
+    // Update legend
+    let legend = d3.select('.legend').selectAll('li')
+                   .data(data)
+                   .enter()
+                   .append('li')
+                   .style('color', (d, i) => color(i))
+                   .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
+}
+  
