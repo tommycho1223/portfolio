@@ -235,10 +235,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #projects-pie-plot {
-    max-width: 300px; /* Restricts the width */
-    height: auto;
+    width: 300px;
+    height: 300px;
     display: block;
-    margin: 0 auto; /* Centers the chart */
+    margin: auto;
 }
 
 /* Style the legend container */

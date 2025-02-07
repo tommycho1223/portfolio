@@ -5,7 +5,7 @@ async function loadProjects() {
     try {
         const projects = await fetchJSON('../lib/projects.json');
 
-        console.log("Fetched projects:", projects); // Debugging line
+        console.log("Fetched projects:", projects); // Debugging
 
         const projectsContainer = document.querySelector('.projects');
         const projectsTitle = document.querySelector('.projects-title');
@@ -44,7 +44,6 @@ function renderProjectPieChart(projects) {
 
     console.log("Pie Chart Data:", data); // Debugging
 
-    // Ensure pie chart only updates if data is available
     if (data.length > 0) {
         renderPieChart(data);
     } else {
@@ -53,8 +52,8 @@ function renderProjectPieChart(projects) {
 }
 
 function renderPieChart(data) {
-    let width = 300;  // Adjusted width
-    let height = 300; // Adjusted height
+    let width = 300;  // Controlled width
+    let height = 300; // Controlled height
     let radius = Math.min(width, height) / 2;
 
     let svgContainer = d3.select("#projects-pie-plot");
@@ -93,7 +92,6 @@ function renderPieChart(data) {
           .style('color', (d, i) => color(i))
           .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
-
 
 // Call function
 loadProjects();
