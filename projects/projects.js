@@ -65,4 +65,4 @@ d3.select("#projects-pie-plot")
   .enter()
   .append("path")
   .attr("d", d => d)
-  .attr("fill", (_, i) => colors(i));  // Calls the function to get color
+  .attr("fill", (_, i) => colors(i)); // Calls the function to get color
