@@ -251,6 +251,8 @@ h1, h2, h3, h4, h5, h6 {
     padding: 10px;
     margin: 15px 0;
     flex: 1;
+    min-width: 150px; /* Ensures legend doesn’t collapse too much */
+
 }
 
 /* Style each legend item */
@@ -273,14 +275,18 @@ h1, h2, h3, h4, h5, h6 {
 /* Container to align pie chart and legend side by side */
 .container {
     display: flex;
-    align-items: center;  /* Aligns them vertically */
-    gap: 20px;  /* Space between chart and legend */
+    align-items: center;  /* Aligns items vertically */
     justify-content: center;
-    max-width: 600px;
+    gap: 20px;  /* Space between pie chart and legend */
+    max-width: 800px; /* Adjust width to ensure they fit side by side */
+    min-width: 600px; /* Prevents legend from wrapping too soon */
     margin: auto;
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
 /* Ensure pie chart does not shrink */
 .container svg {
     flex: 0 0 auto;
+    width: 250px; /* Adjust size if needed */
+    height: auto;
 }
