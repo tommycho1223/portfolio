@@ -6,7 +6,7 @@ let selectedYear = null; // Track selected year
 
 async function loadProjects() {
     try {
-        const projects = await fetchJSON('../lib/projects.json');
+        projects = await fetchJSON('./projects.json'); // Remove `const`
         const projectsContainer = document.querySelector('.projects');
         const searchInput = document.querySelector('.searchBar');
 
@@ -16,7 +16,7 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects); // Initial render
+        renderPieChart(projects); // Ensure pie chart loads on page load
 
         // Add search event listener
         searchInput.addEventListener('input', (event) => {
@@ -35,31 +35,9 @@ async function loadProjects() {
     }
 }
 
-// function renderProjectPieChart(projects) {
-//     let rolledData = d3.rollups(
-//         projects,
-//         v => v.length,  // Count projects per year
-//         d => d.year      // Group by year
-//     );
-
-//     let data = rolledData.map(([year, count]) => ({
-//         value: count,
-//         label: year
-//     }));
-
-//     console.log("Pie Chart Data:", data); // Debugging
-
-//     if (data.length > 0) {
-//         console.log("Rendering Pie Chart...");
-//         renderPieChart(data);
-//     } else {
-//         console.error("No valid data for pie chart.");
-//     }
-// }
-
-function renderPieChart(data) {
+function renderProjectPieChart(projects) {
     let rolledData = d3.rollups(
-        projectsGiven,
+        projects,
         v => v.length,  // Count projects per year
         d => d.year      // Group by year
     );
@@ -69,10 +47,30 @@ function renderPieChart(data) {
         label: year
     }));
 
-    let svgContainer = d3.select("#projects-pie-plot");
+    console.log("Pie Chart Data:", data); // Debugging
 
-    // Clear previous chart before re-rendering
-    svgContainer.selectAll("*").remove();
+    if (data.length > 0) {
+        console.log("Rendering Pie Chart...");
+        renderPieChart(data);
+    } else {
+        console.error("No valid data for pie chart.");
+    }
+}
+
+function renderPieChart(data) {
+    let rolledData = d3.rollups(
+        data,  // Use `data` instead of `projectsGiven`
+        v => v.length,
+        d => d.year
+    );
+
+    let pieData = rolledData.map(([year, count]) => ({
+        value: count,
+        label: year
+    }));
+
+    let svgContainer = d3.select("#projects-pie-plot");
+    svgContainer.selectAll("*").remove(); // Clear before re-rendering
 
     let width = 300;
     let height = 300;
@@ -89,7 +87,7 @@ function renderPieChart(data) {
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
     let arcs = svg.selectAll('path')
-       .data(pie(data))
+       .data(pie(pieData)) // Pass correct data
        .enter()
        .append('path')
        .attr('d', arc)
@@ -98,10 +96,10 @@ function renderPieChart(data) {
        .style('stroke-width', '2px')
        .style('cursor', 'pointer')
        .on('click', function(event, d) {
-           selectedYear = d.data.label; // Set selected year
+           selectedYear = d.data.label;
            let filteredProjects = projects.filter(project => project.year === selectedYear);
            renderProjects(filteredProjects, document.querySelector('.projects'), 'h2');
-           renderPieChart(filteredProjects); // Update chart based on selection
+           renderPieChart(filteredProjects);
        });
 
     // Update legend
@@ -109,7 +107,7 @@ function renderPieChart(data) {
     legend.selectAll("*").remove();
 
     legend.selectAll('li')
-          .data(data)
+          .data(pieData)
           .enter()
           .append('li')
           .style('color', (d, i) => color(i))
@@ -119,9 +117,10 @@ function renderPieChart(data) {
               selectedYear = d.label;
               let filteredProjects = projects.filter(project => project.year === selectedYear);
               renderProjects(filteredProjects, document.querySelector('.projects'), 'h2');
-              renderPieChart(filteredProjects); // Update chart
+              renderPieChart(filteredProjects);
           });
 }
+
 
 // Call function to load all projects
 loadProjects();
