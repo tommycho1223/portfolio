@@ -250,6 +250,7 @@ h1, h2, h3, h4, h5, h6 {
     list-style: none;
     padding: 10px;
     margin: 15px 0;
+    flex: 1;
 }
 
 /* Style each legend item */
@@ -267,4 +268,19 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50%; /* Makes it circular */
     background-color: var(--color);
     display: inline-block;
+}
+
+/* Container to align pie chart and legend side by side */
+.container {
+    display: flex;
+    align-items: center;  /* Aligns them vertically */
+    gap: 20px;  /* Space between chart and legend */
+    justify-content: center;
+    max-width: 600px;
+    margin: auto;
+}
+
+/* Ensure pie chart does not shrink */
+.container svg {
+    flex: 0 0 auto;
 }
