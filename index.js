@@ -1,6 +1,7 @@
 import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
 
 let query = ''; // Declare search query variable
+let projects = []; // Store all projects for filtering
 
 async function loadLatestProjects() {
     try {
@@ -19,8 +20,38 @@ async function loadLatestProjects() {
     }
 }
 
-// Call function to load the latest projects
-loadLatestProjects();
+// Loads all projects and adds search functionality
+async function loadProjects() {
+    try {
+        projects = await fetchJSON('./projects.json'); // Fetch all projects
+        const projectsContainer = document.querySelector('.projects');
+
+        if (!projectsContainer) {
+            console.error('Error: No container with class .projects found.');
+            return;
+        }
+
+        renderProjects(projects, projectsContainer, 'h2'); // Initial render
+
+        // Add search event listener
+        let searchInput = document.querySelector('.searchBar');
+        searchInput.addEventListener('input', (event) => {
+            query = event.target.value.toLowerCase();
+            const filteredProjects = projects.filter(project =>
+                project.title.toLowerCase().includes(query) ||
+                project.description.toLowerCase().includes(query)
+            );
+            renderProjects(filteredProjects, projectsContainer, 'h2');
+        });
+
+    } catch (error) {
+        console.error('Error loading projects:', error);
+    }
+}
+
+// Call both functions to ensure expected behavior
+loadLatestProjects(); // Loads only the latest 3 projects
+loadProjects(); // Loads all projects and enables search
 
 async function loadGitHubProfile(username) {
     try {
