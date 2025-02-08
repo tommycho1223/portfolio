@@ -174,7 +174,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .container {
-        flex-direction: column; /* Stacks pie chart and legend vertically */
+        flex-wrap: wrap; /* Allows items to stay side by side */
         align-items: center;
     }
 
@@ -209,6 +209,7 @@ h1, h2, h3, h4, h5, h6 {
     .legend {
         grid-template-columns: repeat(1, 1fr);
         text-align: center;
+        justify-items: center;
     }
 }
 
