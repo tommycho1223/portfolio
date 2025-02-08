@@ -1,8 +1,47 @@
 import { fetchJSON, renderProjects } from '../global.js';
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
-let query = '';
+let query = ''; // Store search input
 
+// Select the search bar
+let searchInput = document.querySelector('.searchBar');
+
+searchInput.addEventListener('input', (event) => {
+    query = event.target.value.toLowerCase(); // Convert query to lowercase for case-insensitive search
+    filterProjects();
+});
+
+function filterProjects() {
+    fetchJSON('../lib/projects.json').then((projects) => {
+        let filteredProjects = projects.filter((project) =>
+            project.title.toLowerCase().includes(query)
+        );
+
+        // Update the project count
+        const projectsTitle = document.querySelector('.projects-title');
+        if (projectsTitle) {
+            projectsTitle.textContent = `${filteredProjects.length} Projects`;
+        }
+
+        // Render only the filtered projects
+        const projectsContainer = document.querySelector('.projects');
+        renderProjects(filteredProjects, projectsContainer, 'h2');
+
+        // Update Pie Chart based on visible projects
+        let rolledData = d3.rollups(
+            filteredProjects,
+            (v) => v.length,
+            (d) => d.year
+        );
+
+        let data = rolledData.map(([year, count]) => ({
+            value: count,
+            label: year,
+        }));
+
+        renderPieChart(data); // Update pie chart dynamically
+    }).catch((error) => console.error("Error filtering projects:", error));
+}
 
 async function loadProjects() {
     try {
