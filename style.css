@@ -169,6 +169,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Responsive Design for Mobile */
+@media (max-width: 900px) {
+    .projects {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+    }
+
+    .container {
+        flex-direction: column; /* Stacks pie chart and legend vertically */
+        align-items: center;
+    }
+
+    .container svg {
+        width: 250px; /* Reduce pie chart size */
+    }
+}
+
 @media (max-width: 600px) {
     .cv-container {
         grid-template-columns: 1fr; /* Stacks everything vertically on small screens */
@@ -176,11 +191,19 @@ h1, h2, h3, h4, h5, h6 {
     .projects {
         grid-template-columns: 1fr; /* 1 column for small screens */
     }
-}
 
-@media (max-width: 900px) {
-    .projects {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+    .container {
+        flex-direction: column; /* Stacks elements vertically */
+        align-items: center;
+    }
+
+    .container svg {
+        width: 200px; /* Further reduce size for smaller screens */
+    }
+
+    .legend {
+        flex-direction: column; /* Ensures proper layout on small screens */
+        align-items: center;
     }
 }
 
@@ -271,17 +294,16 @@ h1, h2, h3, h4, h5, h6 {
 .container {
     display: flex;
     align-items: center;  /* Aligns items vertically */
-    justify-content: space-between; /* Distributes chart and legend */
-    gap: 2rem;  /* Space between pie chart and legend */
-    max-width: 700px; /* Adjust width to ensure they fit side by side */
-    min-width: 600px; /* Prevents legend from wrapping too soon */
+    justify-content: center; /* Distributes chart and legend */
+    gap: 1rem;  /* Space between pie chart and legend */
+    max-width: 900px; /* Adjust width to ensure they fit side by side */
     margin: auto;
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
 .container svg {
     flex: 0 0 auto;
-    width: 250px; /* Reduce the size */
+    width: 300px; /* Reduce the size */
     height: auto;
     max-width: 100%; /* Prevents it from growing too large */
 }
