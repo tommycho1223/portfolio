@@ -247,7 +247,7 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-
+    min-width: 200px; /* Prevents it from shrinking too much */
 }
 
 /* Style each legend item */
@@ -287,8 +287,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 768px) {
-    .projects {
-        grid-template-columns: repeat(2, minmax(180px, 1fr)); /* Adjusts for small screens */
+    .container {
+        flex-direction: column; /* Stacks elements vertically on smaller screens */
+        align-items: center;
     }
 }
 
