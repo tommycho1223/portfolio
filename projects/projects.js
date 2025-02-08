@@ -47,68 +47,6 @@ async function loadProjects() {
 // Call function
 loadProjects();
 
-// === PIE CHART CODE ===
-
-// // Data for the pie chart (with labels)
-// let data = [
-//     { value: 1, label: 'apples' },
-//     { value: 2, label: 'oranges' },
-//     { value: 3, label: 'mangos' },
-//     { value: 4, label: 'pears' },
-//     { value: 5, label: 'limes' },
-//     { value: 5, label: 'cherries' },
-// ];
-
-// // Generate pie slice angles using D3
-// let sliceGenerator = d3.pie().value((d) => d.value);
-// let arcData = sliceGenerator(data); // Generate slices automatically
-
-// // Create an arc generator
-// let pieArcGenerator = d3.arc()
-//     .innerRadius(0)  // Full pie (0 for full pie, >0 for donut chart)
-//     .outerRadius(50); // Pie radius
-
-// // Define colors for slices
-// let colors = d3.scaleOrdinal(d3.schemeTableau10);
-
-// // Select the existing SVG and append slices
-// d3.select("#projects-pie-plot")
-//   .selectAll("path")
-//   .data(arcData) // ✅ Use arcData directly
-//   .enter()
-//   .append("path")
-//   .attr("d", d => pieArcGenerator(d)) // ✅ Generate arc paths here
-//   .attr("fill", (_, i) => colors(i)); // Assign colors dynamically
-
-// let legend = d3.select(".legend"); // Select the legend <ul>
-
-// data.forEach((d, idx) => {
-//     legend.append("li")
-//         .attr("style", `--color:${colors(idx)}`) // Assigns the slice's color
-//         .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`); // Adds label and value
-// });
-
-// // Fetch project data from projects.json or another source
-// fetch('projects.json')
-//   .then(response => response.json())
-//   .then(projects => {
-//     // Process project data
-//     let rolledData = d3.rollups(
-//       projects,
-//       v => v.length,  // Count projects per year
-//       d => d.year      // Group by year
-//     );
-
-//     // Convert to the expected format for the pie chart
-//     let data = rolledData.map(([year, count]) => ({
-//       value: count,
-//       label: year
-//     }));
-
-//     // Now use this data for rendering the pie chart
-//     renderPieChart(data);
-// });
-
 function renderPieChart(data) {
     let container = document.getElementById("projects-pie-plot");
     let width = container.clientWidth || 250; // Get container width
@@ -138,9 +76,14 @@ function renderPieChart(data) {
        .attr('stroke', 'white')
        .style('stroke-width', '2px');
 
-    // Fix the legend update
+    // Adjust the legend placement and spacing
     let legendContainer = d3.select('.legend');
     legendContainer.selectAll("*").remove(); 
+
+    legendContainer.style("display", "grid")
+                  .style("grid-template-columns", "repeat(auto-fill, minmax(90px, 1fr))")
+                  .style("gap", "8px")
+                  .style("margin-top", "10px");
 
     legendContainer.selectAll('li')
         .data(data)
@@ -157,5 +100,8 @@ function renderPieChart(data) {
 
 // Resize Pie Chart on Window Resize
 window.addEventListener("resize", () => {
-    renderPieChart(data); // Re-render on resize
+    let container = document.getElementById("projects-pie-plot");
+    let width = container.clientWidth || 250;
+    let height = width;
+    renderPieChart(data);
 });
