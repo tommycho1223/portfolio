@@ -30,44 +30,82 @@ async function loadProjects() {
     }
 }
 
-function renderProjectPieChart(projects) {
+// Call function
+loadProjects();
+
+// === PIE CHART CODE ===
+
+// Data for the pie chart (with labels)
+let data = [
+    { value: 1, label: 'apples' },
+    { value: 2, label: 'oranges' },
+    { value: 3, label: 'mangos' },
+    { value: 4, label: 'pears' },
+    { value: 5, label: 'limes' },
+    { value: 5, label: 'cherries' },
+];
+
+// Generate pie slice angles using D3
+let sliceGenerator = d3.pie().value((d) => d.value);
+let arcData = sliceGenerator(data); // Generate slices automatically
+
+// Create an arc generator
+let pieArcGenerator = d3.arc()
+    .innerRadius(0)  // Full pie (0 for full pie, >0 for donut chart)
+    .outerRadius(50); // Pie radius
+
+// Define colors for slices
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
+
+// Select the existing SVG and append slices
+d3.select("#projects-pie-plot")
+  .selectAll("path")
+  .data(arcData) // ✅ Use arcData directly
+  .enter()
+  .append("path")
+  .attr("d", d => pieArcGenerator(d)) // ✅ Generate arc paths here
+  .attr("fill", (_, i) => colors(i)); // Assign colors dynamically
+
+let legend = d3.select(".legend"); // Select the legend <ul>
+
+data.forEach((d, idx) => {
+    legend.append("li")
+        .attr("style", `--color:${colors(idx)}`) // Assigns the slice's color
+        .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`); // Adds label and value
+});
+
+// Fetch project data from projects.json or another source
+fetch('projects.json')
+  .then(response => response.json())
+  .then(projects => {
+    // Process project data
     let rolledData = d3.rollups(
       projects,
       v => v.length,  // Count projects per year
       d => d.year      // Group by year
     );
 
+    // Convert to the expected format for the pie chart
     let data = rolledData.map(([year, count]) => ({
       value: count,
       label: year
     }));
 
-    console.log("Pie Chart Data:", data); // Debugging
-
-    // Ensure pie chart only updates if data is available
-    if (data.length > 0) {
-        renderPieChart(data);
-    } else {
-        console.error("No valid data for pie chart.");
-    }
-}
+    // Now use this data for rendering the pie chart
+    renderPieChart(data);
+});
 
 function renderPieChart(data) {
-    let width = 300;  // Adjusted to match layout
-    let height = 300; // Adjusted for proportionality
-    let radius = Math.min(width, height) / 2 - 10;
-
-    let svgContainer = d3.select("#projects-pie-plot");
-
-    // Ensure previous pie chart is cleared before drawing a new one
-    svgContainer.selectAll("*").remove();
-
-    let svg = svgContainer
-                .attr("viewBox", `0 0 ${width} ${height}`)
-                .attr("preserveAspectRatio", "xMidYMid meet") // Ensures responsiveness
-                .append("g")
-                .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
+    let width = 300;
+    let height = 300;
+    let radius = Math.min(width, height) / 2;
+  
+    let svg = d3.select('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g')
+                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+  
     let color = d3.scaleOrdinal(d3.schemeTableau10);
   
     let pie = d3.pie().value(d => d.value);
@@ -81,20 +119,13 @@ function renderPieChart(data) {
                   .attr('fill', (d, i) => color(i))
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
-
-    console.log("Arcs Data:", arcs); // Debugging
-
-    // Add legend
-    let legend = d3.select('.legend');
-    legend.selectAll("*").remove(); // Clear previous legends
-
-    legend.selectAll('li')
-          .data(data)
-          .enter()
-          .append('li')
-          .style('color', (d, i) => color(i))
-          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
+  
+    // Update legend
+    let legend = d3.select('.legend').selectAll('li')
+                   .data(data)
+                   .enter()
+                   .append('li')
+                   .style('color', (d, i) => color(i))
+                   .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
-
-// Call function
-loadProjects();
+  
