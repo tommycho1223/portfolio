@@ -23,34 +23,23 @@ async function loadLatestProjects() {
 // Loads all projects and adds search functionality
 async function loadProjects() {
     try {
-        projects = await fetchJSON('./projects.json'); // Fetch all projects
-        const projectsContainer = document.querySelector('.projects');
+        projects = await fetchJSON('./projects.json');
+        console.log("Fetched Projects:", projects); // Debugging
 
+        const projectsContainer = document.querySelector('.projects');
         if (!projectsContainer) {
-            console.error('Error: No container with class .projects found.');
+            console.error('Error: No container found.');
             return;
         }
 
-        renderProjects(projects, projectsContainer, 'h2'); // Initial render
-
-        // Add search event listener
-        let searchInput = document.querySelector('.searchBar');
-        searchInput.addEventListener('input', (event) => {
-            query = event.target.value.toLowerCase(); // Convert query to lowercase
-
-            const filteredProjects = projects.filter(project => {
-                // Convert all project values to a single string and lowercase
-                let values = Object.values(project).join('\n').toLowerCase();
-                return values.includes(query);
-            });
-
-            renderProjects(filteredProjects, projectsContainer, 'h2'); // Update results
-        });
+        renderProjects(projects, projectsContainer, 'h2');
+        renderPieChart(projects); // Ensure pie chart loads initially
 
     } catch (error) {
-        console.error('Error loading projects:', error);
+        console.error("Error loading projects:", error);
     }
 }
+
 
 // Call both functions to ensure expected behavior
 loadLatestProjects(); // Loads only the latest 3 projects
