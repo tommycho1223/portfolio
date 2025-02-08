@@ -265,21 +265,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #projects-pie-plot {
-    max-width: 20em;
-    margin-block: 2em;
-    overflow: visible;
+    width: 100%;
+    max-width: 300px; /* Adjust maximum size */
+    height: auto;
+    display: block;
 }
 
 /* Style the legend container */
 .legend {
     flex: 1; /* Allows legend to take available space */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(7em, 1fr)); /* Adjusts columns dynamically */
+    grid-template-columns: repeat(auto-fit, minmax(7em, 1fr));
     margin-left: 0px;
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    max-width: 250px; /* Ensures it doesn't exceed container */
+    max-width: 200px; /* Ensures it doesn't exceed container */
 }
 
 /* Style each legend item */
@@ -302,14 +303,16 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;  /* Aligns items vertically */
     justify-content: center;
-    max-width: 90vw;
-    margin: auto;
+    /* max-width: 90vw; */
+    /* margin: auto; */
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
+    gap: 10px; /* Adjust spacing between pie chart and legend */
+    text-align: center;
 }
 
 .container svg {
-    width: 100%; /* ✅ Adjusts dynamically */
-    max-width: 250px; /* ✅ Prevents excessive scaling */
+    width: 100%; /* Adjusts dynamically */
+    max-width: 250px; /* Prevents excessive scaling */
     height: auto;
     display: block;
     margin: auto;
@@ -322,23 +325,23 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .container svg {
-        width: 200px; /* ✅ Reduce size on smaller screens */
+        width: 200px; /* Reduce size on smaller screens */
         height: 200px;
     }
 
     .legend {
-        grid-template-columns: repeat(2, 1fr); /* ✅ Auto-adjust legend */
+        grid-template-columns: repeat(2, 1fr); /* Auto-adjust legend */
     }
 }
 
 @media (max-width: 500px) {
     .container svg {
-        width: 180px; /* ✅ Further reduce for mobile */
+        width: 180px; /* Further reduce for mobile */
         height: 180px;
     }
 
     .legend {
-        grid-template-columns: repeat(1, 1fr); /* ✅ Single column legend for tiny screens */
+        grid-template-columns: repeat(1, 1fr); /* Single column legend for tiny screens */
     }
 }
 

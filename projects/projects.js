@@ -110,36 +110,39 @@ loadProjects();
 // });
 
 function renderPieChart(data) {
-    let width = 250;
-    let height = 250;
+    let container = document.getElementById("projects-pie-plot");
+    let width = container.clientWidth || 250; // Get container width
+    let height = width; // Maintain aspect ratio
     let radius = Math.min(width, height) / 2 - 10;
 
-    // ✅ Clear existing pie chart before drawing
+    // Clear existing pie chart before redrawing
     d3.select("#projects-pie-plot").selectAll("*").remove();
 
     let svg = d3.select("#projects-pie-plot")
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .attr("preserveAspectRatio", "xMidYMid meet")
                 .append("g")
                 .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    let color = d3.scaleOrdinal(d3.schemeTableau10); // ✅ Color assigned by index
+    let color = d3.scaleOrdinal(d3.schemeTableau10);
 
     let pie = d3.pie().value(d => d.value);
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    let arcs = svg.selectAll('path')
-                  .data(pie(data))
-                  .enter()
-                  .append('path')
-                  .attr('d', arc)
-                  .attr('fill', (d, i) => color(i)) // ✅ Color assigned by index
-                  .attr('stroke', 'white')
-                  .style('stroke-width', '2px');
+    svg.selectAll('path')
+       .data(pie(data))
+       .enter()
+       .append('path')
+       .attr('d', arc)
+       .attr('fill', (d, i) => color(i))
+       .attr('stroke', 'white')
+       .style('stroke-width', '2px');
 
-    // ✅ Fix the legend update: Ensure colors are consistent
+    // Fix the legend update
     let legendContainer = d3.select('.legend');
-    legendContainer.selectAll("*").remove(); // ✅ Clears previous legend items
+    legendContainer.selectAll("*").remove(); 
 
-    let legendItems = legendContainer.selectAll('li')
+    legendContainer.selectAll('li')
         .data(data)
         .enter()
         .append('li')
@@ -147,7 +150,12 @@ function renderPieChart(data) {
         .style('align-items', 'center')
         .style('gap', '8px')
         .html((d, i) => 
-            `<span class="swatch" style="width: 10px; height: 10px; display: inline-block; background-color: ${color(i)};"></span> 
+            `<span class="swatch" style="width: 12px; height: 12px; display: inline-block; background-color: ${color(i)};"></span> 
              ${d.label} <em>(${d.value})</em>`
         );
 }
+
+// Resize Pie Chart on Window Resize
+window.addEventListener("resize", () => {
+    renderPieChart(data); // Re-render on resize
+});
