@@ -186,6 +186,7 @@ export function renderProjects(projects, container, headingTag = 'h2') {
     });
 }
 
+
 export async function fetchGitHubData(username) {
     try {
         const response = await fetch(`https://api.github.com/users/${username}`);

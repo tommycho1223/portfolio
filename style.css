@@ -235,11 +235,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #projects-pie-plot {
-    width: 300px;
-    height: 300px;
-    display: block;
-    margin: auto;
+    max-width: 20em;
+    margin-block: 2em;
+    overflow: visible;
 }
+
 
 /* Style the legend container */
 .legend {
