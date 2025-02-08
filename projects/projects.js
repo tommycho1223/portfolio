@@ -19,7 +19,7 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects);
+        renderPieChart();
     } catch (error) {
         console.error('Error loading projects:', error);
     }
@@ -27,32 +27,25 @@ async function loadProjects() {
 
 loadProjects();
 
-async function renderPieChart() {
-    try {
-        const projects = await fetchJSON('../projects.json');
-        let data = d3.rollups(
-            projects,
-            v => v.length,
-            d => d.year
-        ).map(([year, count]) => ({ value: count, label: year }));
+function renderPieChart() {
+    let data = [1, 2];
+    let colors = ['gold', 'purple'];
+    
+    let svg = d3.select("#projects-pie-plot");
+    svg.selectAll("*").remove();
+    let width = 200, height = 200, radius = Math.min(width, height) / 2;
+    let g = svg.append("g").attr("transform", `translate(${width / 2}, ${height / 2})`);
+    
+    let arcGenerator = d3.arc().innerRadius(0).outerRadius(radius);
+    let sliceGenerator = d3.pie();
+    let arcData = sliceGenerator(data);
+    let arcs = arcData.map((d) => arcGenerator(d));
 
-        let svg = d3.select('#projects-pie-plot');
-        svg.selectAll("*").remove();
-        let width = 200, height = 200, radius = Math.min(width, height) / 2;
-        let g = svg.append("g").attr("transform", `translate(${width / 2}, ${height / 2})`);
-        let color = d3.scaleOrdinal(d3.schemeTableau10);
-        let pie = d3.pie().value(d => d.value);
-        let arc = d3.arc().innerRadius(0).outerRadius(radius);
-
-        g.selectAll("path")
-            .data(pie(data))
-            .enter()
-            .append("path")
-            .attr("d", arc)
-            .attr("fill", (d, i) => color(i))
-            .attr("stroke", "white");
-
-    } catch (error) {
-        console.error('Error rendering pie chart:', error);
-    }
+    arcs.forEach((arc, idx) => {
+        g.append("path")
+         .attr("d", arc)
+         .attr("fill", colors[idx])
+         .attr("stroke", "white")
+         .style("stroke-width", "2px");
+    });
 }
