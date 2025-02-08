@@ -5,23 +5,34 @@ let projects = []; // Global variable to store projects
 
 async function loadProjects() {
     try {
-        projects = await fetchJSON('./projects.json');
-        console.log("Fetched Projects:", projects); // Debugging
-
+        projects = await fetchJSON('./projects.json'); // ✅ Ensure correct path
         const projectsContainer = document.querySelector('.projects');
+
         if (!projectsContainer) {
-            console.error('Error: No container found.');
+            console.error('Error: No container with class .projects found.');
             return;
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects); // Ensure pie chart loads initially
+        renderPieChart(projects); // ✅ Restore pie chart rendering
+
+        // ✅ Ensure search is working properly
+        let searchInput = document.querySelector('.searchBar');
+        searchInput.addEventListener('input', (event) => {
+            let query = event.target.value.toLowerCase();
+            let filteredProjects = projects.filter(project => {
+                let values = Object.values(project).join('\n').toLowerCase();
+                return values.includes(query);
+            });
+
+            renderProjects(filteredProjects, projectsContainer, 'h2');
+            renderPieChart(filteredProjects); // ✅ Keep chart updated
+        });
 
     } catch (error) {
-        console.error("Error loading projects:", error);
+        console.error('Error loading projects:', error);
     }
 }
-
 
 // ✅ Restore `renderPieChart()` from Step 5.1
 function renderPieChart(data) {
