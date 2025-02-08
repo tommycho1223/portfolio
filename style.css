@@ -307,7 +307,7 @@ h1, h2, h3, h4, h5, h6 {
     gap: 2rem;  /* Space between pie chart and legend */
     max-width: 90vw;
     margin: auto;
-    flex-wrap: nowrap; /* Ensures responsiveness on smaller screens */
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
 .container svg {
