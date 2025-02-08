@@ -185,6 +185,7 @@ h1, h2, h3, h4, h5, h6 {
     /* Adjust legend to 2 columns */
     .legend {
         grid-template-columns: repeat(2, 1fr);
+        max-width: 200px;
     }
 }
 
@@ -207,7 +208,7 @@ h1, h2, h3, h4, h5, h6 {
 
     /* Ensure legend is a single column */
     .legend {
-        grid-template-columns: repeat(auto-fill, minmax(7em, 1fr)); /* Adjust legend layout */
+        grid-template-columns: repeat(1, 1fr); /* Single column on small screens */
         text-align: center;
         justify-items: center;
     }
@@ -273,9 +274,8 @@ h1, h2, h3, h4, h5, h6 {
 .legend {
     flex: 1; /* Allows legend to take available space */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts from multiple columns to 1 */
+    grid-template-columns: repeat(auto-fit, minmax(7em, 1fr)); /* Adjusts columns dynamically */
     gap: 10px; /* Space between items */
-    /* justify-content: center; */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
