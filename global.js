@@ -136,7 +136,7 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         return;
     }
 
-    container.innerHTML = ''; // Clear existing content
+    // container.innerHTML = ''; // Clear existing content
 
     // if (!projects || projects.length === 0) {
     //     container.innerHTML = '<p>No projects available.</p>';
