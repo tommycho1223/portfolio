@@ -21,9 +21,6 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2'); // Calls the updated render function
-
-        // Call pie chart rendering after fetching projects
-        renderProjectPieChart(projects);
     } catch (error) {
         console.error('Error loading projects:', error);
     }
@@ -49,37 +46,15 @@ fetch('projects.json')
       label: year
     }));
 
-    renderPieChart(data);
-});
+    console.log("Pie Chart Data:", data); // Debugging
 
-// Generate pie slice angles using D3
-let sliceGenerator = d3.pie().value((d) => d.value);
-let arcData = sliceGenerator(data); // Generate slices automatically
-
-// Create an arc generator
-let pieArcGenerator = d3.arc()
-    .innerRadius(0)  // Full pie (0 for full pie, >0 for donut chart)
-    .outerRadius(50); // Pie radius
-
-// Define colors for slices
-let colors = d3.scaleOrdinal(d3.schemeTableau10);
-
-// Select the existing SVG and append slices
-d3.select("#projects-pie-plot")
-  .selectAll("path")
-  .data(arcData) // ✅ Use arcData directly
-  .enter()
-  .append("path")
-  .attr("d", d => pieArcGenerator(d)) // ✅ Generate arc paths here
-  .attr("fill", (_, i) => colors(i)); // Assign colors dynamically
-
-let legend = d3.select(".legend"); // Select the legend <ul>
-
-data.forEach((d, idx) => {
-    legend.append("li")
-        .attr("style", `--color:${colors(idx)}`) // Assigns the slice's color
-        .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`); // Adds label and value
-});
+    // Ensure pie chart only updates if data is available
+    if (data.length > 0) {
+        renderPieChart(data);
+    } else {
+        console.error("No valid data for pie chart.");
+    }
+}
 
 function renderPieChart(data) {
     let width = 300;
