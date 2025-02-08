@@ -242,6 +242,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Style the legend container */
 .legend {
+    flex: 1; /* Allows legend to take up remaining space */
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
