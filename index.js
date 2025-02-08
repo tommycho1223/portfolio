@@ -33,7 +33,6 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects); // Ensure pie chart loads initially
 
     } catch (error) {
         console.error("Error loading projects:", error);
