@@ -110,19 +110,16 @@ loadProjects();
 // });
 
 function renderPieChart(data) {
-    let width = 300;  // Set fixed small size
-    let height = 300;
-    let radius = Math.min(width, height) / 2;
+    let width = 250;
+    let height = 250;
+    let radius = Math.min(width, height) / 2 - 10; 
 
-    // ✅ FIX: Only select the existing `#projects-pie-plot` instead of creating a new SVG
+    // ✅ Clear existing pie chart
+    d3.select("#projects-pie-plot").selectAll("*").remove();
+
     let svg = d3.select("#projects-pie-plot")
-                .attr("width", width)
-                .attr("height", height)
-                .selectAll("*").remove(); // Clear old chart before drawing new one
-
-    svg = d3.select("#projects-pie-plot") // Re-select after clearing
-            .append("g")
-            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+                .append("g")
+                .attr("transform", `translate(${width / 2}, ${height / 2})`); // ✅ Centers chart properly
 
     let color = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -137,15 +134,4 @@ function renderPieChart(data) {
                   .attr('fill', (d, i) => color(i))
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
-
-    // Update legend
-    let legend = d3.select('.legend');
-    legend.selectAll("*").remove(); // Clear old legend
-
-    legend.selectAll('li')
-          .data(data)
-          .enter()
-          .append('li')
-          .style('color', (d, i) => color(i))
-          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }

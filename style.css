@@ -311,16 +311,37 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .container svg {
-    flex: 0 0 auto;
-    width: 35vw; /* Adjusts based on viewport width */
+    width: 100%; /* ✅ Adjusts dynamically */
+    max-width: 250px; /* ✅ Prevents excessive scaling */
     height: auto;
-    /* max-width: 300px; /* Prevents it from growing too large */
+    display: block;
+    margin: auto;
 }
 
 @media (max-width: 768px) {
     .container {
-        flex-direction: column; /* Stacks elements vertically on smaller screens */
+        flex-direction: column;
         align-items: center;
+    }
+
+    .container svg {
+        width: 200px; /* ✅ Reduce size on smaller screens */
+        height: 200px;
+    }
+
+    .legend {
+        grid-template-columns: repeat(2, 1fr); /* ✅ Auto-adjust legend */
+    }
+}
+
+@media (max-width: 500px) {
+    .container svg {
+        width: 180px; /* ✅ Further reduce for mobile */
+        height: 180px;
+    }
+
+    .legend {
+        grid-template-columns: repeat(1, 1fr); /* ✅ Single column legend for tiny screens */
     }
 }
 
