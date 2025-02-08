@@ -20,21 +20,17 @@ async function loadProjects() {
             projectsTitle.textContent = `${projects.length} Projects`;
         }
 
-        renderProjects(projects, projectsContainer, 'h2'); // Calls the updated render function
+        renderProjects(projects, projectsContainer, 'h2');
+
+        // Debugging - Ensure data is correctly grouped
+        console.log("Grouping projects for pie chart...");
+        renderProjectPieChart(projects);
     } catch (error) {
         console.error('Error loading projects:', error);
     }
 }
 
-// Call function
-loadProjects();
-
-// === PIE CHART CODE ===
-
-// Fetch project data from projects.json and render pie chart dynamically
-fetch('projects.json')
-  .then(response => response.json())
-  .then(projects => {
+function renderProjectPieChart(projects) {
     let rolledData = d3.rollups(
       projects,
       v => v.length,  // Count projects per year
@@ -57,18 +53,21 @@ fetch('projects.json')
 }
 
 function renderPieChart(data) {
-    let width = 300;
-    let height = 300;
-    let radius = Math.min(width, height) / 2;
-  
-    let svg = d3.select('svg')
-                .attr('width', width)
-                .attr('height', height)
-                .append('g')
-                .attr('transform', `translate(${width / 2}, ${height / 2})`);
+    let width = 300;  // Adjusted to match layout
+    let height = 300; // Adjusted for proportionality
+    let radius = Math.min(width, height) / 2 - 10;
 
-    svg.selectAll("*").remove(); // Clear previous pie chart
-  
+    let svgContainer = d3.select("#projects-pie-plot");
+
+    // Ensure previous pie chart is cleared before drawing a new one
+    svgContainer.selectAll("*").remove();
+
+    let svg = svgContainer
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .attr("preserveAspectRatio", "xMidYMid meet") // Ensures responsiveness
+                .append("g")
+                .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
     let color = d3.scaleOrdinal(d3.schemeTableau10);
   
     let pie = d3.pie().value(d => d.value);
@@ -82,13 +81,20 @@ function renderPieChart(data) {
                   .attr('fill', (d, i) => color(i))
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
-  
-    let legend = d3.select('.legend').selectAll('li')
-                   .data(data)
-                   .enter()
-                   .append('li')
-                   .style('color', (d, i) => color(i))
-                   .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
+
+    console.log("Arcs Data:", arcs); // Debugging
+
+    // Add legend
+    let legend = d3.select('.legend');
+    legend.selectAll("*").remove(); // Clear previous legends
+
+    legend.selectAll('li')
+          .data(data)
+          .enter()
+          .append('li')
+          .style('color', (d, i) => color(i))
+          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
 
-  
+// Call function
+loadProjects();
