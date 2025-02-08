@@ -1,14 +1,12 @@
 import { fetchJSON, renderProjects } from '../global.js';
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
-let projects = []; // Store all projects
-let selectedYear = null; // Track selected year
+let projects = []; // Global variable to store projects
 
 async function loadProjects() {
     try {
-        projects = await fetchJSON('./projects.json'); // Remove `const`
+        projects = await fetchJSON('./projects.json'); // Ensure correct path
         const projectsContainer = document.querySelector('.projects');
-        const searchInput = document.querySelector('.searchBar');
 
         if (!projectsContainer) {
             console.error('Error: No container with class .projects found.');
@@ -16,9 +14,10 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects); // Ensure pie chart loads on page load
+        renderPieChart(projects); // Restore pie chart rendering
 
-        // Add search event listener
+        // Ensure search is working properly
+        let searchInput = document.querySelector('.searchBar');
         searchInput.addEventListener('input', (event) => {
             let query = event.target.value.toLowerCase();
             let filteredProjects = projects.filter(project => {
@@ -27,7 +26,7 @@ async function loadProjects() {
             });
 
             renderProjects(filteredProjects, projectsContainer, 'h2');
-            renderPieChart(filteredProjects); // Re-render pie chart
+            renderPieChart(filteredProjects); // Keep chart updated
         });
 
     } catch (error) {
@@ -35,31 +34,10 @@ async function loadProjects() {
     }
 }
 
-function renderProjectPieChart(projects) {
-    let rolledData = d3.rollups(
-        projects,
-        v => v.length,  // Count projects per year
-        d => d.year      // Group by year
-    );
-
-    let data = rolledData.map(([year, count]) => ({
-        value: count,
-        label: year
-    }));
-
-    console.log("Pie Chart Data:", data); // Debugging
-
-    if (data.length > 0) {
-        console.log("Rendering Pie Chart...");
-        renderPieChart(data);
-    } else {
-        console.error("No valid data for pie chart.");
-    }
-}
-
+// Restore `renderPieChart()` from Step 5.1
 function renderPieChart(data) {
     let rolledData = d3.rollups(
-        data,  // Use `data` instead of `projectsGiven`
+        data,
         v => v.length,
         d => d.year
     );
@@ -87,22 +65,15 @@ function renderPieChart(data) {
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
     let arcs = svg.selectAll('path')
-       .data(pie(pieData)) // Pass correct data
+       .data(pie(pieData))
        .enter()
        .append('path')
        .attr('d', arc)
        .attr('fill', (d, i) => color(i))
        .attr('stroke', 'white')
-       .style('stroke-width', '2px')
-       .style('cursor', 'pointer')
-       .on('click', function(event, d) {
-           selectedYear = d.data.label;
-           let filteredProjects = projects.filter(project => project.year === selectedYear);
-           renderProjects(filteredProjects, document.querySelector('.projects'), 'h2');
-           renderPieChart(filteredProjects);
-       });
+       .style('stroke-width', '2px');
 
-    // Update legend
+    // Restore legend update
     let legend = d3.select('.legend');
     legend.selectAll("*").remove();
 
@@ -111,16 +82,8 @@ function renderPieChart(data) {
           .enter()
           .append('li')
           .style('color', (d, i) => color(i))
-          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`)
-          .style('cursor', 'pointer')
-          .on('click', function(event, d) {
-              selectedYear = d.label;
-              let filteredProjects = projects.filter(project => project.year === selectedYear);
-              renderProjects(filteredProjects, document.querySelector('.projects'), 'h2');
-              renderPieChart(filteredProjects);
-          });
+          .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
 
-
-// Call function to load all projects
+// Ensure projects load correctly
 loadProjects();
