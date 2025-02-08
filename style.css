@@ -286,8 +286,7 @@ h1, h2, h3, h4, h5, h6 {
 .legend li {
     display: flex;
     align-items: center;
-    gap: 5px;
-    white-space: nowrap; /* Prevents text from wrapping unnecessarily */
+    gap: 8px;
 }
 
 /* Create the color swatch */
@@ -296,7 +295,6 @@ h1, h2, h3, h4, h5, h6 {
     height: 12px;
     display: inline-block;
     border-radius: 50%;
-    background: currentColor;
 }
 
 /* Container to align pie chart and legend side by side */
