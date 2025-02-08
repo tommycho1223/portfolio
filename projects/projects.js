@@ -121,7 +121,7 @@ function renderPieChart(data) {
                 .append("g")
                 .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    let color = d3.scaleOrdinal(d3.schemeTableau10);
+    let color = d3.scaleOrdinal(d3.schemeTableau10); // ✅ Color assigned by index
 
     let pie = d3.pie().value(d => d.value);
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
@@ -131,11 +131,11 @@ function renderPieChart(data) {
                   .enter()
                   .append('path')
                   .attr('d', arc)
-                  .attr('fill', (d, i) => color(i))
+                  .attr('fill', (d, i) => color(i)) // ✅ Color assigned by index
                   .attr('stroke', 'white')
                   .style('stroke-width', '2px');
 
-    // ✅ Fix the legend update
+    // ✅ Fix the legend update: Ensure colors are consistent
     let legendContainer = d3.select('.legend');
     legendContainer.selectAll("*").remove(); // ✅ Clears previous legend items
 
@@ -146,8 +146,8 @@ function renderPieChart(data) {
         .style('display', 'flex')
         .style('align-items', 'center')
         .style('gap', '8px')
-        .html(d => 
-            `<span class="swatch" style="width: 10px; height: 10px; display: inline-block; background-color: ${color(d.label)};"></span> 
+        .html((d, i) => 
+            `<span class="swatch" style="width: 10px; height: 10px; display: inline-block; background-color: ${color(i)};"></span> 
              ${d.label} <em>(${d.value})</em>`
         );
 }
