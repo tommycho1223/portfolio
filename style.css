@@ -168,7 +168,6 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.6;
 }
 
-/* Responsive Design for Mobile */
 @media (max-width: 900px) {
     .projects {
         grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
@@ -181,6 +180,11 @@ h1, h2, h3, h4, h5, h6 {
 
     .container svg {
         width: 250px; /* Reduce pie chart size */
+    }
+
+    /* Adjust legend to 2 columns */
+    .legend {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -201,9 +205,10 @@ h1, h2, h3, h4, h5, h6 {
         width: 200px; /* Further reduce size for smaller screens */
     }
 
+    /* Ensure legend is a single column */
     .legend {
-        flex-direction: column; /* Ensures proper layout on small screens */
-        align-items: center;
+        grid-template-columns: repeat(1, 1fr);
+        text-align: center;
     }
 }
 
@@ -265,12 +270,13 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Style the legend container */
 .legend {
-    flex: 1; /* Allows legend to take up remaining space */
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Default: 3 columns */
+    gap: 10px; /* Space between items */
     justify-content: center;
-    gap: 10px;
-    min-width: 200px; /* Prevents it from shrinking too much */
+    text-align: center;
+    max-width: 600px; /* Prevent it from stretching too much */
+    margin: auto;
 }
 
 /* Style each legend item */
