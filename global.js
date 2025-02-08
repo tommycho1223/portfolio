@@ -138,10 +138,10 @@ export function renderProjects(projects, container, headingTag = 'h2') {
 
     container.innerHTML = ''; // Clear existing content
 
-    if (!projects || projects.length === 0) {
-        container.innerHTML = '<p>No projects available.</p>';
-        return;
-    }
+    // if (!projects || projects.length === 0) {
+    //     container.innerHTML = '<p>No projects available.</p>';
+    //     return;
+    // }
 
     // Validate headingTag to ensure it's a valid heading tag
     const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
