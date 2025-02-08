@@ -271,10 +271,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Style the legend container */
 .legend {
+    flex: 1; /* Allows legend to take available space */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts from multiple columns to 1 */
     gap: 10px; /* Space between items */
-    justify-content: center;
+    /* justify-content: center; */
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -302,8 +303,8 @@ h1, h2, h3, h4, h5, h6 {
 .container {
     display: flex;
     align-items: center;  /* Aligns items vertically */
-    justify-content: space-between;
-    gap: 1rem;  /* Space between pie chart and legend */
+    justify-content: center;
+    gap: 2rem;  /* Space between pie chart and legend */
     max-width: 90vw;
     margin: auto;
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
