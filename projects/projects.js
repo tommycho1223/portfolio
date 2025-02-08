@@ -5,7 +5,7 @@ let projects = []; // Global variable to store projects
 
 async function loadProjects() {
     try {
-        projects = await fetchJSON('./projects.json'); // Ensure correct path
+        projects = await fetchJSON('./projects.json'); // ✅ Ensure correct path
         const projectsContainer = document.querySelector('.projects');
 
         if (!projectsContainer) {
@@ -14,9 +14,9 @@ async function loadProjects() {
         }
 
         renderProjects(projects, projectsContainer, 'h2');
-        renderPieChart(projects); // Restore pie chart rendering
+        renderPieChart(projects); // ✅ Restore pie chart rendering
 
-        // Ensure search is working properly
+        // ✅ Ensure search is working properly
         let searchInput = document.querySelector('.searchBar');
         searchInput.addEventListener('input', (event) => {
             let query = event.target.value.toLowerCase();
@@ -26,7 +26,7 @@ async function loadProjects() {
             });
 
             renderProjects(filteredProjects, projectsContainer, 'h2');
-            renderPieChart(filteredProjects); // Keep chart updated
+            renderPieChart(filteredProjects); // ✅ Keep chart updated
         });
 
     } catch (error) {
@@ -34,7 +34,7 @@ async function loadProjects() {
     }
 }
 
-// Restore `renderPieChart()` from Step 5.1
+// ✅ Restore `renderPieChart()` from Step 5.1
 function renderPieChart(data) {
     let rolledData = d3.rollups(
         data,
@@ -48,7 +48,7 @@ function renderPieChart(data) {
     }));
 
     let svgContainer = d3.select("#projects-pie-plot");
-    svgContainer.selectAll("*").remove(); // Clear before re-rendering
+    svgContainer.selectAll("*").remove(); // ✅ Clear before re-rendering
 
     let width = 300;
     let height = 300;
@@ -73,7 +73,7 @@ function renderPieChart(data) {
        .attr('stroke', 'white')
        .style('stroke-width', '2px');
 
-    // Restore legend update
+    // ✅ Restore legend update
     let legend = d3.select('.legend');
     legend.selectAll("*").remove();
 
@@ -85,5 +85,5 @@ function renderPieChart(data) {
           .html(d => `<span class="swatch"></span> ${d.label} (${d.value})`);
 }
 
-// Ensure projects load correctly
+// ✅ Ensure projects load correctly
 loadProjects();
