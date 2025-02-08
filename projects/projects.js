@@ -22,23 +22,9 @@ async function loadProjects() {
 
         renderProjects(projects, projectsContainer, 'h2');
 
-        // Group projects by year
-        let rolledData = d3.rollups(
-            projects,
-            (v) => v.length,  // Count projects per year
-            (d) => d.year      // Group by year
-        );
-
-        // Convert to correct format
-        let data = rolledData.map(([year, count]) => ({
-            value: count,
-            label: year
-        }));
-
-        console.log("Processed Pie Chart Data:", data); // Debugging
-
-        // Render the pie chart with actual project data
-        renderPieChart(data);
+        // Debugging - Ensure data is correctly grouped
+        console.log("Grouping projects for pie chart...");
+        renderProjectPieChart(projects);
     } catch (error) {
         console.error('Error loading projects:', error);
     }
