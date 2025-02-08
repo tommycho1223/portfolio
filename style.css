@@ -174,12 +174,12 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .container {
-        flex-wrap: wrap; /* Allows items to stay side by side */
+        flex-direction: column;
         align-items: center;
     }
 
     .container svg {
-        width: 250px; /* Reduce pie chart size */
+        width: 50ww; /* Reduce pie chart size */
     }
 
     /* Adjust legend to 2 columns */
@@ -202,12 +202,12 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .container svg {
-        width: 200px; /* Further reduce size for smaller screens */
+        width: 70vw; /* Further reduce size for smaller screens */
     }
 
     /* Ensure legend is a single column */
     .legend {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns: repeat(auto-fill, minmax(7em, 1fr)); /* Adjust legend layout */
         text-align: center;
         justify-items: center;
     }
@@ -272,20 +272,21 @@ h1, h2, h3, h4, h5, h6 {
 /* Style the legend container */
 .legend {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Default: 3 columns */
+    grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Adjusts from multiple columns to 1 */
     gap: 10px; /* Space between items */
     justify-content: center;
-    text-align: center;
-    max-width: 600px; /* Prevent it from stretching too much */
-    margin: auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 100%; /* Ensures it doesn't exceed container */
 }
 
 /* Style each legend item */
 .legend li {
-    list-style: none;
     display: flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap; /* Prevents text from wrapping unnecessarily */
 }
 
 /* Create the color swatch */
@@ -301,18 +302,18 @@ h1, h2, h3, h4, h5, h6 {
 .container {
     display: flex;
     align-items: center;  /* Aligns items vertically */
-    justify-content: center; /* Distributes chart and legend */
+    justify-content: space-between;
     gap: 1rem;  /* Space between pie chart and legend */
-    max-width: 900px; /* Adjust width to ensure they fit side by side */
+    max-width: 90vw;
     margin: auto;
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
 }
 
 .container svg {
     flex: 0 0 auto;
-    width: 300px; /* Reduce the size */
+    width: 35vw; /* Adjusts based on viewport width */
     height: auto;
-    max-width: 100%; /* Prevents it from growing too large */
+    max-width: 300px; /* Prevents it from growing too large */
 }
 
 @media (max-width: 768px) {
