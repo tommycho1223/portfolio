@@ -279,7 +279,7 @@ h1, h2, h3, h4, h5, h6 {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    max-width: 100%; /* Ensures it doesn't exceed container */
+    max-width: 250px; /* Ensures it doesn't exceed container */
 }
 
 /* Style each legend item */
@@ -307,14 +307,14 @@ h1, h2, h3, h4, h5, h6 {
     gap: 2rem;  /* Space between pie chart and legend */
     max-width: 90vw;
     margin: auto;
-    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
+    flex-wrap: nowrap; /* Ensures responsiveness on smaller screens */
 }
 
 .container svg {
     flex: 0 0 auto;
     width: 35vw; /* Adjusts based on viewport width */
     height: auto;
-    max-width: 300px; /* Prevents it from growing too large */
+    /* max-width: 300px; /* Prevents it from growing too large */
 }
 
 @media (max-width: 768px) {
