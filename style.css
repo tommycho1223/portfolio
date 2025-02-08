@@ -275,8 +275,8 @@ h1, h2, h3, h4, h5, h6 {
     flex: 1; /* Allows legend to take available space */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(7em, 1fr)); /* Adjusts columns dynamically */
-    gap: 10px; /* Space between items */
-    padding: 10px;
+    margin-left: 0px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 8px;
     max-width: 250px; /* Ensures it doesn't exceed container */
@@ -302,7 +302,7 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     align-items: center;  /* Aligns items vertically */
     justify-content: center;
-    gap: 2rem;  /* Space between pie chart and legend */
+    gap: 10px;  /* Space between pie chart and legend */
     max-width: 90vw;
     margin: auto;
     flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
