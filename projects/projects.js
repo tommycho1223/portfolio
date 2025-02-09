@@ -3,6 +3,7 @@ import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
 let query = ''; // Store search input
 let allProjects = []; // Store fetched projects
+let selectedYear = null; // Track selected year
 
 // Select the search bar
 let searchInput = document.querySelector('.searchBar');
@@ -98,9 +99,17 @@ function renderPieChart(data) {
         .style('stroke-width', '2px')
         .style("cursor", "pointer") // Make it clear it's clickable
         .on("click", function(event, d) {
-            filterProjectsByYear(d.data.label);
-            slices.style("opacity", 0.5); // Fade out other slices
-            d3.select(this).style("opacity", 1).style("stroke", "black").style("stroke-width", "3px");
+            if (selectedYear === d.data.label) {
+                // If the clicked slice is already selected, reset selection
+                selectedYear = null;
+                filterProjects(); // Show all projects
+                slices.attr("fill", (d, i) => color(i)); // Restore original colors
+            } else {
+                selectedYear = d.data.label;
+                filterProjectsByYear(d.data.label);
+                slices.attr("fill", (d, i) => color(i)); // Restore all colors
+                d3.select(this).attr("fill", "green"); // Highlight selected slice
+            }
         });
 
     // Legend setup
@@ -125,9 +134,16 @@ function renderPieChart(data) {
              ${d.label} <em>(${d.value})</em>`
         )
         .on("click", function(event, d) {
-            filterProjectsByYear(d.label);
-            slices.style("opacity", 0.5);  // Fade out unselected slices
-            d3.select(slices.filter(pathD => pathD.data.label === d.label)).style("opacity", 1);
+            if (selectedYear === d.label) {
+                selectedYear = null;
+                filterProjects();
+                slices.attr("fill", (d, i) => color(i)); // Restore original colors
+            } else {
+                selectedYear = d.label;
+                filterProjectsByYear(d.label);
+                slices.attr("fill", (d, i) => color(i)); // Restore all colors
+                d3.select(slices.filter(pathD => pathD.data.label === d.label)).attr("fill", "green");
+            }
         });
 }
 
