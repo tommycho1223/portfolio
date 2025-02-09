@@ -91,14 +91,25 @@ function renderPieChart(projects) {
     let pie = d3.pie().value(d => d.value);
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    svg.selectAll('path')
+    // Append pie chart slices
+    let slices = svg.selectAll('path')
        .data(pie(data))
        .enter()
        .append('path')
        .attr('d', arc)
        .attr('fill', (_, i) => color(i))
        .attr('stroke', 'white')
-       .style('stroke-width', '2px');
+       .style('stroke-width', '2px')
+       .style('cursor', 'pointer')
+       .on("mouseover", function() {
+            d3.select(this).style("opacity", 0.7); // Highlight effect on hover
+       })
+       .on("mouseout", function() {
+            d3.select(this).style("opacity", 1); // Reset on mouse out
+       })
+       .on("click", function(event, d) {
+            filterByYear(d.data.label); // Call function to filter projects by year
+       });
 
     // Update the legend
     let legendContainer = d3.select('.legend');
@@ -108,10 +119,20 @@ function renderPieChart(projects) {
         .data(data)
         .enter()
         .append('li')
+        .style('cursor', 'pointer')
         .html((d, i) => 
             `<span class="swatch" style="width: 12px; height: 12px; display: inline-block; background-color: ${color(i)};"></span> 
              ${d.label} <em>(${d.value})</em>`
-        );
+        )
+        .on("click", function(event, d) {
+            filterByYear(d.label); // Call function when clicking on a legend item
+        });
+}
+
+// Function to filter projects by year when clicking pie chart
+function filterByYear(year) {
+    query = year.toString();
+    filterProjects();
 }
 
 // Resize Pie Chart on Window Resize
