@@ -351,11 +351,11 @@ path {
     transition: 300ms;
 }
 
-svg:has(path:hover) {
+/* svg:has(path:hover) {
     path:not(:hover) {
         opacity: 0.5;
     }
-}
+} */
 
 path {
     transition: 300ms;
