@@ -35,7 +35,6 @@ async function loadProjects() {
 
         renderProjects(projects, projectsContainer, 'h2');
         renderPieChart(projects); // Initialize pie chart
-
     } catch (error) {
         console.error('Error loading projects:', error);
     }
@@ -44,7 +43,7 @@ async function loadProjects() {
 function filterProjects() {
     let filteredProjects = allProjects.filter((project) => {
         let values = Object.values(project).join('\n').toLowerCase();
-        let matchesQuery = query ? values.includes(query.toLowerCase()) : true;
+        let matchesQuery = query ? values.includes(query) : true;
         let matchesYear = selectedYear ? project.year === selectedYear : true;
 
         return matchesQuery && matchesYear; // Apply both filters together
@@ -88,7 +87,7 @@ function renderPieChart(data) {
         v => v.length,
         d => d.year
     ).map(([year, count]) => ({
-        label: year,  // Ensure label is assigned correctly
+        label: year,
         value: count
     }));
 
@@ -100,7 +99,7 @@ function renderPieChart(data) {
         .enter()
         .append('path')
         .attr('d', arc)
-        .attr('fill', (d, i) => color(i))
+        .attr('fill', (d, i) => (d.data.label === selectedYear ? "green" : color(i)))
         .attr('stroke', 'white')
         .style('stroke-width', '2px')
         .style("cursor", "pointer")
@@ -126,7 +125,7 @@ function renderPieChart(data) {
         .style('gap', '8px')
         .style("cursor", "pointer")
         .html((d, i) => 
-            `<span class="swatch" style="width: 12px; height: 12px; display: inline-block; background-color: ${color(i)};"></span> 
+            `<span class="swatch" style="width: 12px; height: 12px; display: inline-block; background-color: ${d.label === selectedYear ? "green" : color(i)};"></span> 
              ${d.label} <em>(${d.value})</em>`
         )
         .on("click", function(event, d) {
@@ -137,18 +136,6 @@ function renderPieChart(data) {
             }
             filterProjects(); // Reapply filter after clicking
         });
-}
-
-// Function to filter projects when clicking a slice
-function filterProjectsByYear(year) {
-    let filteredProjects = allProjects.filter(project => project.year == year);
-
-    // Update project list
-    const projectsContainer = document.querySelector('.projects');
-    projectsContainer.innerHTML = "";
-    renderProjects(filteredProjects, projectsContainer, 'h2');
-
-    // The pie chart remains unchanged to maintain the full dataset
 }
 
 // Resize Pie Chart on Window Resize
