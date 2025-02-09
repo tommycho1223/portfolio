@@ -42,22 +42,42 @@ async function loadProjects() {
 }
 
 function filterProjects() {
-    let filteredProjects = allProjects.filter((project) => {
-        let values = Object.values(project).join('\n').toLowerCase();
-        return values.includes(query);
-    });
+    fetchJSON('../lib/projects.json').then((projects) => {
+        let filteredProjects = projects.filter((project) => {
+            let values = Object.values(project).join('\n').toLowerCase();
+            let matchesQuery = query ? values.includes(query.toLowerCase()) : true;
+            let matchesYear = selectedYear ? project.year === selectedYear : true;
 
-    const projectsContainer = document.querySelector('.projects');
-    const projectsTitle = document.querySelector('.projects-title');
+            return matchesQuery && matchesYear; // Combine both filters
+        });
 
-    if (projectsTitle) {
-        projectsTitle.textContent = `${filteredProjects.length} Projects`;
-    }
+        // Update project count
+        const projectsTitle = document.querySelector('.projects-title');
+        if (projectsTitle) {
+            projectsTitle.textContent = `${filteredProjects.length} Projects`;
+        }
 
-    projectsContainer.innerHTML = ""; // Clear previous projects
-    renderProjects(filteredProjects, projectsContainer, 'h2'); // Update project list
-    renderPieChart(filteredProjects); // Update pie chart dynamically
+        // Render filtered projects
+        const projectsContainer = document.querySelector('.projects');
+        projectsContainer.innerHTML = ""; // Clear previous projects
+        renderProjects(filteredProjects, projectsContainer, 'h2');
+
+        // Update Pie Chart based on visible projects
+        let rolledData = d3.rollups(
+            filteredProjects,
+            (v) => v.length,
+            (d) => d.year
+        );
+
+        let data = rolledData.map(([year, count]) => ({
+            value: count,
+            label: year,
+        }));
+
+        renderPieChart(data); // Update pie chart dynamically
+    }).catch((error) => console.error("Error filtering projects:", error));
 }
+
 
 function renderPieChart(data) {
     let container = document.getElementById("projects-pie-plot");
