@@ -13,6 +13,7 @@ searchInput.addEventListener('input', (event) => {
 
 function filterProjects() {
     fetchJSON('../lib/projects.json').then((projects) => {
+        // Filter projects based on search query
         let filteredProjects = projects.filter((project) => {
             let values = Object.values(project).join('\n').toLowerCase();
             return values.includes(query.toLowerCase());
@@ -24,11 +25,12 @@ function filterProjects() {
             projectsTitle.textContent = `${filteredProjects.length} Projects`;
         }
 
-        // Render only the filtered projects
+        // Update project list (REQUIRED)
         const projectsContainer = document.querySelector('.projects');
+        projectsContainer.innerHTML = ""; // Clear previous projects
         renderProjects(filteredProjects, projectsContainer, 'h2');
 
-        // Update Pie Chart based on visible projects
+        // Update Pie Chart based on filtered projects
         let rolledData = d3.rollups(
             filteredProjects,
             (v) => v.length,
