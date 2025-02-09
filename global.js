@@ -23,8 +23,9 @@ document.body.insertAdjacentHTML(
 let pages = [
     { url: 'portfolio/', title: 'Home' },
     { url: 'portfolio/projects/', title: 'Projects' },
-    { url: 'portfolio/contact/', title: 'Contact' },
     { url: 'portfolio/cv/', title: 'Resume' },
+    { url: 'portfolio/contact/', title: 'Contact' },
+    { url: 'portfolio/meta/', title: 'Meta' },
     { url: 'https://github.com/tommycho1223', title: 'My GitHub' }
 ];
 
