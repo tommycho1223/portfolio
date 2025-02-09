@@ -367,3 +367,26 @@ path {
     border-color: #007BFF;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
+
+.stats-table {
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    color: white;
+}
+
+.stats-table tr {
+    border-bottom: 1px solid gray;
+}
+
+.stats-label {
+    font-weight: bold;
+    padding: 8px;
+    text-align: left;
+}
+
+.stats-value {
+    text-align: right;
+    padding: 8px;
+}
