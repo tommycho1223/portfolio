@@ -60,8 +60,8 @@ function filterProjects() {
 
 function renderPieChart(projects) {
     let container = document.getElementById("projects-pie-plot");
-    let width = container.clientWidth || 250; // Get container width
-    let height = width; // Maintain aspect ratio
+    let width = container.clientWidth || 250; // Get container width dynamically
+    let height = width; // Maintain square aspect ratio
     let radius = Math.min(width, height) / 2 - 10;
 
     // Clear existing pie chart before redrawing
@@ -84,6 +84,8 @@ function renderPieChart(projects) {
                 .append("svg")
                 .attr("width", width)
                 .attr("height", height)
+                .attr("viewBox", `0 0 ${width} ${height}`)
+                .attr("preserveAspectRatio", "xMidYMid meet")
                 .append("g")
                 .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
@@ -101,6 +103,7 @@ function renderPieChart(projects) {
        .attr('stroke', 'white')
        .style('stroke-width', '2px')
        .style('cursor', 'pointer')
+       .style('transition', 'transform 300ms ease-in-out')
        .on("mouseover", function() {
             d3.select(this).style("opacity", 0.7); // Highlight effect on hover
        })
@@ -128,6 +131,7 @@ function renderPieChart(projects) {
             filterByYear(d.label); // Call function when clicking on a legend item
         });
 }
+
 
 // Function to filter projects by year when clicking pie chart
 function filterByYear(year) {
