@@ -357,11 +357,6 @@ path {
     }
 } */
 
-path {
-    transition: 300ms;
-    cursor: pointer;
-}
-
 .searchBar {
     width: 100%;
     max-width: 1000px;
