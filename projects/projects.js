@@ -61,48 +61,59 @@ function filterProjects() {
 function renderPieChart(data) {
     let container = document.getElementById("projects-pie-plot");
     let width = container.clientWidth || 250; // Responsive width
-    let height = width; 
+    let height = width;
     let radius = Math.min(width, height) / 2 - 10;
 
     // Clear previous pie chart
     d3.select("#projects-pie-plot").selectAll("*").remove();
 
     let svg = d3.select("#projects-pie-plot")
-                .attr("viewBox", `0 0 ${width} ${height}`)
-                .attr("preserveAspectRatio", "xMidYMid meet")
-                .append("g")
-                .attr("transform", `translate(${width / 2}, ${height / 2})`);
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
     let color = d3.scaleOrdinal(d3.schemeTableau10);
+
+    // Group projects by year and count them
+    let groupedData = d3.rollups(
+        data,
+        v => v.length,
+        d => d.year
+    ).map(([year, count]) => ({
+        label: year,  // Ensure label is assigned correctly
+        value: count
+    }));
 
     let pie = d3.pie().value(d => d.value);
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
     let slices = svg.selectAll('path')
-       .data(pie(data))
-       .enter()
-       .append('path')
-       .attr('d', arc)
-       .attr('fill', (d, i) => color(i))
-       .attr('stroke', 'white')
-       .style('stroke-width', '2px')
-       .style("cursor", "pointer") // Make it clear it's clickable
-       .on("click", function(event, d) {
-           filterProjectsByYear(d.data.label);
-           d3.select(this).style("opacity", 1).style("stroke", "black").style("stroke-width", "3px"); // Highlight clicked slice
-       });
+        .data(pie(groupedData))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', (d, i) => color(i))
+        .attr('stroke', 'white')
+        .style('stroke-width', '2px')
+        .style("cursor", "pointer") // Make it clear it's clickable
+        .on("click", function(event, d) {
+            filterProjectsByYear(d.data.label);
+            slices.style("opacity", 0.5); // Fade out other slices
+            d3.select(this).style("opacity", 1).style("stroke", "black").style("stroke-width", "3px");
+        });
 
     // Legend setup
     let legendContainer = d3.select('.legend');
     legendContainer.selectAll("*").remove();
 
     legendContainer.style("display", "grid")
-                  .style("grid-template-columns", "repeat(auto-fill, minmax(90px, 1fr))")
-                  .style("gap", "8px")
-                  .style("margin-top", "10px");
+        .style("grid-template-columns", "repeat(auto-fill, minmax(90px, 1fr))")
+        .style("gap", "8px")
+        .style("margin-top", "10px");
 
     legendContainer.selectAll('li')
-        .data(data)
+        .data(groupedData)
         .enter()
         .append('li')
         .style('display', 'flex')
@@ -122,16 +133,14 @@ function renderPieChart(data) {
 
 // Function to filter projects when clicking a slice
 function filterProjectsByYear(year) {
-    fetchJSON('../lib/projects.json').then((projects) => {
-        let filteredProjects = projects.filter(project => project.year == year);
+    let filteredProjects = allProjects.filter(project => project.year == year);
 
-        // Update project list
-        const projectsContainer = document.querySelector('.projects');
-        projectsContainer.innerHTML = "";
-        renderProjects(filteredProjects, projectsContainer, 'h2');
+    // Update project list
+    const projectsContainer = document.querySelector('.projects');
+    projectsContainer.innerHTML = "";
+    renderProjects(filteredProjects, projectsContainer, 'h2');
 
-        // Keep the pie chart the same instead of changing it
-    }).catch((error) => console.error("Error filtering projects:", error));
+    // The pie chart remains unchanged to maintain the full dataset
 }
 
 // Resize Pie Chart on Window Resize
