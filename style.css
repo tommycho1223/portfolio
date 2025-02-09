@@ -343,19 +343,15 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-svg:has(path:hover) path:not(:hover) {
-    opacity: 0.5;
+svg:has(path:hover) {
+    path:not(:hover) {
+        opacity: 0.5;
+    }
 }
 
 path {
     transition: 300ms;
 }
-
-/* svg:has(path:hover) {
-    path:not(:hover) {
-        opacity: 0.5;
-    }
-} */
 
 .searchBar {
     width: 100%;
