@@ -42,46 +42,32 @@ async function loadProjects() {
 }
 
 function filterProjects() {
-    fetchJSON('../lib/projects.json').then((projects) => {
-        let filteredProjects = projects.filter((project) => {
-            let values = Object.values(project).join('\n').toLowerCase();
-            let matchesQuery = query ? values.includes(query.toLowerCase()) : true;
-            let matchesYear = selectedYear ? project.year === selectedYear : true;
+    let filteredProjects = allProjects.filter((project) => {
+        let values = Object.values(project).join('\n').toLowerCase();
+        let matchesQuery = query ? values.includes(query.toLowerCase()) : true;
+        let matchesYear = selectedYear ? project.year === selectedYear : true;
 
-            return matchesQuery && matchesYear; // Combine both filters
-        });
+        return matchesQuery && matchesYear; // Apply both filters together
+    });
 
-        // Update project count
-        const projectsTitle = document.querySelector('.projects-title');
-        if (projectsTitle) {
-            projectsTitle.textContent = `${filteredProjects.length} Projects`;
-        }
+    // Update project count
+    const projectsTitle = document.querySelector('.projects-title');
+    if (projectsTitle) {
+        projectsTitle.textContent = `${filteredProjects.length} Projects`;
+    }
 
-        // Render filtered projects
-        const projectsContainer = document.querySelector('.projects');
-        projectsContainer.innerHTML = ""; // Clear previous projects
-        renderProjects(filteredProjects, projectsContainer, 'h2');
+    // Render filtered projects
+    const projectsContainer = document.querySelector('.projects');
+    projectsContainer.innerHTML = ""; // Clear previous projects
+    renderProjects(filteredProjects, projectsContainer, 'h2');
 
-        // Update Pie Chart based on visible projects
-        let rolledData = d3.rollups(
-            filteredProjects,
-            (v) => v.length,
-            (d) => d.year
-        );
-
-        let data = rolledData.map(([year, count]) => ({
-            value: count,
-            label: year,
-        }));
-
-        renderPieChart(data); // Update pie chart dynamically
-    }).catch((error) => console.error("Error filtering projects:", error));
+    // Update Pie Chart & Legend **only based on visible projects**
+    renderPieChart(filteredProjects);
 }
-
 
 function renderPieChart(data) {
     let container = document.getElementById("projects-pie-plot");
-    let width = container.clientWidth || 250; // Responsive width
+    let width = container.clientWidth || 250;
     let height = width;
     let radius = Math.min(width, height) / 2 - 10;
 
@@ -96,7 +82,7 @@ function renderPieChart(data) {
 
     let color = d3.scaleOrdinal(d3.schemeTableau10);
 
-    // Group projects by year and count them
+    // Group projects by year **ONLY IN FILTERED DATA**
     let groupedData = d3.rollups(
         data,
         v => v.length,
@@ -117,29 +103,19 @@ function renderPieChart(data) {
         .attr('fill', (d, i) => color(i))
         .attr('stroke', 'white')
         .style('stroke-width', '2px')
-        .style("cursor", "pointer") // Make it clear it's clickable
+        .style("cursor", "pointer")
         .on("click", function(event, d) {
             if (selectedYear === d.data.label) {
-                // If the clicked slice is already selected, reset selection
                 selectedYear = null;
-                filterProjects(); // Show all projects
-                slices.attr("fill", (d, i) => color(i)); // Restore original colors
             } else {
                 selectedYear = d.data.label;
-                filterProjectsByYear(d.data.label);
-                slices.attr("fill", (d, i) => color(i)); // Restore all colors
-                d3.select(this).attr("fill", "green"); // Highlight selected slice
             }
+            filterProjects(); // Reapply filter after clicking
         });
 
-    // Legend setup
+    // Update legend correctly
     let legendContainer = d3.select('.legend');
     legendContainer.selectAll("*").remove();
-
-    legendContainer.style("display", "grid")
-        .style("grid-template-columns", "repeat(auto-fill, minmax(90px, 1fr))")
-        .style("gap", "8px")
-        .style("margin-top", "10px");
 
     legendContainer.selectAll('li')
         .data(groupedData)
@@ -156,14 +132,10 @@ function renderPieChart(data) {
         .on("click", function(event, d) {
             if (selectedYear === d.label) {
                 selectedYear = null;
-                filterProjects();
-                slices.attr("fill", (d, i) => color(i)); // Restore original colors
             } else {
                 selectedYear = d.label;
-                filterProjectsByYear(d.label);
-                slices.attr("fill", (d, i) => color(i)); // Restore all colors
-                d3.select(slices.filter(pathD => pathD.data.label === d.label)).attr("fill", "green");
             }
+            filterProjects(); // Reapply filter after clicking
         });
 }
 
