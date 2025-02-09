@@ -60,8 +60,8 @@ function filterProjects() {
 
 function renderPieChart(projects) {
     let container = document.getElementById("projects-pie-plot");
-    let width = container.clientWidth || 250; // Get container width dynamically
-    let height = width; // Maintain square aspect ratio
+    let width = container.clientWidth || 250;
+    let height = width; 
     let radius = Math.min(width, height) / 2 - 10;
 
     // Clear existing pie chart before redrawing
@@ -78,12 +78,9 @@ function renderPieChart(projects) {
         label: year
     }));
 
-    if (data.length === 0) return; // Avoid rendering an empty chart
+    if (data.length === 0) return;
 
     let svg = d3.select("#projects-pie-plot")
-                .append("svg")
-                .attr("width", width)
-                .attr("height", height)
                 .attr("viewBox", `0 0 ${width} ${height}`)
                 .attr("preserveAspectRatio", "xMidYMid meet")
                 .append("g")
@@ -93,7 +90,6 @@ function renderPieChart(projects) {
     let pie = d3.pie().value(d => d.value);
     let arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    // Append pie chart slices
     let slices = svg.selectAll('path')
        .data(pie(data))
        .enter()
@@ -103,20 +99,20 @@ function renderPieChart(projects) {
        .attr('stroke', 'white')
        .style('stroke-width', '2px')
        .style('cursor', 'pointer')
-       .style('transition', 'transform 300ms ease-in-out')
+       .style('transition', 'opacity 300ms ease-in-out')
        .on("mouseover", function() {
-            d3.select(this).style("opacity", 0.7); // Highlight effect on hover
+            d3.select(this).style("opacity", 0.7);
        })
        .on("mouseout", function() {
-            d3.select(this).style("opacity", 1); // Reset on mouse out
+            d3.select(this).style("opacity", 1);
        })
        .on("click", function(event, d) {
-            filterByYear(d.data.label); // Call function to filter projects by year
+            filterByYear(d.data.label);
        });
 
     // Update the legend
     let legendContainer = d3.select('.legend');
-    legendContainer.selectAll("*").remove(); 
+    legendContainer.selectAll("*").remove();
 
     legendContainer.selectAll('li')
         .data(data)
@@ -128,7 +124,7 @@ function renderPieChart(projects) {
              ${d.label} <em>(${d.value})</em>`
         )
         .on("click", function(event, d) {
-            filterByYear(d.label); // Call function when clicking on a legend item
+            filterByYear(d.label);
         });
 }
 
@@ -141,7 +137,7 @@ function filterByYear(year) {
 
 // Resize Pie Chart on Window Resize
 window.addEventListener("resize", () => {
-    renderPieChart(allProjects);
+    renderPieChart(allProjects.filter(project => project.year.toString().includes(query)));
 });
 
 // Initialize projects
