@@ -103,13 +103,13 @@ function createScatterplot() {
     .attr('cy', (d) => yScale(d.hourFrac))
     .attr('r', 5)
     .attr('fill', 'steelblue')
-    .on("mouseenter", (event, commit) => {
+    .on('mouseenter', (event, commit) => {
         updateTooltipContent(commit);
-        document.getElementById("commit-tooltip").style.display = "block";
+        updateTooltipVisibility(true);
     })
-    .on("mouseleave", () => {
+    .on('mouseleave', () => {
         updateTooltipContent({});
-        document.getElementById("commit-tooltip").style.display = "none";
+        updateTooltipVisibility(false);
     });
 
 
@@ -150,3 +150,7 @@ function updateTooltipContent(commit) {
     });
 }
 
+function updateTooltipVisibility(isVisible) {
+    const tooltip = document.getElementById('commit-tooltip');
+    tooltip.hidden = !isVisible;
+}

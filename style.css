@@ -441,3 +441,13 @@ circle {
 circle:hover {
     transform: scale(1.5);
 }
+
+d1.info {
+    transition-duration: 500ms;
+    transition-property: opacity, visibility;
+}
+
+d1.info[hidden]:not(:hover, :focus-within) {
+    opacity: 0;
+    visibility: hidden;
+}
