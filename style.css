@@ -396,3 +396,10 @@ path {
     font-weight: bold;
     color: #fff;
 }
+
+.gridlines path,
+.gridlines line {
+    stroke: lightgray;
+    stroke-opacity: 0.5;
+    shape-rendering: crispEdges;
+}
