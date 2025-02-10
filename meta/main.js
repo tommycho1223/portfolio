@@ -76,13 +76,13 @@ function createScatterplot() {
         height: height - margin.top - margin.bottom,
     };    
 
-    // const gridlines = svg
-    // .append('g')
-    // .attr('class', 'gridlines')
-    // .attr('transform', `translate(${usableArea.left}, 0)`);
+    const gridlines = svg
+    .append('g')
+    .attr('class', 'gridlines')
+    .attr('transform', `translate(${usableArea.left}, 0)`);
 
-    // // Create gridlines as an axis with no labels and full-width ticks
-    // gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
+    // Create gridlines as an axis with no labels and full-width ticks
+    gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 
     const xScale = d3
         .scaleTime()
