@@ -67,6 +67,9 @@ function createScatterplot() {
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
 
+    // Sort commits by total lines in descending order
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+
     const usableArea = {
         top: margin.top,
         right: width - margin.right,
@@ -89,10 +92,10 @@ function createScatterplot() {
         .domain([0, 24])
         .range([height, 0]);
 
-    const rScale = d3.scaleLinear()
+    const rScale = d3
+        .scaleSqrt() // Change only this line
         .domain([minLines, maxLines])
-        .range([2, 30]); // Experiment with different values
-    
+        .range([2, 30]);
 
     xScale.range([usableArea.left, usableArea.right]);
     yScale.range([usableArea.bottom, usableArea.top]);
@@ -103,18 +106,16 @@ function createScatterplot() {
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
-        .selectAll('circle')
-        .data(commits)
-        .join('circle')
+        .selectAll('circle').data(sortedCommits).join('circle')
         // ... existing properties
         .attr('r', (d) => rScale(d.totalLines))
         .style('fill-opacity', 0.7) // Add transparency for overlapping dots
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
         // .attr('r', 5)
-        // .attr('fill', 'steelblue')
+        .attr('fill', 'steelblue')
         .on('mouseenter', (event, commit) => {
-            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
+            d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
             updateTooltipContent(commit);
             updateTooltipVisibility(true);
             updateTooltipPosition(event);
