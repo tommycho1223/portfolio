@@ -96,13 +96,22 @@ function createScatterplot() {
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
-        .selectAll('circle')
-        .data(commits)
-        .join('circle')
-        .attr('cx', (d) => xScale(d.datetime))
-        .attr('cy', (d) => yScale(d.hourFrac))
-        .attr('r', 5)
-        .attr('fill', 'steelblue');
+    .selectAll('circle')
+    .data(commits)
+    .join('circle')
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', 5)
+    .attr('fill', 'steelblue')
+    .on("mouseenter", (event, commit) => {
+        updateTooltipContent(commit);
+        document.getElementById("commit-tooltip").style.display = "block";
+    })
+    .on("mouseleave", () => {
+        updateTooltipContent({});
+        document.getElementById("commit-tooltip").style.display = "none";
+    });
+
 
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale)
@@ -127,3 +136,17 @@ function createScatterplot() {
     // Create gridlines as an axis with no labels and full-width ticks
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 }
+
+function updateTooltipContent(commit) {
+    const link = document.getElementById('commit-link');
+    const date = document.getElementById('commit-date');
+
+    if (Object.keys(commit).length === 0) return;
+
+    link.href = commit.url;
+    link.textContent = commit.id;
+    date.textContent = new Date(commit.datetime).toLocaleString('en', {
+        dateStyle: 'full',
+    });
+}
+

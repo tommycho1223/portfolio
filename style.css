@@ -403,3 +403,31 @@ path {
     stroke-opacity: 0.5;
     shape-rendering: crispEdges;
 }
+
+.info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.tooltip {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    display: none;
+}
+
+circle {
+    transition: 200ms;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+circle:hover {
+    transform: scale(1.5);
+}
