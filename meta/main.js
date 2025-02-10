@@ -76,14 +76,6 @@ function createScatterplot() {
         height: height - margin.top - margin.bottom,
     };    
 
-    const gridlines = svg
-    .append('g')
-    .attr('class', 'gridlines')
-    .attr('transform', `translate(${usableArea.left}, 0)`);
-
-    // Create gridlines as an axis with no labels and full-width ticks
-    gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
-
     const xScale = d3
         .scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
@@ -116,14 +108,22 @@ function createScatterplot() {
     const yAxis = d3.axisLeft(yScale)
         .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
 
-    
     // Add X axis
     svg.append('g')
-    .attr('transform', `translate(0, ${usableArea.bottom})`) // Position it at the bottom
-    .call(xAxis);
+        .attr('transform', `translate(0, ${usableArea.bottom})`)
+        .call(xAxis);
 
     // Add Y axis
     svg.append('g')
-    .attr('transform', `translate(${usableArea.left}, 0)`) // Position it on the left
-    .call(yAxis);
+        .attr('transform', `translate(${usableArea.left}, 0)`)
+        .call(yAxis);
+
+    // MOVE GRIDLINES CODE HERE, AFTER DEFINING `yScale`
+    const gridlines = svg
+        .append('g')
+        .attr('class', 'gridlines')
+        .attr('transform', `translate(${usableArea.left}, 0)`);
+
+    // Create gridlines as an axis with no labels and full-width ticks
+    gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 }
