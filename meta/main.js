@@ -7,7 +7,6 @@ const svg = d3
     .select('#chart')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
     .style('overflow', 'visible');
 
 async function loadData() {
@@ -104,29 +103,28 @@ function createScatterplot() {
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
-    .selectAll('circle')
-    .data(commits)
-    .join('circle')
-    // ... existing properties
-    .attr("r", (d) => rScale(d.totalLines)) // Set radius based on lines edited
-    .style("fill-opacity", 0.7) // Add transparency for overlapping dots;
-    .attr('cx', (d) => xScale(d.datetime))
-    .attr('cy', (d) => yScale(d.hourFrac))
-    .attr('r', 5)
-    .attr('fill', 'steelblue')
-    .on("mouseenter", function (event, commit) {
-        updateTooltipContent(commit);
-        updateTooltipVisibility(true);
-        updateTooltipPosition(event);
-        d3.select(event.currentTarget).style("fill-opacity", 1);
-    })
-    .on("mouseleave", function () {
-        updateTooltipContent({});
-        updateTooltipVisibility(false);
-        d3.select(event.currentTarget).style("fill-opacity", 0.7);
-    });
-    
+        .selectAll('circle')
+        .data(commits)
+        .join('circle')
+        // ... existing properties
+        .attr('r', (d) => rScale(d.totalLines))
+        .style('fill-opacity', 0.7) // Add transparency for overlapping dots
+        .attr('cx', (d) => xScale(d.datetime))
+        .attr('cy', (d) => yScale(d.hourFrac))
+        // .attr('r', 5)
+        .attr('fill', 'steelblue')
+        .on('mouseenter', (event, commit) => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
+            updateTooltipContent(commit);
+            updateTooltipVisibility(true);
+            updateTooltipPosition(event);
+        })
 
+        .on('mouseleave', () => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
+            updateTooltipContent({});
+            updateTooltipVisibility(false);
+    })
 
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale)
@@ -146,8 +144,7 @@ function createScatterplot() {
     const gridlines = svg
         .append('g')
         .attr('class', 'gridlines')
-        .attr('transform', `translate(${usableArea.left}, 0)`)
-        .call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
+        .attr('transform', `translate(${usableArea.left}, 0)`);
 
     // Create gridlines as an axis with no labels and full-width ticks
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
