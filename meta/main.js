@@ -112,7 +112,7 @@ function createScatterplot() {
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
         // .attr('r', 5)
-        .attr('fill', 'steelblue')
+        // .attr('fill', 'steelblue')
         .on('mouseenter', (event, commit) => {
             d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
             updateTooltipContent(commit);
