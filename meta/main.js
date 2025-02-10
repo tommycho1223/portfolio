@@ -7,6 +7,7 @@ const svg = d3
     .select('#chart')
     .append('svg')
     .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
     .style('overflow', 'visible');
 
 async function loadData() {
@@ -106,31 +107,25 @@ function createScatterplot() {
     .selectAll('circle')
     .data(commits)
     .join('circle')
+    // ... existing properties
+    .attr("r", (d) => rScale(d.totalLines)) // Set radius based on lines edited
+    .style("fill-opacity", 0.7) // Add transparency for overlapping dots;
     .attr('cx', (d) => xScale(d.datetime))
     .attr('cy', (d) => yScale(d.hourFrac))
     .attr('r', 5)
     .attr('fill', 'steelblue')
-    .on('mouseenter', (event, commit) => {
+    .on("mouseenter", function (event, commit) {
         updateTooltipContent(commit);
         updateTooltipVisibility(true);
         updateTooltipPosition(event);
-    })
-
-    .on('mouseleave', () => {
-        updateTooltipContent({});
-        updateTooltipVisibility(false);
-    })
-    // ... existing properties
-    .attr("r", (d) => rScale(d.totalLines)) // Set radius based on lines edited
-    .style("fill-opacity", 0.7) // Add transparency for overlapping dots
-    .on("mouseenter", function (event, d) {
-        d3.select(event.currentTarget).style("fill-opacity", 1); // Full opacity on hover
-        // ... existing hover handlers
+        d3.select(event.currentTarget).style("fill-opacity", 1);
     })
     .on("mouseleave", function () {
-        d3.select(event.currentTarget).style("fill-opacity", 0.7); // Restore transparency
-        // ... existing leave handlers
-    });;
+        updateTooltipContent({});
+        updateTooltipVisibility(false);
+        d3.select(event.currentTarget).style("fill-opacity", 0.7);
+    });
+    
 
 
     const xAxis = d3.axisBottom(xScale);
@@ -151,7 +146,8 @@ function createScatterplot() {
     const gridlines = svg
         .append('g')
         .attr('class', 'gridlines')
-        .attr('transform', `translate(${usableArea.left}, 0)`);
+        .attr('transform', `translate(${usableArea.left}, 0)`)
+        .call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 
     // Create gridlines as an axis with no labels and full-width ticks
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
