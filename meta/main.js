@@ -74,7 +74,9 @@ function createScatterplot() {
         left: margin.left,
         width: width - margin.left - margin.right,
         height: height - margin.top - margin.bottom,
-    };    
+    };
+
+    const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
     const xScale = d3
         .scaleTime()
@@ -86,6 +88,11 @@ function createScatterplot() {
         .scaleLinear()
         .domain([0, 24])
         .range([height, 0]);
+
+    const rScale = d3.scaleLinear()
+        .domain([minLines, maxLines])
+        .range([2, 30]); // Experiment with different values
+    
 
     xScale.range([usableArea.left, usableArea.right]);
     yScale.range([usableArea.bottom, usableArea.top]);
@@ -112,7 +119,18 @@ function createScatterplot() {
     .on('mouseleave', () => {
         updateTooltipContent({});
         updateTooltipVisibility(false);
-    });
+    })
+    // ... existing properties
+    .attr("r", (d) => rScale(d.totalLines)) // Set radius based on lines edited
+    .style("fill-opacity", 0.7) // Add transparency for overlapping dots
+    .on("mouseenter", function (event, d) {
+        d3.select(event.currentTarget).style("fill-opacity", 1); // Full opacity on hover
+        // ... existing hover handlers
+    })
+    .on("mouseleave", function () {
+        d3.select(event.currentTarget).style("fill-opacity", 0.7); // Restore transparency
+        // ... existing leave handlers
+    });;
 
 
     const xAxis = d3.axisBottom(xScale);
