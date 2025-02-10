@@ -65,6 +65,17 @@ function displayStats() {
 function createScatterplot() {
     if (!commits.length) return;  // Prevents rendering if data is empty
 
+    const margin = { top: 10, right: 10, bottom: 30, left: 50 };
+
+    const usableArea = {
+        top: margin.top,
+        right: width - margin.right,
+        bottom: height - margin.bottom,
+        left: margin.left,
+        width: width - margin.left - margin.right,
+        height: height - margin.top - margin.bottom,
+    };    
+
     const xScale = d3
         .scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
@@ -75,6 +86,9 @@ function createScatterplot() {
         .scaleLinear()
         .domain([0, 24])
         .range([height, 0]);
+
+    xScale.range([usableArea.left, usableArea.right]);
+    yScale.range([usableArea.bottom, usableArea.top]);
 
     // Remove existing dots before updating
     svg.select('.dots').remove();
@@ -89,4 +103,19 @@ function createScatterplot() {
         .attr('cy', (d) => yScale(d.hourFrac))
         .attr('r', 5)
         .attr('fill', 'steelblue');
+
+    const xAxis = d3.axisBottom(xScale);
+    const yAxis = d3.axisLeft(yScale)
+        .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+
+    
+    // Add X axis
+    svg.append('g')
+    .attr('transform', `translate(0, ${usableArea.bottom})`) // Position it at the bottom
+    .call(xAxis);
+
+    // Add Y axis
+    svg.append('g')
+    .attr('transform', `translate(${usableArea.left}, 0)`) // Position it on the left
+    .call(yAxis);
 }
