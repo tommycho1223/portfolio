@@ -13,11 +13,13 @@ async function loadData() {
     data = await d3.csv('loc.csv');
     processCommits();  // Process commit data AFTER data is loaded
     displayStats();  // Display statistics after processing commits
-    createScatterplot();  // Now that commits exist, we can plot them
+    // createScatterplot();  // Now that commits exist, we can plot them
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
+    createScatterplot();  // Now that commits exist, we can plot them
+    brushSelector(); // Enable brushing
 });
 
 function processCommits() {
@@ -147,8 +149,6 @@ function createScatterplot() {
         .attr('transform', `translate(${usableArea.left}, 0)`);
 
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
-
-    brushSelector(); // Enable brushing
 }
 
 
