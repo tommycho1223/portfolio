@@ -1,5 +1,18 @@
 let commits = [];
 
+// Set up the scatterplot
+const width = 1000;
+const height = 600;
+const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+const usableArea = {
+    top: margin.top,
+    right: width - margin.right,
+    bottom: height - margin.bottom,
+    left: margin.left,
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
+};
+
 async function loadData() {
     try {
         const response = await fetch('meta/loc.csv'); // Ensure the correct path
@@ -18,19 +31,6 @@ async function loadData() {
         console.error('Error loading data:', error);
     }
 }
-
-// Set up the scatterplot
-const width = 1000;
-const height = 600;
-const margin = { top: 10, right: 10, bottom: 30, left: 20 };
-const usableArea = {
-    top: margin.top,
-    right: width - margin.right,
-    bottom: height - margin.bottom,
-    left: margin.left,
-    width: width - margin.left - margin.right,
-    height: height - margin.top - margin.bottom,
-};
 
 // Create scales
 const xScale = d3.scaleTime().range([0, width]).nice();
