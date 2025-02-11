@@ -2,6 +2,8 @@ let data = [];
 let commits = [];
 const width = 1000;
 const height = 600;
+let brushSelection = null; // Store selection range
+
 
 const svg = d3
     .select('#chart')
@@ -179,9 +181,33 @@ function updateTooltipPosition(event) {
 function brushSelector() {
     const svg = d3.select('svg'); // Select the scatterplot SVG
 
-    // Apply brushing
-    svg.call(d3.brush());
+    const brush = d3.brush()
+        .on('start brush end', brushed); // Listen for brush events
+
+    svg.call(brush);
 
     // Fix tooltip issue by ensuring dots are raised above the brush overlay
     svg.selectAll('.dots, .overlay ~ *').raise();
+}
+
+function brushed(event) {
+    brushSelection = event.selection; // Update selection bounds
+    updateSelection();
+}
+
+function isCommitSelected(commit) {
+    if (!brushSelection) return false; // No selection means nothing is selected
+
+    const min = { x: brushSelection[0][0], y: brushSelection[0][1] };
+    const max = { x: brushSelection[1][0], y: brushSelection[1][1] };
+
+    const x = xScale(commit.datetime);
+    const y = yScale(commit.hourFrac);
+
+    return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+}
+
+function updateSelection() {
+    d3.selectAll('circle')
+        .classed('selected', (d) => isCommitSelected(d));
 }

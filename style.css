@@ -465,3 +465,7 @@ d1.info[hidden]:not(:hover, :focus-within) {
     stroke-dasharray: 5 3; /* Dash pattern */
     animation: marching-ants 2s linear infinite; /* Creates a moving dashed effect */
 }
+
+circle.selected {
+    fill: #ff666b; /* Highlight color for selected dots */
+}
