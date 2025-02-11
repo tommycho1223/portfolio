@@ -63,6 +63,9 @@ function displayStats() {
 }
 
 function createScatterplot() {
+    // Sort commits by total lines in descending order
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+
     if (!commits.length) return;  // Prevents rendering if data is empty
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
@@ -98,9 +101,7 @@ function createScatterplot() {
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
-        .selectAll('circle')
-        .data(commits)
-        .join('circle')
+        .selectAll('circle').data(sortedCommits).join('circle')
         // ... existing properties
         .attr('r', (d) => rScale(d.totalLines))
         .style('fill-opacity', 0.7) // Add transparency for overlapping dots
