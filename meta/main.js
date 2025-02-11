@@ -84,15 +84,10 @@ function createScatterplot() {
         .range([0, width])
         .nice();
 
-    const yScale = d3
-        .scaleLinear()
-        .domain([0, 24])
-        .range([height, 0]);
-
-    const rScale = d3.scaleLinear()
+    const rScale = d3
+        .scaleSqrt() // Change only this line
         .domain([minLines, maxLines])
-        .range([2, 30]); // Experiment with different values
-    
+        .range([2, 30]);
 
     xScale.range([usableArea.left, usableArea.right]);
     yScale.range([usableArea.bottom, usableArea.top]);
@@ -111,15 +106,16 @@ function createScatterplot() {
         .style('fill-opacity', 0.7) // Add transparency for overlapping dots
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
-        // .attr('r', 5)
         .attr('fill', 'steelblue')
         .on('mouseenter', (event, commit) => {
+            d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
             updateTooltipContent(commit);
             updateTooltipVisibility(true);
             updateTooltipPosition(event);
         })
 
         .on('mouseleave', () => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
             updateTooltipContent({});
             updateTooltipVisibility(false);
     })
