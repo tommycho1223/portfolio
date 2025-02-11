@@ -147,6 +147,8 @@ function createScatterplot() {
         .attr('transform', `translate(${usableArea.left}, 0)`);
 
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
+
+    brushSelector(); // Enable brushing
 }
 
 
@@ -172,4 +174,9 @@ function updateTooltipPosition(event) {
     const tooltip = document.getElementById('commit-tooltip');
     tooltip.style.left = `${event.clientX}px`;
     tooltip.style.top = `${event.clientY}px`;
+}
+
+function brushSelector() {
+    const svg = document.querySelector('svg'); 
+    d3.select(svg).call(d3.brush());
 }
