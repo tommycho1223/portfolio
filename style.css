@@ -451,3 +451,17 @@ d1.info[hidden]:not(:hover, :focus-within) {
     opacity: 0;
     visibility: hidden;
 }
+
+@keyframes marching-ants {
+    to {
+        stroke-dashoffset: -8; /* Moves the dashes */
+    }
+}
+
+.selection {
+    fill-opacity: 0.1;
+    stroke: black;
+    stroke-opacity: 0.7;
+    stroke-dasharray: 5 3; /* Dash pattern */
+    animation: marching-ants 2s linear infinite; /* Creates a moving dashed effect */
+}
