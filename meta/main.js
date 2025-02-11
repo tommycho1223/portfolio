@@ -66,7 +66,7 @@ function createScatterplot() {
     // Sort commits by total lines in descending order
     const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
 
-    if (!commits.length) return;  // Prevents rendering if data is empty
+    // if (!commits.length) return;  // Prevents rendering if data is empty
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
 
