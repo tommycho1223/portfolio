@@ -383,11 +383,9 @@ path {
     color: black; /* Ensures visibility in light mode */
 }
 
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    .stats-summary .stats-value {
-        color: white; /* Ensures visibility in dark mode */
-    }
+/* Dark Mode */
+[data-theme="dark"] .stats-summary .stats-value {
+    color: white; /* Ensures visibility in dark mode */
 }
 
 .stats-item {
