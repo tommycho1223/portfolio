@@ -63,10 +63,7 @@ function displayStats() {
 }
 
 function createScatterplot() {
-    // Sort commits by total lines in descending order
-    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
-
-    // if (!commits.length) return;  // Prevents rendering if data is empty
+    if (!commits.length) return;  // Prevents rendering if data is empty
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
 
@@ -79,71 +76,79 @@ function createScatterplot() {
         height: height - margin.top - margin.bottom,
     };
 
+    // Ensure commits are sorted by total lines
+    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+
+    // Define scales
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
     const xScale = d3
         .scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
-        .range([0, width])
+        .range([usableArea.left, usableArea.right])
         .nice();
 
+    const yScale = d3
+        .scaleLinear()
+        .domain([0, 24])
+        .range([height, 0]);
+
     const rScale = d3
-        .scaleSqrt() // Change only this line
+        .scaleSqrt()
         .domain([minLines, maxLines])
         .range([2, 30]);
 
-    xScale.range([usableArea.left, usableArea.right]);
-    yScale.range([usableArea.bottom, usableArea.top]);
-
-    // Remove existing dots before updating
+    // Remove old elements
     svg.select('.dots').remove();
+    svg.select('.x-axis').remove();
+    svg.select('.y-axis').remove();
+    svg.select('.gridlines').remove();
 
+    // Create dots group
     const dots = svg.append('g').attr('class', 'dots');
 
     dots
-        .selectAll('circle').data(sortedCommits).join('circle')
-        // ... existing properties
+        .selectAll('circle')
+        .data(sortedCommits)
+        .join('circle')
         .attr('r', (d) => rScale(d.totalLines))
-        .style('fill-opacity', 0.7) // Add transparency for overlapping dots
+        .style('fill-opacity', 0.7)
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
         .attr('fill', 'steelblue')
         .on('mouseenter', (event, commit) => {
-            d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
+            d3.select(event.currentTarget).style('fill-opacity', 1);
             updateTooltipContent(commit);
             updateTooltipVisibility(true);
             updateTooltipPosition(event);
         })
-
         .on('mouseleave', () => {
-            d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
+            d3.select(event.currentTarget).style('fill-opacity', 0.7);
             updateTooltipContent({});
             updateTooltipVisibility(false);
-    })
-
-    const xAxis = d3.axisBottom(xScale);
-    const yAxis = d3.axisLeft(yScale)
-        .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+        });
 
     // Add X axis
     svg.append('g')
+        .attr('class', 'x-axis')
         .attr('transform', `translate(0, ${usableArea.bottom})`)
-        .call(xAxis);
+        .call(d3.axisBottom(xScale));
 
     // Add Y axis
     svg.append('g')
+        .attr('class', 'y-axis')
         .attr('transform', `translate(${usableArea.left}, 0)`)
-        .call(yAxis);
+        .call(d3.axisLeft(yScale).tickFormat(d => String(d % 24).padStart(2, '0') + ':00'));
 
-    // MOVE GRIDLINES CODE HERE, AFTER DEFINING `yScale`
+    // Add Gridlines
     const gridlines = svg
         .append('g')
         .attr('class', 'gridlines')
         .attr('transform', `translate(${usableArea.left}, 0)`);
 
-    // Create gridlines as an axis with no labels and full-width ticks
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 }
+
 
 function updateTooltipContent(commit) {
     const link = document.getElementById('commit-link');
