@@ -34,7 +34,7 @@ function processCommits() {
                 timezone: first.timezone,
                 datetime: new Date(first.datetime),
                 hourFrac: new Date(first.datetime).getHours() + new Date(first.datetime).getMinutes() / 60,
-                totalLines: lines.length
+                totalLines: lines.length || 1 // Avoid zero values
             };
         });
 
@@ -67,7 +67,7 @@ function createScatterplot() {
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
 
-    // Sort commits by total lines in descending order
+    // Correct sorting: Sort commits by total lines in descending order
     const sortedCommits = [...commits].sort((a, b) => b.totalLines - a.totalLines);
 
     const usableArea = {
@@ -80,6 +80,7 @@ function createScatterplot() {
     };
 
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+    console.log("Min Lines:", minLines, "Max Lines:", maxLines); // Debugging output
 
     const xScale = d3
         .scaleTime()
@@ -92,9 +93,10 @@ function createScatterplot() {
         .domain([0, 24])
         .range([height, 0]);
 
+    // Updated rScale to prevent zero values and extreme cases
     const rScale = d3
-        .scaleSqrt() // Change only this line
-        .domain([minLines, maxLines])
+        .scaleSqrt()
+        .domain([Math.max(1, minLines), maxLines]) // Ensures no zero issues
         .range([2, 30]);
 
     xScale.range([usableArea.left, usableArea.right]);
@@ -107,8 +109,7 @@ function createScatterplot() {
 
     dots
         .selectAll('circle').data(sortedCommits).join('circle')
-        // ... existing properties
-        .attr('r', (d) => rScale(d.totalLines))
+        .attr('r', (d) => rScale(d.totalLines || 1)) // Avoid zero values
         .style('fill-opacity', 0.7) // Add transparency for overlapping dots
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
@@ -119,12 +120,11 @@ function createScatterplot() {
             updateTooltipVisibility(true);
             updateTooltipPosition(event);
         })
-
         .on('mouseleave', () => {
             d3.select(event.currentTarget).style('fill-opacity', 0.7); // Restore transparency
             updateTooltipContent({});
             updateTooltipVisibility(false);
-    })
+        });
 
     const xAxis = d3.axisBottom(xScale);
     const yAxis = d3.axisLeft(yScale)
@@ -140,13 +140,12 @@ function createScatterplot() {
         .attr('transform', `translate(${usableArea.left}, 0)`)
         .call(yAxis);
 
-    // MOVE GRIDLINES CODE HERE, AFTER DEFINING `yScale`
+    // Gridlines
     const gridlines = svg
         .append('g')
         .attr('class', 'gridlines')
         .attr('transform', `translate(${usableArea.left}, 0)`);
 
-    // Create gridlines as an axis with no labels and full-width ticks
     gridlines.call(d3.axisLeft(yScale).tickFormat("").tickSize(-usableArea.width));
 }
 
