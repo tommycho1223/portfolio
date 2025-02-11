@@ -68,7 +68,7 @@ function createScatterplot() {
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
 
     // Sort commits by total lines in descending order
-    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+    const sortedCommits = [...commits].sort((a, b) => b.totalLines - a.totalLines);
 
     const usableArea = {
         top: margin.top,
@@ -112,7 +112,6 @@ function createScatterplot() {
         .style('fill-opacity', 0.7) // Add transparency for overlapping dots
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
-        // .attr('r', 5)
         .attr('fill', 'steelblue')
         .on('mouseenter', (event, commit) => {
             d3.select(event.currentTarget).style('fill-opacity', 1); // Full opacity on hover
