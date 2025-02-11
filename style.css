@@ -378,6 +378,18 @@ path {
     border-radius: 10px;
 }
 
+/* Default (light mode) */
+.stats-summary .stats-value {
+    color: black; /* Ensures visibility in light mode */
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    .stats-summary .stats-value {
+        color: white; /* Ensures visibility in dark mode */
+    }
+}
+
 .stats-item {
     background: rgba(255, 255, 255, 0.2);
     padding: 10px;
