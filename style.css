@@ -471,9 +471,10 @@ d1.info[hidden]:not(:hover, :focus-within) {
 }
 
 [data-theme="dark"] .selection {
-    stroke: white; /* White stroke in dark mode */
+    stroke: white !important; /* White stroke in dark mode */
+    fill-opacity: 0.2 !important; /* Lighten selection box */
 }
 
 circle.selected {
-    fill: #ff666b; /* Highlight color for selected dots */
+    fill: #ff666b !important; /* Highlight color */
 }

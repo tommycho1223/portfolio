@@ -210,10 +210,12 @@ function isCommitSelected(commit) {
 }
 
 function updateSelection() {
+    console.log("Updating selection...");
     d3.selectAll('circle')
         .classed('selected', (d) => isCommitSelected(d))
         .attr('fill', (d) => isCommitSelected(d) ? '#ff666b' : 'steelblue'); // Change color
 }
+
 
 function updateSelectionCount() {
     const selectedCommits = brushSelection
@@ -225,11 +227,11 @@ function updateSelectionCount() {
         selectedCommits.length || 'No'
     } commits selected`;
 
-    // Show commit details (new feature)
+    // Show commit details below the chart
     const commitDetails = document.getElementById('commit-details');
-    commitDetails.innerHTML = selectedCommits.map(commit =>
+    commitDetails.innerHTML = selectedCommits.length > 0 ? selectedCommits.map(commit =>
         `<p><strong>${commit.date}:</strong> <a href="${commit.url}" target="_blank">${commit.id}</a></p>`
-    ).join('') || '<p>No commits selected</p>'; 
+    ).join('') : '<p>No commits selected</p>'; 
 
     return selectedCommits;
 }
