@@ -222,16 +222,10 @@ function updateSelectionCount() {
         ? commits.filter(isCommitSelected)
         : [];
 
-    // const countElement = document.getElementById('selection-count');
-    // countElement.textContent = `${
-    //     selectedCommits.length || 'No'
-    // } commits selected`;
-
-    // Show commit details below the chart
-    const commitDetails = document.getElementById('commit-details');
-    commitDetails.innerHTML = selectedCommits.length > 0 ? selectedCommits.map(commit =>
-        `<p><strong>${commit.date}:</strong> <a href="${commit.url}" target="_blank">${commit.id}</a></p>`
-    ).join('') : '<p>No commits selected</p>'; 
+    const countElement = document.getElementById('selection-count');
+    countElement.textContent = `${
+        selectedCommits.length || 'No'
+    } commits selected`;
 
     return selectedCommits;
 }
