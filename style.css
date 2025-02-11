@@ -459,11 +459,19 @@ d1.info[hidden]:not(:hover, :focus-within) {
 }
 
 .selection {
-    fill-opacity: 0.1; /* Adjust transparency */
-    stroke: white; /* Change stroke color to white for dark mode */
-    stroke-opacity: 0.7;
+    fill-opacity: 0.2; /* Adjust transparency */
+    stroke-opacity: 0.8;
     stroke-dasharray: 5 3;
     animation: marching-ants 2s linear infinite;
+}
+
+/* Adjust selection box stroke color based on theme */
+[data-theme="light"] .selection {
+    stroke: black; /* Black stroke in light mode */
+}
+
+[data-theme="dark"] .selection {
+    stroke: white; /* White stroke in dark mode */
 }
 
 circle.selected {
