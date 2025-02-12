@@ -264,6 +264,7 @@ function updateLanguageBreakdown() {
     const lines = requiredCommits.flatMap(d => d.lines).filter(d => d !== undefined); // Fix: Remove undefined values
 
     console.log("Total lines:", lines);
+    console.log("Checking lines data:", lines);
 
     if (lines.length === 0) {
         console.warn("No valid lines found, skipping breakdown update.");
