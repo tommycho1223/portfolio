@@ -292,16 +292,3 @@ function updateLanguageBreakdown() {
     }
 }
 
-    console.log("Breakdown:", breakdown);
-
-    container.innerHTML = '';
-    for (const [language, count] of breakdown) {
-        const proportion = count / lines.length;
-        const formatted = d3.format('.1%')(proportion);
-
-        container.innerHTML += `
-            <dt>${language}</dt>
-            <dd>${count} lines (${formatted})</dd>
-        `;
-    }
-}
