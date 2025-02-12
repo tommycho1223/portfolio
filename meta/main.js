@@ -109,18 +109,6 @@ function createScatterplot() {
     // Create dots group
     const dots = svg.append('g').attr('class', 'dots');
 
-    function isCommitSelected(commit) {
-        if (!brushSelection) return false; // No selection means nothing is selected
-    
-        const min = { x: brushSelection[0][0], y: brushSelection[0][1] };
-        const max = { x: brushSelection[1][0], y: brushSelection[1][1] };
-    
-        const x = xScale(commit.datetime);
-        const y = yScale(commit.hourFrac);
-    
-        return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
-    }
-
     dots
         .selectAll('circle')
         .data(sortedCommits)
@@ -209,7 +197,17 @@ function brushed(event) {
     updateLanguageBreakdown(); // Add this to update language stats
 }
 
+function isCommitSelected(commit) {
+    if (!brushSelection) return false; // No selection means nothing is selected
 
+    const min = { x: brushSelection[0][0], y: brushSelection[0][1] };
+    const max = { x: brushSelection[1][0], y: brushSelection[1][1] };
+
+    const x = xScale(commit.datetime);
+    const y = yScale(commit.hourFrac);
+
+    return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+}
 
 function updateSelection() {
     console.log("Updating selection...");
