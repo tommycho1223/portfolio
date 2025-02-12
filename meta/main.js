@@ -85,16 +85,16 @@ function createScatterplot() {
     // Define scales
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
-    const xScale = d3
-        .scaleTime()
-        .domain(d3.extent(commits, (d) => d.datetime))
-        .range([usableArea.left, usableArea.right])
-        .nice();
+    // const xScale = d3
+    //     .scaleTime()
+    //     .domain(d3.extent(commits, (d) => d.datetime))
+    //     .range([usableArea.left, usableArea.right])
+    //     .nice();
 
-    const yScale = d3
-        .scaleLinear()
-        .domain([0, 24])
-        .range([height, 0]);
+    // const yScale = d3
+    //     .scaleLinear()
+    //     .domain([0, 24])
+    //     .range([height, 0]);
 
     const rScale = d3
         .scaleSqrt()
