@@ -13,6 +13,7 @@ const svg = d3
 
 async function loadData() {
     data = await d3.csv('loc.csv');
+    console.log("CSV Data Sample:", data.slice(0, 10)); // Debugging
     processCommits();  // Process commit data AFTER data is loaded
     displayStats();  // Display statistics after processing commits
     createScatterplot();  // Now that commits exist, we can plot them
@@ -23,25 +24,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function processCommits() {
-    commits = d3
-        .groups(data, (d) => d.commit)
-        .map(([commit, lines]) => {
-            let first = lines[0];
+    commits = d3.groups(data, (d) => d.commit).map(([commit, lines]) => {
+        let first = lines[0];
 
-            return {
-                id: commit,
-                url: `https://github.com/tommycho1223/portfolio/commit/${commit}`,
-                author: first.author,
-                date: first.date,
-                time: first.time,
-                timezone: first.timezone,
-                datetime: new Date(first.datetime),
-                hourFrac: new Date(first.datetime).getHours() + new Date(first.datetime).getMinutes() / 60,
-                totalLines: lines.length
-            };
-        });
+        return {
+            id: commit,
+            url: `https://github.com/tommycho1223/portfolio/commit/${commit}`,
+            author: first.author,
+            date: first.date,
+            time: first.time,
+            timezone: first.timezone,
+            datetime: new Date(first.datetime),
+            hourFrac: new Date(first.datetime).getHours() + new Date(first.datetime).getMinutes() / 60,
+            totalLines: lines.length,
+            lines: lines // ✅ This fixes missing data
+        };
+    });
 
-    console.log(commits);
+    console.log("Processed commits with lines:", commits);
 }
 
 function displayStats() {
@@ -251,6 +251,8 @@ function updateLanguageBreakdown() {
         : [];
     
     console.log("Selected for breakdown:", selectedCommits);
+    console.log("Selected commits:", selectedCommits);
+    console.log("Lines in selected commits:", selectedCommits.map(c => c.lines));
 
     const container = document.getElementById('language-breakdown');
     if (!container) return; // Ensure the element exists before updating
@@ -263,7 +265,7 @@ function updateLanguageBreakdown() {
     const requiredCommits = selectedCommits.length ? selectedCommits : commits;
     const lines = requiredCommits.flatMap(d => d.lines).filter(d => d !== undefined); // Fix: Remove undefined values
 
-    console.log("Total lines:", lines);
+    // console.log("Total lines:", lines);
     console.log("Checking lines data:", lines);
 
     if (lines.length === 0) {
