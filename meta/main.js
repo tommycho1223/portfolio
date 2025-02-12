@@ -261,15 +261,36 @@ function updateLanguageBreakdown() {
     }
 
     const requiredCommits = selectedCommits.length ? selectedCommits : commits;
-    const lines = requiredCommits.flatMap(d => d.lines);
+    const lines = requiredCommits.flatMap(d => d.lines).filter(d => d !== undefined); // Fix: Remove undefined values
 
     console.log("Total lines:", lines);
 
+    if (lines.length === 0) {
+        console.warn("No valid lines found, skipping breakdown update.");
+        container.innerHTML = "<p>No language data available for selected commits.</p>";
+        return;
+    }
+
+    // Fix: Ensure every line has a 'type' property before rollup
     const breakdown = d3.rollup(
-        lines,
+        lines.filter(d => d && d.type !== undefined), // Ensure 'type' exists
         v => v.length,
         d => d.type
     );
+
+    console.log("Breakdown:", breakdown);
+
+    container.innerHTML = '';
+    for (const [language, count] of breakdown) {
+        const proportion = count / lines.length;
+        const formatted = d3.format('.1%')(proportion);
+
+        container.innerHTML += `
+            <dt>${language}</dt>
+            <dd>${count} lines (${formatted})</dd>
+        `;
+    }
+}
 
     console.log("Breakdown:", breakdown);
 
