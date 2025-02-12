@@ -108,7 +108,7 @@ function createScatterplot() {
     
     yScale = d3.scaleLinear()
         .domain([0, 24])
-        .range([height, 0]);
+        .range([usableArea.bottom, usableArea.top]);
 
     // Remove old elements
     svg.select('.dots').remove();
@@ -143,7 +143,7 @@ function createScatterplot() {
     // Add X axis
     svg.append('g')
         .attr('class', 'x-axis')
-        .attr('transform', `translate(0, ${usableArea.bottom})`)
+        .attr('transform', `translate(0, ${yScale(0)})`)
         .call(d3.axisBottom(xScale));
 
     // Add Y axis
