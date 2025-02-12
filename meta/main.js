@@ -3,7 +3,7 @@ let commits = [];
 const width = 1000;
 const height = 600;
 let brushSelection = null; // Store selection range
-
+let xScale, yScale; 
 
 const svg = d3
     .select('#chart')
@@ -84,16 +84,13 @@ function createScatterplot() {
     // Define scales
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
-    const xScale = d3
-        .scaleTime()
-        .domain(d3.extent(commits, (d) => d.datetime))
-        .range([usableArea.left, usableArea.right])
-        .nice();
+    xScale = d3.scaleTime()
+        .domain(d3.extent(data, d => d.datetime))
+        .range([margin.left, width - margin.right]);
 
-    const yScale = d3
-        .scaleLinear()
-        .domain([0, 24])
-        .range([height, 0]);
+    yScale = d3.scaleLinear()
+        .domain([0, 1])
+        .range([height - margin.bottom, margin.top]);
 
     const rScale = d3
         .scaleSqrt()
@@ -211,8 +208,26 @@ function isCommitSelected(commit) {
 
 function updateSelection() {
     console.log("Updating selection...");
-    d3.selectAll('circle')
-        .classed('selected', (d) => isCommitSelected(d))
+
+    if (!brushSelection) {
+        console.log("No selection available.");
+        d3.select("#selection-count").text("No commits selected");
+        d3.select("#language-breakdown").html("");
+        return;
+    }
+
+    const selectedCommits = commits.filter(isCommitSelected);
+
+    // Update the number of selected commits
+    d3.select("#selection-count").text(
+        `${selectedCommits.length || "No"} commits selected`
+    );
+
+    // Update visual state of dots
+    d3.selectAll("circle")
+        .classed("selected", d => isCommitSelected(d));
+
+    updateLanguageBreakdown(selectedCommits);
         // .attr('fill', (d) => isCommitSelected(d) ? '#ff666b' : 'steelblue'); // Change color
 }
 
