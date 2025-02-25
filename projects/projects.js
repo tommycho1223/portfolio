@@ -18,7 +18,7 @@ async function loadProjects() {
         const projects = await fetchJSON('../lib/projects.json');
         allProjects = projects; // Store all projects
 
-        allProjects.push({
+        allProjects.unshift({
             title: "Bikewatching",
             description: "An interactive map visualizing Boston bike traffic patterns using geospatial data.",
             year: 2025,  // Change to the correct year
