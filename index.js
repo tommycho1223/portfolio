@@ -6,6 +6,14 @@ let projects = []; // Store all projects for filtering
 async function loadLatestProjects() {
     try {
         const projects = await fetchJSON('./lib/projects.json');
+
+        // Ensure Bikewatching is included at the top
+        projects = projects.sort((a, b) => {
+            if (a.title === "Bikewatching") return -1;
+            if (b.title === "Bikewatching") return 1;
+            return 0;
+        });
+        
         const latestProjects = projects.slice(0, 3); // Get the first 3 projects
 
         const projectsContainer = document.querySelector('.projects');
