@@ -24,7 +24,7 @@ async function loadProjects() {
             year: 2025,  // Change to the correct year
             technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
             url: "https://tommycho1223.github.io/bikewatching/",
-            image: "images/bikewatching.png"
+            image: "images/Bikewatching.png"
         });
 
         console.log("Fetched projects:", projects); // Debugging line
