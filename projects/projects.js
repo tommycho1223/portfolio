@@ -25,7 +25,7 @@ async function loadProjects() {
                 year: "2025",  // Ensure year is a string, matching other entries
                 technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
                 url: "https://tommycho1223.github.io/bikewatching/",
-                image: "images/bikewatching.png"
+                image: "https://tommycho1223.github.io/portfolio/images/bikewatching.png"
             });
         }        
 
