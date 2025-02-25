@@ -7,13 +7,17 @@ async function loadLatestProjects() {
     try {
         const projects = await fetchJSON('./lib/projects.json');
 
-        // Ensure Bikewatching is included at the top
-        projects = projects.sort((a, b) => {
-            if (a.title === "Bikewatching") return -1;
-            if (b.title === "Bikewatching") return 1;
-            return 0;
-        });
-        
+        if (!projects.some(project => project.title === "Bikewatching")) {
+            projects.unshift({
+                title: "Bikewatching",
+                description: "An interactive map visualizing Boston bike traffic patterns using geospatial data.",
+                year: "2025",  // Ensure year is a string, matching other entries
+                technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
+                url: "https://tommycho1223.github.io/bikewatching/",
+                image: "https://tommycho1223.github.io/portfolio/images/bikewatching.png"
+            });
+        }
+
         const latestProjects = projects.slice(0, 3); // Get the first 3 projects
 
         const projectsContainer = document.querySelector('.projects');
@@ -46,7 +50,6 @@ async function loadProjects() {
         console.error("Error loading projects:", error);
     }
 }
-
 
 // Call both functions to ensure expected behavior
 loadLatestProjects(); // Loads only the latest 3 projects
