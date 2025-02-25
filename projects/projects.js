@@ -14,6 +14,15 @@ searchInput.addEventListener('input', (event) => {
 });
 
 async function loadProjects() {
+    allProjects.push({
+        title: "Bikewatching",
+        description: "An interactive map visualizing Boston bike traffic patterns using geospatial data.",
+        year: 2025,  // Change to the correct year
+        technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
+        url: "https://tommycho1223.github.io/bikewatching/",
+        image: "images/bikewatching.png"  // Optional, update with a correct screenshot
+    });
+
     try {
         const projects = await fetchJSON('../lib/projects.json');
         allProjects = projects; // Store all projects
