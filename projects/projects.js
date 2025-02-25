@@ -18,14 +18,16 @@ async function loadProjects() {
         const projects = await fetchJSON('../lib/projects.json');
         allProjects = projects; // Store all projects
 
-        allProjects.unshift({
-            title: "Bikewatching",
-            description: "An interactive map visualizing Boston bike traffic patterns using geospatial data.",
-            year: 2025,  // Change to the correct year
-            technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
-            url: "https://tommycho1223.github.io/bikewatching/",
-            image: "images/Bikewatching.png"
-        });
+        if (!allProjects.some(project => project.title === "Bikewatching")) {
+            allProjects.unshift({
+                title: "Bikewatching",
+                description: "An interactive map visualizing Boston bike traffic patterns using geospatial data.",
+                year: "2025",  // Ensure year is a string, matching other entries
+                technologies: ["D3.js", "Mapbox", "JavaScript", "CSS"],
+                url: "https://tommycho1223.github.io/bikewatching/",
+                image: "images/bike_proj.png"
+            });
+        }        
 
         console.log("Fetched projects:", projects); // Debugging line
 
