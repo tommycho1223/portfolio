@@ -144,17 +144,28 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         headingTag = 'h2';
     }
 
-    // Create project elements
+    // Clear existing content before rendering
+    container.innerHTML = "";
+
     projects.forEach(project => {
         const article = document.createElement('article');
-        article.classList.add('project-card'); // Added class for better styling
+        article.classList.add('project-card');
 
         const title = document.createElement(headingTag);
         title.textContent = project.title;
 
+        // Create an anchor tag that wraps ONLY the image
+        const imgLink = document.createElement('a');
+        imgLink.href = project.url;  // Use the project's URL
+        imgLink.target = "_blank";  // Open in a new tab
+        imgLink.rel = "noopener noreferrer";
+
         const img = document.createElement('img');
         img.src = project.image;
         img.alt = project.title;
+
+        // Append image inside the clickable link
+        imgLink.appendChild(img);
 
         const description = document.createElement('p');
         description.textContent = project.description;
@@ -162,24 +173,17 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         // Add year to each project
         const year = document.createElement('p');
         year.classList.add('project-year');
-        year.textContent = `© ${project.year || 'Unknown Year'}`; // Default text if missing
+        year.textContent = `© ${project.year || 'Unknown Year'}`;
 
-        // Create a flex container to ensure proper alignment
-        const contentWrapper = document.createElement('div');
-        contentWrapper.classList.add('project-content');
-        contentWrapper.appendChild(title);
-        contentWrapper.appendChild(img);
-        contentWrapper.appendChild(description);
+        // Append elements to the project card
+        article.appendChild(title);
+        article.appendChild(imgLink);  // Only image is clickable
+        article.appendChild(description);
+        article.appendChild(year);
 
-        // Append everything in order
-        article.appendChild(contentWrapper);
-        article.appendChild(year); // Now it's positioned at the bottom
-
-        // Append article to container
         container.appendChild(article);
     });
 }
-
 
 export async function fetchGitHubData(username) {
     try {
