@@ -137,24 +137,6 @@ export function renderProjects(projects, container, headingTag = 'h2') {
         return;
     }
 
-    // container.innerHTML = ''; // Clear existing content
-
-    // if (!projects || projects.length === 0) {
-    //     container.innerHTML = '<p>No projects available.</p>';
-    //     return;
-    // }
-
-    container.innerHTML = projects.map(project => `
-        <div class="project">
-            <a href="${project.url}" target="_blank">
-                <img src="${project.image}" alt="${project.title}">
-            </a>
-            <${headingTag}>${project.title}</${headingTag}>
-            <p>${project.description}</p>
-            <p><strong>Year:</strong> ${project.year}</p>
-        </div>
-    `).join('');
-
     // Validate headingTag to ensure it's a valid heading tag
     const validHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     if (!validHeadings.includes(headingTag)) {
