@@ -145,7 +145,7 @@ export function renderProjects(projects, container, headingTag = 'h2') {
     }
 
     // Clear existing content before rendering
-    container.innerHTML = "";
+    // container.innerHTML = "";
 
     projects.forEach(project => {
         const article = document.createElement('article');
