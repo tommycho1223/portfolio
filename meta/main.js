@@ -5,6 +5,8 @@ const width = 1000;
 const height = 600;
 let brushSelection = null; // Store selection range
 let selectedCommits = []; // New global variable to store selected commits
+let commitProgress = 100; // Default to showing all commits
+
 
 const svg = d3
     .select('#chart')
@@ -15,9 +17,24 @@ const svg = d3
 async function loadData() {
     data = await d3.csv('loc.csv');
     console.log("CSV Data Sample:", data.slice(0, 10)); // Debugging
+
     processCommits();  // Process commit data AFTER data is loaded
     displayStats();  // Display statistics after processing commits
     createScatterplot();  // Now that commits exist, we can plot them
+
+    // Create a time scale for slider mapping
+    timeScale = d3.scaleTime()
+        .domain(d3.extent(commits, (d) => d.datetime))
+        .range([0, 100]);
+
+    updateSelectedTime(); // Ensure time display updates initially
+
+    // Attach event listener for the slider
+    document.getElementById('commit-slider').addEventListener('input', (event) => {
+        commitProgress = +event.target.value;  // Convert to number
+        updateSelectedTime();  // Update time display
+        filterCommits();  // Filter commits based on slider value
+    });
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -66,7 +83,7 @@ function displayStats() {
     setText("most-active-day", maxDay);
 }
 
-function createScatterplot() {
+function createScatterplot(filteredCommits = commits) {
     if (!commits.length) return;  // Prevents rendering if data is empty
 
     const margin = { top: 10, right: 10, bottom: 30, left: 50 };
@@ -81,7 +98,7 @@ function createScatterplot() {
     };
 
     // Ensure commits are sorted by total lines
-    const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+    const sortedCommits = d3.sort(filteredCommits, (d) => -d.totalLines);
 
     // Define scales
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
@@ -296,3 +313,19 @@ function updateLanguageBreakdown() {
     }
 }
 
+function updateSelectedTime() {
+    const selectedTime = document.getElementById('selected-time');
+    selectedTime.textContent = timeScale.invert(commitProgress).toLocaleString('en', {
+        dateStyle: 'long',
+        timeStyle: 'short'
+    });
+}
+
+function filterCommits() {
+    let maxTime = timeScale.invert(commitProgress);
+
+    let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
+
+    // Re-render scatterplot with filtered data
+    createScatterplot(filteredCommits);
+}
