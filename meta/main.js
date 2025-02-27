@@ -249,19 +249,13 @@ function updateSelection() {
 }
 
 function updateSelectionCount() {
-    console.log("Updating selection count...");
-    const selectedCommits = brushSelection
-        ? commits.filter(isCommitSelected)
-        : [];
-
-    console.log("Selected commits:", selectedCommits);
-    
     const countElement = document.getElementById('selection-count');
-    countElement.textContent = `${
-        selectedCommits.length || 'No'
-    } commits selected`;
 
-    return selectedCommits;
+    if (selectedCommits.length > 0) {
+        countElement.textContent = `${selectedCommits.length} commits selected`;
+    } else {
+        countElement.textContent = "No commits selected";
+    }
 }
 
 function updateLanguageBreakdown() {
@@ -324,17 +318,15 @@ function updateSelectedTime() {
 }
 
 function filterCommits() {
-    let maxTime = timeScale.invert(commitProgress); // Get selected time
+    let maxTime = timeScale.invert(commitProgress);
     let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
 
-    console.log("Filtered commits:", filteredCommits.length); // Debugging
-
-    createScatterplot(filteredCommits); // Re-render scatterplot with filtered data
-    processFiles();
+    createScatterplot(filteredCommits);
+    processFiles(filteredCommits);
 }
 
-function processFiles() {
-    let allLines = commits.flatMap(commit => commit.lines || []); // Extract all lines from commits
+function processFiles(filteredCommits) {
+    let allLines = filteredCommits.flatMap(commit => commit.lines || []);
 
     let files = d3.groups(allLines, (d) => d.file)
         .map(([name, lines]) => ({
