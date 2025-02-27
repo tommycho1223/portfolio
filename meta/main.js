@@ -329,7 +329,11 @@ function filterCommits() {
 function processFiles(filteredCommits) {
     let allLines = filteredCommits.flatMap(commit => commit.lines || []);
 
-    let files = d3.sort(files, (a, b) => d3.descending(a.lines.length, b.lines.length));
+    let files = d3.groups(allLines, (d) => d.file)
+        .map(([name, lines]) => ({
+            name, 
+            lines 
+        }));
 
     updateFileVisualization(files);
 }
@@ -339,9 +343,6 @@ function updateFileVisualization(files) {
 
     // Remove old elements
     container.selectAll('div').remove();
-
-    // Create color scale for different file types
-    let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
 
     // Bind data
     let fileSelection = container.selectAll('div')
@@ -358,13 +359,11 @@ function updateFileVisualization(files) {
     fileSelection.append('small')
         .text(d => ` ${d.lines.length} lines`);
 
-    // Apply colors to dots
+    // Append divs inside <dd> for each line
     fileSelection.append('dd')
         .selectAll('.line')
-        .data(d => d.lines)
+        .data(d => d.lines) // Bind each line
         .enter()
         .append('div')
-        .attr('class', 'line')
-        .style('background', d => fileTypeColors(d.fileType));
+        .attr('class', 'line'); // Apply CSS class for styling
 }
-

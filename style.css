@@ -514,10 +514,12 @@ circle.selected {
 }
 
 .line {
-    display: block; /* Ensures they align in Grid */
-    width: 5px;
+    display: inline-block; /* Ensures dots line up properly */
+    width: 5px; /* Set dot size */
     height: 5px;
-    border-radius: 50%;
+    background: steelblue; /* Blue color */
+    border-radius: 50%; /* Make them circular */
+    margin: 1px; /* Add spacing between dots */
 }
 
 dd {
