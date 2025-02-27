@@ -514,11 +514,12 @@ circle.selected {
 }
 
 .line {
-    display: flex;
-    width: 0.5em;
-    aspect-ratio: 1;
+    display: inline-block;
+    width: 5px; /* Adjust size for visibility */
+    height: 5px;
     background: steelblue;
     border-radius: 50%;
+    margin: 1px;
 }
 
 dd {

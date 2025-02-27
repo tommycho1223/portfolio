@@ -355,10 +355,12 @@ function updateFileVisualization(files) {
         .text(d => d.name);
 
     filesContainer.append('dd')
-        .selectAll('div')
-        .data(d => d.lines) // Bind data for each line
-        .enter()
-        .append('div')
-        .attr('class', 'line'); // Each div represents a line of code
-    
+        .each(function(d) {
+            d3.select(this)
+                .selectAll('.line')
+                .data(d.lines)
+                .enter()
+                .append('div')
+                .attr('class', 'line');
+        });
 }
