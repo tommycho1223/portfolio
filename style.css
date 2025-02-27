@@ -517,7 +517,6 @@ circle.selected {
     display: block; /* Ensures they align in Grid */
     width: 5px;
     height: 5px;
-    background: steelblue;
     border-radius: 50%;
 }
 
