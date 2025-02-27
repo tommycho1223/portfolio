@@ -4,6 +4,7 @@ let commits = [];
 const width = 1000;
 const height = 600;
 let brushSelection = null; // Store selection range
+let selectedCommits = []; // New global variable to store selected commits
 
 const svg = d3
     .select('#chart')
@@ -85,17 +86,6 @@ function createScatterplot() {
     // Define scales
     const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
 
-    // const xScale = d3
-    //     .scaleTime()
-    //     .domain(d3.extent(commits, (d) => d.datetime))
-    //     .range([usableArea.left, usableArea.right])
-    //     .nice();
-
-    // const yScale = d3
-    //     .scaleLinear()
-    //     .domain([0, 24])
-    //     .range([height, 0]);
-
     const rScale = d3
         .scaleSqrt()
         .domain([minLines, maxLines])
@@ -138,6 +128,17 @@ function createScatterplot() {
             d3.select(event.currentTarget).style('fill-opacity', 0.7);
             updateTooltipContent({});
             updateTooltipVisibility(false);
+        });
+        .on("click", (event, commit) => {
+            // Toggle commit selection
+            if (selectedCommits.includes(commit)) {
+                selectedCommits = selectedCommits.filter(c => c !== commit);
+            } else {
+                selectedCommits.push(commit);
+            }
+            updateSelection();
+            updateSelectionCount();
+            updateLanguageBreakdown();
         });
 
     // Add X axis
@@ -202,7 +203,15 @@ function brushSelector() {
 
 function brushed(event) {
     console.log("Brush event triggered:", event.selection);
-    brushSelection = event.selection;
+    selectedCommits = event.selection
+        ? commits.filter((commit) => {
+            let min = { x: event.selection[0][0], y: event.selection[0][1] };
+            let max = { x: event.selection[1][0], y: event.selection[1][1] };
+            let x = xScale(commit.datetime);
+            let y = yScale(commit.hourFrac);
+            return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+        })
+        : [];
     updateSelection();
     updateSelectionCount();
     updateLanguageBreakdown();
@@ -210,22 +219,14 @@ function brushed(event) {
 
 
 function isCommitSelected(commit) {
-    if (!brushSelection) return false; // No selection means nothing is selected
-
-    const min = { x: brushSelection[0][0], y: brushSelection[0][1] };
-    const max = { x: brushSelection[1][0], y: brushSelection[1][1] };
-
-    const x = xScale(commit.datetime);
-    const y = yScale(commit.hourFrac);
-
-    return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
+    return selectedCommits.includes(commit);
 }
 
 function updateSelection() {
     console.log("Updating selection...");
     d3.selectAll('circle')
-        .classed('selected', (d) => isCommitSelected(d))
-        .attr('fill', (d) => isCommitSelected(d) ? '#ff666b' : 'steelblue'); // Uncommented
+        .classed('selected', (d) => selectedCommits.includes(d))
+        .attr('fill', (d) => selectedCommits.includes(d) ? '#ff666b' : 'steelblue');
 }
 
 function updateSelectionCount() {
