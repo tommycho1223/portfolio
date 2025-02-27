@@ -354,6 +354,11 @@ function updateFileVisualization(files) {
         .append('code')
         .text(d => d.name);
 
-    fileSelection.append('dd')
-        .text(d => `${d.lines.length} lines`);
+    filesContainer.append('dd')
+        .selectAll('div')
+        .data(d => d.lines) // Bind data for each line
+        .enter()
+        .append('div')
+        .attr('class', 'line'); // Each div represents a line of code
+    
 }
