@@ -254,9 +254,10 @@ function updateSelectionCount() {
     if (selectedCommits.length > 0) {
         countElement.textContent = `${selectedCommits.length} commits selected`;
     } else {
-        countElement.textContent = "No commits selected";
+        countElement.textContent = "";
     }
 }
+
 
 function updateLanguageBreakdown() {
     console.log("Updating language breakdown...");
