@@ -350,17 +350,21 @@ function updateFileVisualization(files) {
         .enter()
         .append('div');
 
+    // Append filename
     fileSelection.append('dt')
         .append('code')
         .text(d => d.name);
 
-    filesContainer.append('dd')
-        .each(function(d) {
-            d3.select(this)
-                .selectAll('.line')
-                .data(d.lines)
-                .enter()
-                .append('div')
-                .attr('class', 'line');
-        });
+    // Append total line count (optional)
+    fileSelection.append('small')
+        .text(d => ` ${d.lines.length} lines`);
+
+    // Append divs inside <dd> for each line
+    fileSelection.append('dd')
+        .selectAll('.line')
+        .data(d => d.lines) // Bind each line
+        .enter()
+        .append('div')
+        .attr('class', 'line'); // Apply CSS class for styling
 }
+
