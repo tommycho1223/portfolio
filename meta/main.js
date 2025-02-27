@@ -35,6 +35,8 @@ async function loadData() {
         updateSelectedTime();  // Update time display
         filterCommits();  // Filter commits based on slider value
     });
+
+    filterCommits(); // Apply filtering immediately when the page loads
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -109,7 +111,7 @@ function createScatterplot(filteredCommits = commits) {
         .range([2, 30]);
 
     xScale = d3.scaleTime()
-        .domain(d3.extent(commits, (d) => d.datetime))
+        .domain(d3.extent(filteredCommits, (d) => d.datetime))
         .range([usableArea.left, usableArea.right])
         .nice();
     
@@ -322,10 +324,11 @@ function updateSelectedTime() {
 }
 
 function filterCommits() {
-    let maxTime = timeScale.invert(commitProgress);
+    let maxTime = timeScale.invert(commitProgress); // Get the date from the slider value
 
     let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
 
-    // Re-render scatterplot with filtered data
-    createScatterplot(filteredCommits);
+    console.log("Filtered commits:", filteredCommits.length); // Debugging
+
+    createScatterplot(filteredCommits); // Re-render scatterplot with filtered data
 }
