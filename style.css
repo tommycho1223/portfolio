@@ -514,22 +514,20 @@ circle.selected {
 }
 
 .line {
-    display: inline-block; /* Ensures dots line up properly */
-    width: 5px; /* Set dot size */
+    display: block; /* Ensures they align in Grid */
+    width: 5px;
     height: 5px;
-    background: steelblue; /* Blue color */
-    border-radius: 50%; /* Make them circular */
-    margin: 1px; /* Add spacing between dots */
+    background: steelblue;
+    border-radius: 50%;
 }
-
 
 dd {
     grid-column: 2;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: start;
-    align-content: start;
-    gap: 0.15em;
+    display: grid; /* Switch to Grid */
+    grid-template-columns: repeat(auto-fill, minmax(5px, 1fr)); /* ✅ Ensures uniform wrapping */
+    gap: 2px; /* Adds space between dots */
     padding-top: 0.6em;
     margin-left: 0;
+    align-items: start;
+    justify-content: start;
 }
