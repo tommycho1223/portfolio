@@ -488,3 +488,27 @@ d1.info[hidden]:not(:hover, :focus-within) {
 circle.selected {
     fill: #ff666b; /* Highlight color */
 }
+
+.files {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.files > div {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+}
+
+.files dt {
+    font-weight: bold;
+    grid-column: 1;
+}
+
+.files dd {
+    grid-column: 2;
+    text-align: right;
+}

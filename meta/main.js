@@ -324,11 +324,43 @@ function updateSelectedTime() {
 }
 
 function filterCommits() {
-    let maxTime = timeScale.invert(commitProgress); // Get the date from the slider value
-
+    let maxTime = timeScale.invert(commitProgress); // Get selected time
     let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
 
     console.log("Filtered commits:", filteredCommits.length); // Debugging
 
     createScatterplot(filteredCommits); // Re-render scatterplot with filtered data
+    processFiles();
+}
+
+function processFiles() {
+    let allLines = commits.flatMap(commit => commit.lines || []); // Extract all lines from commits
+
+    let files = d3.groups(allLines, (d) => d.file)
+        .map(([name, lines]) => ({
+            name, 
+            lines 
+        }));
+
+    updateFileVisualization(files);
+}
+
+function updateFileVisualization(files) {
+    let container = d3.select('.files');
+
+    // Remove old elements
+    container.selectAll('div').remove();
+
+    // Bind data
+    let fileSelection = container.selectAll('div')
+        .data(files)
+        .enter()
+        .append('div');
+
+    fileSelection.append('dt')
+        .append('code')
+        .text(d => d.name);
+
+    fileSelection.append('dd')
+        .text(d => `${d.lines.length} lines`);
 }
