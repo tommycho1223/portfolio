@@ -128,7 +128,7 @@ function createScatterplot() {
             d3.select(event.currentTarget).style('fill-opacity', 0.7);
             updateTooltipContent({});
             updateTooltipVisibility(false);
-        });
+        })
         .on("click", (event, commit) => {
             // Toggle commit selection
             if (selectedCommits.includes(commit)) {
