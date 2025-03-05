@@ -335,6 +335,9 @@ function processFiles(filteredCommits) {
             lines 
         }));
 
+    // Sort files in descending order based on the number of lines
+    files = d3.sort(files, (d) => -d.lines.length);
+
     updateFileVisualization(files);
 }
 
@@ -359,11 +362,16 @@ function updateFileVisualization(files) {
     fileSelection.append('small')
         .text(d => ` ${d.lines.length} lines`);
 
-    // Append divs inside <dd> for each line
+    // Create an ordinal scale mapping file types to colors
+    let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
+
+    // Apply colors based on file type
     fileSelection.append('dd')
         .selectAll('.line')
         .data(d => d.lines) // Bind each line
         .enter()
         .append('div')
-        .attr('class', 'line'); // Apply CSS class for styling
+        .attr('class', 'line') // Apply CSS class for styling
+        .style('background', d => fileTypeColors(d.type)); // Assign color based on line type
+
 }
