@@ -1,0 +1,534 @@
+body {
+    /* Set line height to 1.5 times the font size
+         and use the OS’s UI font as the website font
+       */
+    font: 100%/1.5 system-ui;
+    max-width: 100ch;
+    margin-inline: max(1em, (100% - 100ch) / 2);
+    padding: 1em;
+    background-color: var(--background-color); /* testing */
+    color: var(--text-color); /* testing */
+}
+
+nav ul, nav li {
+    display: contents;
+}
+
+nav {
+    display: flex;
+    gap: 1em; /* Adds spacing between items */
+    margin-bottom: 1em;  /* Space between nav and content */
+    border-bottom: 1px solid oklch(80% 3% 200);  /* Cool gray bottom border */
+    --border-color: oklch(50% 10% 200 / 40%); /* Adapts better in dark mode */
+    border-bottom-color: var(--border-color);
+}
+
+nav a {
+    flex: 1; /* Ensures each link takes equal space */
+    text-align: center; /* Centers text inside each link */
+    padding: 0.5em; /* Adds padding for better clickability */
+    text-decoration: none; /* Removes underline */
+    color: inherit;  /* Use the same text color as the parent */
+}
+
+nav a.current {
+    font-weight: bold; /* Highlights the current page */
+    border-bottom: 0.4em solid oklch(80% 3% 200);  /* Thicker bottom border */
+    padding-bottom: 0.1em;  /* Reduce padding to compensate for border */
+}
+
+/* Define the accent color as a custom property */
+:root {
+    --color-accent: oklch(65% 50% 0); /* Choose your desired accent color */
+    color-scheme: light dark;
+    --background-color: white; /* testing */
+    --text-color: black; /* testing */
+    --project-bg: #f5f5f5; /* Default light theme */
+}
+
+/* Apply accent color to hovered navigation links */
+nav a:hover {
+    border-bottom: 0.4em solid var(--color-accent); /* Apply accent color as bottom border */
+    background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+    color: var(--hover-text-color); /* Adaptive text color */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Optional: Smooth transition effect */
+}
+
+/* Ensure all form elements inherit the page's font */
+input, textarea, button {
+    font: inherit;
+    grid-column: 2 / -1;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make form elements behave like block elements */
+label, input, textarea, button {
+    display: block;
+    width: 100%; /* Full width of the container */
+    box-sizing: border-box; /* Includes padding and border in width calculation */
+}
+
+/* Add spacing between labels */
+label {
+    margin-block: 0.5em;
+    display: contents;
+}
+
+/* Apply CSS Grid to the form */
+form {
+    display: grid;
+    grid-template-columns: auto 1fr; /* First column fits content, second takes remaining space */
+    gap: 1em; /* Adds spacing between elements */
+}
+
+/* Ensure the button spans the full form width */
+button {
+    grid-column: 1 / -1; /* Spans the entire row */
+}
+
+/* Make .projects a grid container */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr)); /* Ensures 3 columns */
+    gap: 1em; /* Space between projects */
+    padding: 1em;
+    max-width: 850px; /* Limit max width to keep alignment */
+    margin: auto; /* Center the grid */
+}
+
+/* Style individual articles */
+.projects article {
+    background-color: var(--project-bg);
+    padding: 1em;
+    border-radius: 5px; /* Slightly rounded corners */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures proper spacing */
+    height: fit-content; /* Prevents forced height */
+    min-height: 280px; /* Ensures consistency */
+}
+
+/* Style images */
+.projects img {
+    width: 100%;
+    height: auto;
+}
+
+.projects article h2 {
+    margin: 0;
+}
+
+/* Improve heading sizes */
+h1 {
+    font-size: 200%; /* Make h1 significantly larger */
+}
+
+/* Improve readability for all headings */
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1; /* Adjusts spacing */
+    text-wrap: balance; /* Prevents uneven lines */
+}
+
+/* Container for the entire CV */
+.cv-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* Sidebar takes 1 part, main content takes 3 parts */
+    gap: 2em;
+    max-width: 900px;
+    margin: auto;
+    padding: 2em;
+}
+
+/* Style the Sidebar in cv */
+.cv-sidebar {
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    padding: 1.5em;
+    border-radius: 8px;
+}
+
+/* Style Main Content */
+.cv-main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+}
+
+/* Improve Section Headings */
+.cv-main h1, .cv-sidebar h2 {
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5em;
+}
+
+/* Style Lists for Readability */
+.cv-main ul {
+    padding-left: 1.5em;
+    line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+    .projects {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for medium screens */
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container svg {
+        width: 50ww; /* Reduce pie chart size */
+    }
+
+    /* Adjust legend to 2 columns */
+    .legend {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cv-container {
+        grid-template-columns: 1fr; /* Stacks everything vertically on small screens */
+    }
+    .projects {
+        grid-template-columns: 1fr; /* 1 column for small screens */
+    }
+
+    .container {
+        flex-direction: column; /* Stacks elements vertically */
+        align-items: center;
+    }
+
+    .container svg {
+        width: 70vw; /* Further reduce size for smaller screens */
+    }
+
+    /* Ensure legend is a single column */
+    .legend {
+        grid-template-columns: repeat(1, 1fr); /* Single column on small screens */
+        text-align: center;
+        justify-items: center;
+    }
+}
+
+/* Force Light Mode */
+[data-theme="light"] {
+    color-scheme: light;
+    --background-color: white !important;
+    --text-color: black !important;
+}
+
+/* Force Dark Mode */
+[data-theme="dark"] {
+    color-scheme: dark;
+    --background-color: black !important;
+    --text-color: white !important;
+    --project-bg: #333; /* Darker background for dark mode */
+}
+
+/* Position theme switcher in the top-right corner */
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 80%; /* Make it slightly smaller */
+    font-family: inherit; /* Ensure it inherits the same font */
+}
+
+#profile-stats {
+    max-width: 800px; /* Adjust width to fit the stats */
+    margin: 20px auto; /* Center align */
+    text-align: center;
+}
+
+#profile-stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 equal-width columns */
+    gap: 20px; /* Adds spacing between columns */
+    text-align: center;
+}
+
+#profile-stats dt {
+    font-weight: bold;
+    font-size: 1rem;
+    color: gray; /* Subtitle color */
+    text-transform: uppercase; /* Makes text uppercase */
+}
+
+#profile-stats dd {
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: bold;
+}
+
+#projects-pie-plot {
+    width: 100%;
+    max-width: 300px; /* Adjust maximum size */
+    height: auto;
+    display: block;
+}
+
+/* Style the legend container */
+.legend {
+    flex: 1; /* Allows legend to take available space */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(7em, 1fr)); /* Adjusts columns dynamically */
+    margin-left: 0px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-width: 250px; /* Ensures it doesn't exceed container */
+}
+
+/* Style each legend item */
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Create the color swatch */
+.legend .swatch {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+/* Container to align pie chart and legend side by side */
+.container {
+    display: flex;
+    align-items: center;  /* Aligns items vertically */
+    justify-content: center;
+    flex-wrap: wrap; /* Ensures responsiveness on smaller screens */
+    gap: 10px; /* Adjust spacing between pie chart and legend */
+    text-align: center;
+}
+
+.container svg {
+    width: 100%; /* Adjusts dynamically */
+    max-width: 250px; /* Prevents excessive scaling */
+    height: auto;
+    display: block;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container svg {
+        width: 200px; /* Reduce size on smaller screens */
+        height: 200px;
+    }
+
+    .legend {
+        grid-template-columns: repeat(2, 1fr); /* Auto-adjust legend */
+    }
+}
+
+@media (max-width: 500px) {
+    .container svg {
+        width: 180px; /* Further reduce for mobile */
+        height: 180px;
+    }
+
+    .legend {
+        grid-template-columns: repeat(1, 1fr); /* Single column legend for tiny screens */
+    }
+}
+
+svg:has(path:hover) {
+    path:not(:hover) {
+        opacity: 0.5;
+    }
+}
+
+path {
+    transition: 300ms;
+}
+
+.searchBar {
+    width: 100%;
+    max-width: 1000px;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.searchBar:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.stats-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+/* Default (light mode) */
+.stats-summary .stats-value {
+    color: black; /* Ensures visibility in light mode */
+}
+
+/* Dark Mode */
+[data-theme="dark"] .stats-summary .stats-value {
+    color: white; /* Ensures visibility in dark mode */
+}
+
+.stats-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.stats-label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ddd;
+}
+
+.stats-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.gridlines path,
+.gridlines line {
+    stroke: lightgray;
+    stroke-opacity: 0.5;
+    shape-rendering: crispEdges;
+}
+
+.info {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.tooltip {
+    position: fixed;
+    top: 1em;
+    left: 1em;
+    display: none;
+    background: rgba(255, 255, 255, 0.9); /* Light semi-transparent */
+    color: black; /* Make sure text is visible */
+    padding: 10px 15px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Soft shadow */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1000;
+    border: 1px solid rgba(0, 0, 0, 0.2); /* Optional light border */
+}
+
+circle {
+    transition: 200ms;
+    transform-origin: center;
+    transform-box: fill-box;
+}
+
+circle:hover {
+    transform: scale(1.5);
+}
+
+d1.info {
+    transition-duration: 500ms;
+    transition-property: opacity, visibility;
+}
+
+d1.info[hidden]:not(:hover, :focus-within) {
+    opacity: 0;
+    visibility: hidden;
+}
+
+@keyframes marching-ants {
+    to {
+        stroke-dashoffset: -8; /* Moves the dashes */
+    }
+}
+
+.selection {
+    fill-opacity: 0.2; /* Adjust transparency */
+    stroke-opacity: 0.8;
+    stroke-dasharray: 5 3;
+    animation: marching-ants 2s linear infinite;
+}
+
+/* Adjust selection box stroke color based on theme */
+[data-theme="light"] .selection {
+    stroke: black; /* Black stroke in light mode */
+}
+
+[data-theme="dark"] .selection {
+    stroke: white; /* White stroke in dark mode */
+    fill-opacity: 0.2; /* Lighten selection box */
+}
+
+circle.selected {
+    fill: #ff666b; /* Highlight color */
+}
+
+.files {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.files > div {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+}
+
+.files dt {
+    font-weight: bold;
+    grid-column: 1;
+}
+
+.files dd {
+    grid-column: 2;
+    text-align: right;
+}
+
+.line {
+    display: inline-block; /* Ensures dots line up properly */
+    width: 5px; /* Set dot size */
+    height: 5px;
+    background: steelblue; /* Blue color */
+    border-radius: 50%; /* Make them circular */
+    margin: 1px; /* Add spacing between dots */
+}
+
+dd {
+    grid-column: 2;
+    display: grid; /* Switch to Grid */
+    grid-template-columns: repeat(auto-fill, minmax(5px, 1fr)); /* ✅ Ensures uniform wrapping */
+    gap: 2px; /* Adds space between dots */
+    padding-top: 0.6em;
+    margin-left: 0;
+    align-items: start;
+    justify-content: start;
+}
