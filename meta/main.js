@@ -204,7 +204,6 @@ function createScatterplot(filteredCommits = commits) {
     brushSelector(); // Enable brushing
 }
 
-
 function updateTooltipContent(commit) {
     const link = document.getElementById('commit-link');
     const date = document.getElementById('commit-date');
@@ -398,8 +397,8 @@ function updateFileVisualization(files) {
 }
 
 function renderItems(startIndex) {
-    // Clear previous items
-    itemsContainer.selectAll("div").remove();
+    // // Clear previous items
+    // itemsContainer.selectAll("div").remove();
 
     // Determine visible commits
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
