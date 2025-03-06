@@ -7,7 +7,7 @@ let brushSelection = null; // Store selection range
 let selectedCommits = []; // New global variable to store selected commits
 let commitProgress = 100; // Default to showing all commits
 let NUM_ITEMS = 100; // Set to the commit history length if possible
-let ITEM_HEIGHT = 30; // Controls the height of commit items
+let ITEM_HEIGHT = 60; // Controls the height of commit items
 let VISIBLE_COUNT = 10; // Number of items visible at a time
 let totalHeight = (NUM_ITEMS - 1) * ITEM_HEIGHT;
 
@@ -409,5 +409,16 @@ function renderItems(startIndex) {
         .attr("class", "item")
         .style("position", "absolute")
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
-        .text(d => `Commit: ${d.id}`);
+        .html((commit, index) => `
+            <p>
+                On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
+                I made 
+                <a href="${commit.url}" target="_blank">
+                    ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+                </a>. 
+                I edited ${commit.totalLines} lines across 
+                ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
+                Then I looked over all I had made, and I saw that it was very good.
+            </p>
+        `);
 }
