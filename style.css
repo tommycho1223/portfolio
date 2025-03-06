@@ -1,13 +1,10 @@
 body {
-    /* Set line height to 1.5 times the font size
-         and use the OS’s UI font as the website font
-       */
     font: 100%/1.5 system-ui;
-    max-width: 100ch;
-    margin-inline: max(1em, (100% - 100ch) / 2);
+    max-width: min(120ch, 80vw); /* Updated to allow a wider layout */
+    margin-inline: max(1em, (100% - 120ch) / 2);
     padding: 1em;
-    background-color: var(--background-color); /* testing */
-    color: var(--text-color); /* testing */
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 nav ul, nav li {
