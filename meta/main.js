@@ -141,10 +141,10 @@ function createScatterplot(filteredCommits = commits) {
         .range([usableArea.bottom, usableArea.top]);
 
     // Remove old elements
-    svg.select('.dots').remove();
-    svg.select('.x-axis').remove();
-    svg.select('.y-axis').remove();
-    svg.select('.gridlines').remove();
+    // svg.select('.dots').remove();
+    // svg.select('.x-axis').remove();
+    // svg.select('.y-axis').remove();
+    // svg.select('.gridlines').remove();
 
     // Create dots group
     const dots = svg.append('g').attr('class', 'dots');
@@ -298,7 +298,7 @@ function updateLanguageBreakdown() {
     }
 
     const requiredCommits = selectedCommits.length ? selectedCommits : commits;
-    const lines = requiredCommits.flatMap(d => d.lines).filter(d => d !== undefined); // Fix: Remove undefined values
+    const lines = requiredCommits.flatMap(d => d.lines).filter(d => d !== undefined);
 
     // console.log("Total lines:", lines);
     console.log("Checking lines data:", lines);
@@ -364,8 +364,8 @@ function processFiles(filteredCommits) {
 function updateFileVisualization(files) {
     let container = d3.select('.files');
 
-    // Remove old elements
-    container.selectAll('div').remove();
+    // // Remove old elements
+    // container.selectAll('div').remove();
 
     // Bind data
     let fileSelection = container.selectAll('div')
@@ -440,7 +440,7 @@ function displayCommitFiles(filteredCommits) {
 
     files = d3.sort(files, (d) => -d.lines.length);
 
-    d3.select(".files").selectAll("div").remove();
+    // d3.select(".files").selectAll("div").remove();
 
     let fileContainer = d3.select(".files").selectAll("div")
         .data(files)
