@@ -6,7 +6,25 @@ const height = 600;
 let brushSelection = null; // Store selection range
 let selectedCommits = []; // New global variable to store selected commits
 let commitProgress = 100; // Default to showing all commits
+let NUM_ITEMS = 100; // Set to the commit history length if possible
+let ITEM_HEIGHT = 30; // Controls the height of commit items
+let VISIBLE_COUNT = 10; // Number of items visible at a time
+let totalHeight = (NUM_ITEMS - 1) * ITEM_HEIGHT;
 
+
+const scrollContainer = d3.select("#scroll-container");
+const spacer = d3.select("#spacer");
+spacer.style("height", `${totalHeight}px`);
+
+const itemsContainer = d3.select("#items-container");
+
+// Attach scroll event listener
+scrollContainer.on("scroll", () => {
+    const scrollTop = scrollContainer.property("scrollTop");
+    let startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
+    startIndex = Math.max(0, Math.min(startIndex, commits.length - VISIBLE_COUNT));
+    renderItems(startIndex);
+});
 
 const svg = d3
     .select('#chart')
@@ -374,4 +392,22 @@ function updateFileVisualization(files) {
         .attr('class', 'line') // Apply CSS class for styling
         .style('background', d => fileTypeColors(d.type)); // Assign color based on line type
 
+}
+
+function renderItems(startIndex) {
+    // Clear old items
+    itemsContainer.selectAll("div").remove();
+
+    const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
+    let newCommitSlice = commits.slice(startIndex, endIndex);
+
+    // Bind new commits
+    itemsContainer.selectAll("div")
+        .data(newCommitSlice)
+        .enter()
+        .append("div")
+        .attr("class", "item")
+        .style("position", "absolute")
+        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
+        .text(d => `Commit: ${d.id}`);
 }
