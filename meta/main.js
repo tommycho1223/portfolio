@@ -23,8 +23,11 @@ scrollContainer.on("scroll", () => {
     const scrollTop = scrollContainer.property("scrollTop");
     let startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
     startIndex = Math.max(0, Math.min(startIndex, commits.length - VISIBLE_COUNT));
+    
+    // Update commits and scatterplot at the same time
     renderItems(startIndex);
 });
+
 
 const svg = d3
     .select('#chart')
@@ -45,16 +48,16 @@ async function loadData() {
         .domain(d3.extent(commits, (d) => d.datetime))
         .range([0, 100]);
 
-    updateSelectedTime(); // Ensure time display updates initially
+    // updateSelectedTime(); // Ensure time display updates initially
 
     // Attach event listener for the slider
     document.getElementById('commit-slider').addEventListener('input', (event) => {
         commitProgress = +event.target.value;  // Convert to number
-        updateSelectedTime();  // Update time display
-        filterCommits();  // Filter commits based on slider value
+        // updateSelectedTime();  // Update time display
+        // filterCommits();  // Filter commits based on slider value
     });
 
-    filterCommits(); // Apply filtering immediately when the page loads
+    // filterCommits(); // Apply filtering immediately when the page loads
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -328,21 +331,21 @@ function updateLanguageBreakdown() {
     }
 }
 
-function updateSelectedTime() {
-    const selectedTime = document.getElementById('selected-time');
-    selectedTime.textContent = timeScale.invert(commitProgress).toLocaleString('en', {
-        dateStyle: 'long',
-        timeStyle: 'short'
-    });
-}
+// function updateSelectedTime() {
+//     const selectedTime = document.getElementById('selected-time');
+//     selectedTime.textContent = timeScale.invert(commitProgress).toLocaleString('en', {
+//         dateStyle: 'long',
+//         timeStyle: 'short'
+//     });
+// }
 
-function filterCommits() {
-    let maxTime = timeScale.invert(commitProgress);
-    let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
+// function filterCommits() {
+//     let maxTime = timeScale.invert(commitProgress);
+//     let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
 
-    createScatterplot(filteredCommits);
-    processFiles(filteredCommits);
-}
+//     createScatterplot(filteredCommits);
+//     processFiles(filteredCommits);
+// }
 
 function processFiles(filteredCommits) {
     let allLines = filteredCommits.flatMap(commit => commit.lines || []);
@@ -395,13 +398,18 @@ function updateFileVisualization(files) {
 }
 
 function renderItems(startIndex) {
-    // Clear old items
+    // Clear previous items
     itemsContainer.selectAll("div").remove();
 
+    // Determine visible commits
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
     let newCommitSlice = commits.slice(startIndex, endIndex);
 
-    // Bind new commits
+    // Update scatterplot and file display
+    createScatterplot(newCommitSlice);
+    displayCommitFiles(newCommitSlice);
+
+    // Render commit narratives
     itemsContainer.selectAll("div")
         .data(newCommitSlice)
         .enter()
@@ -421,4 +429,32 @@ function renderItems(startIndex) {
                 Then I looked over all I had made, and I saw that it was very good.
             </p>
         `);
+}
+
+function displayCommitFiles(filteredCommits) {
+    const lines = filteredCommits.flatMap(d => d.lines);
+    let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
+
+    let files = d3.groups(lines, d => d.file).map(([name, lines]) => ({
+        name, lines
+    }));
+
+    files = d3.sort(files, (d) => -d.lines.length);
+
+    d3.select(".files").selectAll("div").remove();
+
+    let fileContainer = d3.select(".files").selectAll("div")
+        .data(files)
+        .enter()
+        .append("div");
+
+    fileContainer.append("dt").html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
+
+    fileContainer.append("dd")
+        .selectAll("div")
+        .data(d => d.lines)
+        .enter()
+        .append("div")
+        .attr("class", "line")
+        .style("background", d => fileTypeColors(d.type));
 }
