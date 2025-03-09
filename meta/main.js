@@ -28,6 +28,7 @@ scrollContainer.on("scroll", () => {
     renderItems(startIndex);
 });
 
+renderItems(0);
 
 const svg = d3
     .select('#chart')
