@@ -150,7 +150,7 @@ function createScatterplot(filteredCommits = commits) {
     // svg.select('.gridlines').remove();
 
     // Create dots group
-    const dots = svg.append('g').attr('class', 'dots');
+    const dots = svg.select('.dots'); 
 
     dots
         .selectAll('circle')
@@ -237,7 +237,7 @@ function brushSelector() {
     const brush = d3.brush()
         .on('start brush end', brushed); // Listen for brush events
 
-    svg.call(brush);
+    svg.insert("g", ":first-child").call(brush);
 
     // Fix tooltip issue by ensuring dots are raised above the brush overlay
     svg.selectAll('.dots, .overlay ~ *').raise();
@@ -408,24 +408,23 @@ function renderItems(startIndex) {
 
     // Select the container where commit messages appear
     itemsContainer.selectAll("div")
-        .data(newCommitSlice)
-        .enter()
-        .append("div")
-        .attr("class", "item")  // Apply styles from style.css
-        .style("position", "absolute")
-        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
-        .html((commit, index) => `
-            <p>
-                On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
-                I made 
-                <a href="${commit.url}" target="_blank">
-                    ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
-                </a>. 
-                I edited ${commit.totalLines} lines across 
-                ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
-                Then I looked over all I had made, and I saw that it was very good.
-            </p>
-        `);
+    .data(newCommitSlice)
+    .join("div")  // Prevents duplicates and removes old items
+    .attr("class", "item")
+    .style("position", "absolute")
+    .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
+    .html((commit, index) => `
+        <p>
+            On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
+            I made 
+            <a href="${commit.url}" target="_blank">
+                ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+            </a>. 
+            I edited ${commit.totalLines} lines across 
+            ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
+            Then I looked over all I had made, and I saw that it was very good.
+        </p>
+    `);
 }
 
 function displayCommitFiles(filteredCommits) {
