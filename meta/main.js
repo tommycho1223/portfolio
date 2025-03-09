@@ -480,12 +480,13 @@ async function loadFileData() {
 
 function processFileData() {
     fileData = fileData.map(file => ({
-        filename: file.file || "Unknown File",
-        lines_changed: +file.lines || 0,  // Convert to number, set default 0
-        commit: file.commit || "Unknown Commit",
-        author: file.author || "Unknown Author",
-        date: new Date(file.datetime || Date.now()),  // Use current time if missing
+        filename: file.file ? file.file : "Unknown File",
+        lines_changed: file.lines ? +file.lines : 0,  // Convert to number
+        commit: file.commit ? file.commit : "Unknown Commit",
+        author: file.author ? file.author : "Unknown Author",
+        date: file.datetime ? new Date(file.datetime) : new Date()
     }));
+    console.log("Processed File Data:", fileData); // Debugging
 }
 
 // Render File Items in Scrollytelling
@@ -496,6 +497,11 @@ function renderFileItems(startIndex) {
     console.log("Rendering file items:", fileSlice); // Debugging
 
     itemsContainerFiles.selectAll("div").remove(); // Clear old messages
+
+    if (fileData.length === 0) {
+        console.warn("No file data available.");
+        return;
+    }
 
     itemsContainerFiles.selectAll("div")
         .data(fileSlice)
@@ -551,13 +557,14 @@ scrollContainerFiles.on("scroll", () => {
     let startIndex = Math.floor(scrollTop / ITEM_HEIGHT_FILES);
     startIndex = Math.max(0, Math.min(startIndex, fileData.length - VISIBLE_COUNT_FILES));
 
-    console.log("Scrolling...", scrollTop, startIndex);
-    renderFileItems(startIndex);
-});
+    console.log("Scrolling detected - Start Index:", startIndex, "File Data Length:", fileData.length);
 
-// Load data when page loads
-// document.addEventListener('DOMContentLoaded', async () => {
-// });
+    if (fileData.length > 0) {
+        renderFileItems(startIndex);
+    } else {
+        console.warn("Skipping renderFileItems(): fileData is empty.");
+    }
+});
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData(); // Loads commit data
