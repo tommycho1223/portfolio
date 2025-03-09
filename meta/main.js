@@ -338,22 +338,6 @@ function updateLanguageBreakdown() {
     }
 }
 
-// function updateSelectedTime() {
-//     const selectedTime = document.getElementById('selected-time');
-//     selectedTime.textContent = timeScale.invert(commitProgress).toLocaleString('en', {
-//         dateStyle: 'long',
-//         timeStyle: 'short'
-//     });
-// }
-
-// function filterCommits() {
-//     let maxTime = timeScale.invert(commitProgress);
-//     let filteredCommits = commits.filter(commit => commit.datetime <= maxTime);
-
-//     createScatterplot(filteredCommits);
-//     processFiles(filteredCommits);
-// }
-
 function processFiles(filteredCommits) {
     let allLines = filteredCommits.flatMap(commit => commit.lines || []);
 
@@ -486,7 +470,7 @@ const itemsContainerFiles = d3.select("#items-container-files");
 
 // Load and process file data (Assuming `loc.csv` contains file data)
 async function loadFileData() {
-    fileData = await d3.csv('loc.csv'); 
+    fileData = await d3.csv('meta/loc.csv'); 
     console.log("Loaded file data:", fileData);
 
     processFileData();  // Process file-related data
