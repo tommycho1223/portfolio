@@ -161,6 +161,7 @@ function createScatterplot(filteredCommits = commits) {
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
         .attr('fill', 'steelblue')
+        .style('pointer-events', 'all')  // <-- Ensure events work
         .on('mouseenter', (event, commit) => {
             d3.select(event.currentTarget).style('fill-opacity', 1);
             updateTooltipContent(commit);
@@ -173,15 +174,12 @@ function createScatterplot(filteredCommits = commits) {
             updateTooltipVisibility(false);
         })
         .on("click", (event, commit) => {
-            // Toggle commit selection
             if (selectedCommits.includes(commit)) {
                 selectedCommits = selectedCommits.filter(c => c !== commit);
             } else {
                 selectedCommits.push(commit);
             }
             updateSelection();
-            updateSelectionCount();
-            updateLanguageBreakdown();
         });
 
     // Add X axis
@@ -232,14 +230,10 @@ function updateTooltipPosition(event) {
 }
 
 function brushSelector() {
-    const svg = d3.select('svg'); // Select the scatterplot SVG
+    const svg = d3.select('svg'); 
+    const brush = d3.brush().on('start brush end', brushed);
 
-    const brush = d3.brush()
-        .on('start brush end', brushed); // Listen for brush events
-
-    svg.call(brush);
-
-    // Fix tooltip issue by ensuring dots are raised above the brush overlay
+    // svg.call(brush); // Comment this out to test if brush is interfering
     svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
