@@ -44,6 +44,8 @@ async function loadData() {
     displayStats();  // Display statistics after processing commits
     createScatterplot();  // Now that commits exist, we can plot them
 
+    renderItems(0);
+
     // Create a time scale for slider mapping
     timeScale = d3.scaleTime()
         .domain(d3.extent(commits, (d) => d.datetime))
@@ -63,7 +65,6 @@ async function loadData() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
-    renderItems(0); // Ensure scrollytelling items are rendered immediately
 });
 
 function processCommits() {
