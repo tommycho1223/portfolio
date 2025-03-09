@@ -438,7 +438,7 @@ function renderItems(startIndex) {
 
 function displayCommitFiles(filteredCommits) {
     const container = d3.select(".files");
-    container.html("");  // ✅ Clear previous file details
+    container.html("");  // Clear previous file details
 
     if (filteredCommits.length === 0) {
         container.append("p").text("No commits selected.");
@@ -495,7 +495,7 @@ function renderFileItems(startIndex) {
     const endIndex = Math.min(startIndex + VISIBLE_COUNT_FILES, fileData.length);
     let fileSlice = fileData.slice(startIndex, endIndex);
 
-    itemsContainerFiles.selectAll("div").remove();
+    // itemsContainerFiles.selectAll("div").remove();
 
     itemsContainerFiles.selectAll("div")
         .data(fileSlice)
