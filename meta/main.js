@@ -495,7 +495,7 @@ function renderFileItems(startIndex) {
     const endIndex = Math.min(startIndex + VISIBLE_COUNT_FILES, fileData.length);
     let fileSlice = fileData.slice(startIndex, endIndex);
 
-    // itemsContainerFiles.selectAll("div").remove();
+    itemsContainerFiles.selectAll("div").remove();
 
     itemsContainerFiles.selectAll("div")
         .data(fileSlice)
@@ -516,7 +516,6 @@ scrollContainerFiles.on("scroll", () => {
     const scrollTop = scrollContainerFiles.property("scrollTop");
     let startIndex = Math.floor(scrollTop / ITEM_HEIGHT_FILES);
     startIndex = Math.max(0, Math.min(startIndex, fileData.length - VISIBLE_COUNT_FILES));
-
     renderFileItems(startIndex);
 });
 
