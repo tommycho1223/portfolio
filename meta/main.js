@@ -232,10 +232,14 @@ function updateTooltipPosition(event) {
 }
 
 function brushSelector() {
-    const svg = d3.select('svg'); 
-    const brush = d3.brush().on('start brush end', brushed);
+    const svg = d3.select('svg'); // Select the scatterplot SVG
 
-    // svg.call(brush); // Comment this out to test if brush is interfering
+    const brush = d3.brush()
+        .on('start brush end', brushed); // Listen for brush events
+
+    svg.call(brush);
+
+    // Fix tooltip issue by ensuring dots are raised above the brush overlay
     svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
@@ -396,28 +400,26 @@ function updateFileVisualization(files) {
 }
 
 function renderItems(startIndex) {
-    // Clear previous items
-    itemsContainer.selectAll("div").remove();
+    // // Clear previous items
+    // itemsContainer.selectAll("div").remove();
 
     // Determine visible commits
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
     let newCommitSlice = commits.slice(startIndex, endIndex);
 
     // Update scatterplot and file display
-    updateScatterplot(newCommitSlice);
+    createScatterplot(newCommitSlice);
     displayCommitFiles(newCommitSlice);
 
     // Render commit narratives
-    let commitSelection = itemsContainer.selectAll(".item")
+    itemsContainer.selectAll("div")
         .data(newCommitSlice)
         .enter()
         .append("div")
         .attr("class", "item")
         .style("position", "absolute")
-        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`);
-
-    // Add message content inside each item
-    commitSelection.html((commit, index) => `
+        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
+        .html((commit, index) => `
         <p>
             On ${commit.datetime.toLocaleString("en", { dateStyle: "short", timeStyle: "short" })}, 
             I made 
@@ -431,7 +433,7 @@ function renderItems(startIndex) {
 }
 
 function displayCommitFiles(filteredCommits) {
-    const lines = filteredCommits.flatMap(d => d.lines || []);
+    const lines = filteredCommits.flatMap(d => d.lines);
     let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
 
     let files = d3.groups(lines, d => d.file).map(([name, lines]) => ({
@@ -440,42 +442,20 @@ function displayCommitFiles(filteredCommits) {
 
     files = d3.sort(files, (d) => -d.lines.length);
 
-    let fileContainer = d3.select(".files");
+    // d3.select(".files").selectAll("div").remove();
 
-    // Clear previous content
-    fileContainer.html("");
-
-    let fileSelection = fileContainer.selectAll("div")
+    let fileContainer = d3.select(".files").selectAll("div")
         .data(files)
         .enter()
         .append("div");
 
-    fileSelection.append("dt").html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
+    fileContainer.append("dt").html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
 
-    fileSelection.append("dd")
+    fileContainer.append("dd")
         .selectAll("div")
         .data(d => d.lines)
         .enter()
         .append("div")
         .attr("class", "line")
         .style("background", d => fileTypeColors(d.type));
-}
-
-function updateScatterplot(filteredCommits) {
-    // Update the dots only, instead of re-creating the scatterplot
-    let dots = svg.selectAll("circle")
-        .data(filteredCommits, d => d.id);
-
-    dots.enter()
-        .append("circle")
-        .merge(dots)
-        .transition()
-        .duration(500)
-        .attr("r", (d) => rScale(d.totalLines))
-        .style("fill-opacity", 0.7)
-        .attr("cx", (d) => xScale(d.datetime))
-        .attr("cy", (d) => yScale(d.hourFrac))
-        .attr("fill", "steelblue");
-
-    dots.exit().remove();
 }
