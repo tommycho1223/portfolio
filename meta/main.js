@@ -496,14 +496,12 @@ async function loadFileData() {
 
 function processFileData() {
     fileData = fileData.map(file => ({
-        filename: file.file,
-        lines_changed: +file.lines,  // Convert to number
-        commit: file.commit, 
-        author: file.author,
-        date: new Date(file.datetime),
+        filename: file.file || "Unknown File",
+        lines_changed: +file.lines || 0,  // Convert to number, set default 0
+        commit: file.commit || "Unknown Commit",
+        author: file.author || "Unknown Author",
+        date: new Date(file.datetime || Date.now()),  // Use current time if missing
     }));
-
-    console.log("Processed file data:", fileData);
 }
 
 // Render File Items in Scrollytelling
@@ -524,18 +522,17 @@ function renderFileItems(startIndex) {
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT_FILES}px`)
         .html(file => {
             console.log("File entry:", file); // Debugging
-
-            // Fix potential undefined issues
-            if (!file || !file.filename || !file.lines_changed) {
+        
+            if (!file || !file.filename || file.lines_changed === undefined) {
                 return `<p><b>Data missing</b></p>`;
             }
-
+        
             return `
-            <p>
-                <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
-            </p>
+                <p>
+                    <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
+                </p>
             `;
-        });
+        });        
 }
 
 function renderFileDotVisualization() {

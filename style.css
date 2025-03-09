@@ -608,4 +608,6 @@ dd {
 #scroll-container-files {
     width: 50%;
     float: right;
+    overflow-y: auto;
+    max-height: 400px;
 }
