@@ -18,6 +18,8 @@ spacer.style("height", `${totalHeight}px`);
 
 const itemsContainer = d3.select("#items-container");
 
+renderItems(commits.length > VISIBLE_COUNT ? VISIBLE_COUNT : commits.length);
+
 // Attach scroll event listener
 scrollContainer.on("scroll", () => {
     const scrollTop = scrollContainer.property("scrollTop");
@@ -418,14 +420,13 @@ function renderItems(startIndex) {
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
         .html((commit, index) => `
         <p>
-            On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
+            On ${commit.datetime.toLocaleString("en", { dateStyle: "short", timeStyle: "short" })}, 
             I made 
             <a href="${commit.url}" target="_blank">
                 ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
             </a>. 
             I edited ${commit.totalLines} lines across 
             ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
-            Then I looked over all I had made, and I saw that it was very good.
         </p>
     `);
 }
