@@ -474,7 +474,7 @@ let fileData = [];  // Store file size changes
 let NUM_FILE_ITEMS = 100; 
 let ITEM_HEIGHT_FILES = 60;
 let VISIBLE_COUNT_FILES = 10;
-let totalHeightFiles = (NUM_FILE_ITEMS - 1) * ITEM_HEIGHT_FILES;
+let totalHeightFiles = (fileData.length - 1) * ITEM_HEIGHT_FILES; 
 
 // Selectors
 const scrollContainerFiles = d3.select("#scroll-container-files");
@@ -495,7 +495,9 @@ function renderFileItems(startIndex) {
     const endIndex = Math.min(startIndex + VISIBLE_COUNT_FILES, fileData.length);
     let fileSlice = fileData.slice(startIndex, endIndex);
 
-    itemsContainerFiles.selectAll("div").remove();
+    console.log("Rendering file items:", fileSlice.length); // Debugging
+
+    itemsContainerFiles.selectAll("div").remove(); // Ensure clearing old items
 
     itemsContainerFiles.selectAll("div")
         .data(fileSlice)
@@ -516,6 +518,8 @@ scrollContainerFiles.on("scroll", () => {
     const scrollTop = scrollContainerFiles.property("scrollTop");
     let startIndex = Math.floor(scrollTop / ITEM_HEIGHT_FILES);
     startIndex = Math.max(0, Math.min(startIndex, fileData.length - VISIBLE_COUNT_FILES));
+
+    console.log("Scrolling...", scrollTop, startIndex);
     renderFileItems(startIndex);
 });
 
