@@ -469,3 +469,58 @@ function displayCommitFiles(filteredCommits) {
         .attr("class", "line")
         .style("background", d => fileTypeColors(d.type));
 }
+
+let fileData = [];  // Store file size changes
+let NUM_FILE_ITEMS = 100; 
+let ITEM_HEIGHT_FILES = 60;
+let VISIBLE_COUNT_FILES = 10;
+let totalHeightFiles = (NUM_FILE_ITEMS - 1) * ITEM_HEIGHT_FILES;
+
+// Selectors
+const scrollContainerFiles = d3.select("#scroll-container-files");
+const spacerFiles = d3.select("#spacer-files");
+spacerFiles.style("height", `${totalHeightFiles}px`);
+
+const itemsContainerFiles = d3.select("#items-container-files");
+
+// Load and process file data (Assuming `loc.csv` contains file data)
+async function loadFileData() {
+    fileData = await d3.csv('loc.csv'); 
+    console.log("Loaded file data:", fileData);
+    renderFileItems(0); // Render initial items
+}
+
+// Render File Items in Scrollytelling
+function renderFileItems(startIndex) {
+    const endIndex = Math.min(startIndex + VISIBLE_COUNT_FILES, fileData.length);
+    let fileSlice = fileData.slice(startIndex, endIndex);
+
+    itemsContainerFiles.selectAll("div").remove();
+
+    itemsContainerFiles.selectAll("div")
+        .data(fileSlice)
+        .enter()
+        .append("div")
+        .attr("class", "item")
+        .style("position", "absolute")
+        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT_FILES}px`)
+        .html(file => `
+        <p>
+            <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
+        </p>
+    `);
+}
+
+// Handle scrolling
+scrollContainerFiles.on("scroll", () => {
+    const scrollTop = scrollContainerFiles.property("scrollTop");
+    let startIndex = Math.floor(scrollTop / ITEM_HEIGHT_FILES);
+    startIndex = Math.max(0, Math.min(startIndex, fileData.length - VISIBLE_COUNT_FILES));
+
+    renderFileItems(startIndex);
+});
+
+// Load data when page loads
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadFileData();
+});
