@@ -400,36 +400,32 @@ function updateFileVisualization(files) {
 }
 
 function renderItems(startIndex) {
-    // // Clear previous items
-    // itemsContainer.selectAll("div").remove();
-
-    // Determine visible commits
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
     let newCommitSlice = commits.slice(startIndex, endIndex);
 
-    // Update scatterplot and file display
+    // Ensure the scatterplot updates as you scroll
     createScatterplot(newCommitSlice);
-    displayCommitFiles(newCommitSlice);
 
-    // Render commit narratives
+    // Select the container where commit messages appear
     itemsContainer.selectAll("div")
         .data(newCommitSlice)
         .enter()
         .append("div")
-        .attr("class", "item")
+        .attr("class", "item")  // Apply styles from style.css
         .style("position", "absolute")
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
         .html((commit, index) => `
-        <p>
-            On ${commit.datetime.toLocaleString("en", { dateStyle: "short", timeStyle: "short" })}, 
-            I made 
-            <a href="${commit.url}" target="_blank">
-                ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
-            </a>. 
-            I edited ${commit.totalLines} lines across 
-            ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
-        </p>
-    `);
+            <p>
+                On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
+                I made 
+                <a href="${commit.url}" target="_blank">
+                    ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+                </a>. 
+                I edited ${commit.totalLines} lines across 
+                ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
+                Then I looked over all I had made, and I saw that it was very good.
+            </p>
+        `);
 }
 
 function displayCommitFiles(filteredCommits) {
