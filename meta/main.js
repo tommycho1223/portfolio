@@ -161,7 +161,6 @@ function createScatterplot(filteredCommits = commits) {
         .attr('cx', (d) => xScale(d.datetime))
         .attr('cy', (d) => yScale(d.hourFrac))
         .attr('fill', 'steelblue')
-        .style('pointer-events', 'all')  // <-- Ensure events work
         .on('mouseenter', (event, commit) => {
             d3.select(event.currentTarget).style('fill-opacity', 1);
             updateTooltipContent(commit);
@@ -174,12 +173,15 @@ function createScatterplot(filteredCommits = commits) {
             updateTooltipVisibility(false);
         })
         .on("click", (event, commit) => {
+            // Toggle commit selection
             if (selectedCommits.includes(commit)) {
                 selectedCommits = selectedCommits.filter(c => c !== commit);
             } else {
                 selectedCommits.push(commit);
             }
             updateSelection();
+            updateSelectionCount();
+            updateLanguageBreakdown();
         });
 
     // Add X axis
@@ -402,7 +404,7 @@ function renderItems(startIndex) {
     let newCommitSlice = commits.slice(startIndex, endIndex);
 
     // Update scatterplot and file display
-    createScatterplot(newCommitSlice);
+    updateScatterplot(newCommitSlice);
     displayCommitFiles(newCommitSlice);
 
     // Render commit narratives
@@ -452,4 +454,18 @@ function displayCommitFiles(filteredCommits) {
         .append("div")
         .attr("class", "line")
         .style("background", d => fileTypeColors(d.type));
+}
+
+function updateScatterplot(filteredCommits) {
+    if (!filteredCommits.length) return;
+
+    // Bind data to existing circles, avoiding deletion of previous points
+    d3.selectAll('.dots circle')
+        .data(filteredCommits)
+        .join('circle')
+        .attr('r', (d) => rScale(d.totalLines))
+        .attr('cx', (d) => xScale(d.datetime))
+        .attr('cy', (d) => yScale(d.hourFrac))
+        .attr('fill', 'steelblue')
+        .style('pointer-events', 'all'); // Ensures events work
 }

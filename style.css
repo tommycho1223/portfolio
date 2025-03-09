@@ -443,12 +443,13 @@ circle {
     transition: 200ms;
     transform-origin: center;
     transform-box: fill-box;
-    cursor: pointer; /* Changes cursor when hovering over dots */
-    pointer-events: all; /* Ensures dots are clickable */
+    cursor: pointer; /* Ensures pointer shows */
+    pointer-events: all; /* Ensures events work */
 }
 
 circle:hover {
     transform: scale(1.5);
+    fill-opacity: 1; /* Ensures it's visible */
 }
 
 d1.info {
