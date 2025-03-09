@@ -470,7 +470,7 @@ const itemsContainerFiles = d3.select("#items-container-files");
 
 // Load and process file data (Assuming `loc.csv` contains file data)
 async function loadFileData() {
-    fileData = await d3.csv('meta/loc.csv'); 
+    fileData = await d3.csv('loc.csv'); 
     console.log("Loaded file data:", fileData);
 
     processFileData();  // Process file-related data
