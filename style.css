@@ -599,3 +599,13 @@ dd {
     height: 400px;
     background: rgba(255, 255, 255, 0.1);
 }
+
+#file-dot-visualization {
+    width: 50%;
+    float: left;
+}
+
+#scroll-container-files {
+    width: 50%;
+    float: right;
+}

@@ -65,6 +65,7 @@ async function loadData() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
+    await loadFileData();
 });
 
 function processCommits() {
@@ -485,9 +486,24 @@ const itemsContainerFiles = d3.select("#items-container-files");
 
 // Load and process file data (Assuming `loc.csv` contains file data)
 async function loadFileData() {
-    fileData = await d3.csv('/portfolio/meta/loc.csv'); 
+    fileData = await d3.csv('loc.csv'); 
     console.log("Loaded file data:", fileData);
-    renderFileItems(0); // Render initial items
+
+    processFileData();  // Process file-related data
+    renderFileDotVisualization();
+    renderFileItems(0); // Render initial scrollytelling items
+}
+
+function processFileData() {
+    fileData = fileData.map(file => ({
+        filename: file.file,
+        lines_changed: +file.lines,  // Convert to number
+        commit: file.commit, 
+        author: file.author,
+        date: new Date(file.datetime),
+    }));
+
+    console.log("Processed file data:", fileData);
 }
 
 // Render File Items in Scrollytelling
@@ -509,7 +525,7 @@ function renderFileItems(startIndex) {
         .html(file => {
             console.log("File entry:", file); // Debugging
 
-            // Ensure file properties exist before rendering
+            // Fix potential undefined issues
             if (!file || !file.filename || !file.lines_changed) {
                 return `<p><b>Data missing</b></p>`;
             }
@@ -519,6 +535,32 @@ function renderFileItems(startIndex) {
                 <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
             </p>
             `;
+        });
+}
+
+function renderFileDotVisualization() {
+    if (!fileData.length) return;  
+
+    const fileContainer = d3.select('#file-dot-visualization');
+
+    const fileGroups = fileContainer.selectAll('.file-group')
+        .data(fileData)
+        .enter()
+        .append('div')
+        .attr('class', 'file-group');
+
+    fileGroups.append('div')
+        .attr('class', 'file-name')
+        .text(d => d.filename);
+
+    fileGroups.append('div')
+        .attr('class', 'dot-container')
+        .html(d => {
+            let dots = "";
+            for (let i = 0; i < d.lines_changed; i += 5) {  // 1 dot per 5 lines
+                dots += "•";
+            }
+            return dots;
         });
 }
 
@@ -533,6 +575,5 @@ scrollContainerFiles.on("scroll", () => {
 });
 
 // Load data when page loads
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadFileData();
-});
+// document.addEventListener('DOMContentLoaded', async () => {
+// });
