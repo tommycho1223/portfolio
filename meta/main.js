@@ -245,20 +245,24 @@ function brushSelector() {
 
 function brushed(event) {
     console.log("Brush event triggered:", event.selection);
-    selectedCommits = event.selection
-        ? commits.filter((commit) => {
-            let min = { x: event.selection[0][0], y: event.selection[0][1] };
-            let max = { x: event.selection[1][0], y: event.selection[1][1] };
+    
+    if (event.selection) {
+        let [minX, minY] = event.selection[0];
+        let [maxX, maxY] = event.selection[1];
+
+        selectedCommits = commits.filter(commit => {
             let x = xScale(commit.datetime);
             let y = yScale(commit.hourFrac);
-            return x >= min.x && x <= max.x && y >= min.y && y <= max.y;
-        })
-        : [];
+            return x >= minX && x <= maxX && y >= minY && y <= maxY;
+        });
+    } else {
+        selectedCommits = [];
+    }
+
     updateSelection();
     updateSelectionCount();
-    updateLanguageBreakdown();
+    displayCommitFiles(selectedCommits);  // Ensure file breakdown updates
 }
-
 
 function isCommitSelected(commit) {
     return selectedCommits.includes(commit);
@@ -433,6 +437,14 @@ function renderItems(startIndex) {
 }
 
 function displayCommitFiles(filteredCommits) {
+    const container = d3.select(".files");
+    container.html("");  // ✅ Clear previous file details
+
+    if (filteredCommits.length === 0) {
+        container.append("p").text("No commits selected.");
+        return;
+    }
+
     const lines = filteredCommits.flatMap(d => d.lines);
     let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
 
@@ -442,9 +454,7 @@ function displayCommitFiles(filteredCommits) {
 
     files = d3.sort(files, (d) => -d.lines.length);
 
-    // d3.select(".files").selectAll("div").remove();
-
-    let fileContainer = d3.select(".files").selectAll("div")
+    let fileContainer = container.selectAll("div")
         .data(files)
         .enter()
         .append("div");
