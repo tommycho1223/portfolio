@@ -443,13 +443,12 @@ circle {
     transition: 200ms;
     transform-origin: center;
     transform-box: fill-box;
-    cursor: pointer; /* Ensures pointer shows */
-    pointer-events: all; /* Ensures events work */
+    cursor: pointer; /* Ensures cursor changes on hover */
 }
 
 circle:hover {
     transform: scale(1.5);
-    fill-opacity: 1; /* Ensures it's visible */
+    cursor: pointer; /* Ensure cursor changes on hover */
 }
 
 d1.info {

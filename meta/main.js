@@ -396,8 +396,8 @@ function updateFileVisualization(files) {
 }
 
 function renderItems(startIndex) {
-    // // Clear previous items
-    // itemsContainer.selectAll("div").remove();
+    // Clear previous items
+    itemsContainer.selectAll("div").remove();
 
     // Determine visible commits
     const endIndex = Math.min(startIndex + VISIBLE_COUNT, commits.length);
@@ -408,14 +408,16 @@ function renderItems(startIndex) {
     displayCommitFiles(newCommitSlice);
 
     // Render commit narratives
-    itemsContainer.selectAll("div")
+    let commitSelection = itemsContainer.selectAll(".item")
         .data(newCommitSlice)
         .enter()
         .append("div")
         .attr("class", "item")
         .style("position", "absolute")
-        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
-        .html((commit, index) => `
+        .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`);
+
+    // Add message content inside each item
+    commitSelection.html((commit, index) => `
         <p>
             On ${commit.datetime.toLocaleString("en", { dateStyle: "short", timeStyle: "short" })}, 
             I made 
@@ -429,7 +431,7 @@ function renderItems(startIndex) {
 }
 
 function displayCommitFiles(filteredCommits) {
-    const lines = filteredCommits.flatMap(d => d.lines);
+    const lines = filteredCommits.flatMap(d => d.lines || []);
     let fileTypeColors = d3.scaleOrdinal(d3.schemeTableau10);
 
     let files = d3.groups(lines, d => d.file).map(([name, lines]) => ({
@@ -438,16 +440,19 @@ function displayCommitFiles(filteredCommits) {
 
     files = d3.sort(files, (d) => -d.lines.length);
 
-    // d3.select(".files").selectAll("div").remove();
+    let fileContainer = d3.select(".files");
 
-    let fileContainer = d3.select(".files").selectAll("div")
+    // Clear previous content
+    fileContainer.html("");
+
+    let fileSelection = fileContainer.selectAll("div")
         .data(files)
         .enter()
         .append("div");
 
-    fileContainer.append("dt").html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
+    fileSelection.append("dt").html(d => `<code>${d.name}</code><small>${d.lines.length} lines</small>`);
 
-    fileContainer.append("dd")
+    fileSelection.append("dd")
         .selectAll("div")
         .data(d => d.lines)
         .enter()
@@ -457,15 +462,20 @@ function displayCommitFiles(filteredCommits) {
 }
 
 function updateScatterplot(filteredCommits) {
-    if (!filteredCommits.length) return;
+    // Update the dots only, instead of re-creating the scatterplot
+    let dots = svg.selectAll("circle")
+        .data(filteredCommits, d => d.id);
 
-    // Bind data to existing circles, avoiding deletion of previous points
-    d3.selectAll('.dots circle')
-        .data(filteredCommits)
-        .join('circle')
-        .attr('r', (d) => rScale(d.totalLines))
-        .attr('cx', (d) => xScale(d.datetime))
-        .attr('cy', (d) => yScale(d.hourFrac))
-        .attr('fill', 'steelblue')
-        .style('pointer-events', 'all'); // Ensures events work
+    dots.enter()
+        .append("circle")
+        .merge(dots)
+        .transition()
+        .duration(500)
+        .attr("r", (d) => rScale(d.totalLines))
+        .style("fill-opacity", 0.7)
+        .attr("cx", (d) => xScale(d.datetime))
+        .attr("cy", (d) => yScale(d.hourFrac))
+        .attr("fill", "steelblue");
+
+    dots.exit().remove();
 }
