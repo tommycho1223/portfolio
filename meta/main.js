@@ -495,9 +495,9 @@ function renderFileItems(startIndex) {
     const endIndex = Math.min(startIndex + VISIBLE_COUNT_FILES, fileData.length);
     let fileSlice = fileData.slice(startIndex, endIndex);
 
-    console.log("Rendering file items:", fileSlice.length); // Debugging
+    console.log("Rendering file items:", fileSlice); // Debugging
 
-    itemsContainerFiles.selectAll("div").remove(); // Ensure clearing old items
+    itemsContainerFiles.selectAll("div").remove(); // Clear old messages
 
     itemsContainerFiles.selectAll("div")
         .data(fileSlice)
@@ -506,11 +506,20 @@ function renderFileItems(startIndex) {
         .attr("class", "item")
         .style("position", "absolute")
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT_FILES}px`)
-        .html(file => `
-        <p>
-            <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
-        </p>
-    `);
+        .html(file => {
+            console.log("File entry:", file); // Debugging
+
+            // Ensure file properties exist before rendering
+            if (!file || !file.filename || !file.lines_changed) {
+                return `<p><b>Data missing</b></p>`;
+            }
+
+            return `
+            <p>
+                <b>${file.filename}</b> had <b>${file.lines_changed}</b> lines edited.
+            </p>
+            `;
+        });
 }
 
 // Handle scrolling
