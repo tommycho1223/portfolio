@@ -63,10 +63,10 @@ async function loadData() {
     // filterCommits(); // Apply filtering immediately when the page loads
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadData();
-    await loadFileData();
-});
+// document.addEventListener('DOMContentLoaded', async () => {
+//     await loadData();
+//     await loadFileData();
+// });
 
 function processCommits() {
     commits = d3.groups(data, (d) => d.commit).map(([commit, lines]) => {
@@ -574,3 +574,8 @@ scrollContainerFiles.on("scroll", () => {
 // Load data when page loads
 // document.addEventListener('DOMContentLoaded', async () => {
 // });
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadData(); // Loads commit data
+    await loadFileData(); // Loads file data for scrollytelling
+});
