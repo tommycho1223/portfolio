@@ -144,10 +144,10 @@ function createScatterplot(filteredCommits = commits) {
         .range([usableArea.bottom, usableArea.top]);
 
     // Remove old elements
-    // svg.select('.dots').remove();
-    // svg.select('.x-axis').remove();
-    // svg.select('.y-axis').remove();
-    // svg.select('.gridlines').remove();
+    svg.select('.dots').remove();
+    svg.select('.x-axis').remove();
+    svg.select('.y-axis').remove();
+    svg.select('.gridlines').remove();
 
     // Create dots group
     const dots = svg.append('g').attr('class', 'dots');
