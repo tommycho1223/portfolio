@@ -28,8 +28,6 @@ scrollContainer.on("scroll", () => {
     renderItems(startIndex);
 });
 
-renderItems(0);
-
 const svg = d3
     .select('#chart')
     .append('svg')
@@ -63,6 +61,7 @@ async function loadData() {
 
 document.addEventListener('DOMContentLoaded', async () => {
     await loadData();
+    renderItems(0); // Ensure scrollytelling items are rendered immediately
 });
 
 function processCommits() {
@@ -418,17 +417,17 @@ function renderItems(startIndex) {
         .style("position", "absolute")
         .style("top", (_, idx) => `${(startIndex + idx) * ITEM_HEIGHT}px`)
         .html((commit, index) => `
-            <p>
-                On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
-                I made 
-                <a href="${commit.url}" target="_blank">
-                    ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
-                </a>. 
-                I edited ${commit.totalLines} lines across 
-                ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
-                Then I looked over all I had made, and I saw that it was very good.
-            </p>
-        `);
+        <p>
+            On ${commit.datetime.toLocaleString("en", { dateStyle: "full", timeStyle: "short" })}, 
+            I made 
+            <a href="${commit.url}" target="_blank">
+                ${index > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'}
+            </a>. 
+            I edited ${commit.totalLines} lines across 
+            ${d3.rollups(commit.lines, D => D.length, d => d.file).length} files.
+            Then I looked over all I had made, and I saw that it was very good.
+        </p>
+    `);
 }
 
 function displayCommitFiles(filteredCommits) {
